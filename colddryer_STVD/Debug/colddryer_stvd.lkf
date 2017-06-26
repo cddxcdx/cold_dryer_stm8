@@ -62,6 +62,7 @@ Debug\stm8s_tim2.o
 Debug\stm8s_uart2.o
 Debug\stm8s_wwdg.o
 Debug\main.o
+Debug\leddisplay.o
 Debug\stm8s_it.o
 #<END OBJECT_FILES>
 
