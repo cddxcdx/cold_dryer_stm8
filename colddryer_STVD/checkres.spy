@@ -3,7 +3,7 @@
 ; ** Copyright STMicroelectronics (c) 1999, all rights reserved **
 ;  Level 1
 ;  Date  07/02/17
-;  Time  14:35:22
+;  Time  22:21:28
 ;
-<.\confmenu.cpp:170-14:35:22> 
+<.\confmenu.cpp:170-22:21:28> 
 Error: resource handle has not been restored in .\mainfrm.cpp:3205
