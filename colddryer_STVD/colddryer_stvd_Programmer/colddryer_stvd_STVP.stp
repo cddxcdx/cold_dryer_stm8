@@ -1,19 +1,31 @@
 [Last Settings]
-Hardware=ST-LINK
 PROTOCOL=SWIM
+DEVICE=STM8S105x6
+Hardware=ST-LINK
 Port=USB
-DEVICE=STM8S105x4
-Verify after programming=1
+CpuFreq=8
 Blank check before programming (when available)=1
+Verify after programming=1
+Clear memory before loading a file=1
 Erase device memory before programming (when available)=0
+Display a popup window when an error occurs=1
+Log activity=0
+Log file=
 Unlock protection before a programming cycle=0
-[DATA MEMORY]
-Count=0
-ProgramEvenIfBlank=0
-[PROGRAM MEMORY]
-Count=0
-ProgramEvenIfBlank=0
+Prompt for new programming cycle=0
+Activate secure mode on next project loading=0
+Enable Serial=0
+Start addr=0
+Length=0
+High Base=0
+Low Base=0
+Step=0
+Little Endian=0
 [OPTION BYTE]
 Count=1
-File0=c:\users\test\desktop\cold_dryer_w\colddryer_stvd\colddryer_stvd_Programmer\colddryer_stvd_STVP_OPTION BYTE.hex
-ProgramEvenIfBlank=0
+File0=E:\SharedSpace\cold_Dryer_w\colddryer_STVD\colddryer_stvd_Programmer\colddryer_stvd_STVP_OPTION BYTE.hex
+[DATA MEMORY]
+Count=0
+[PROGRAM MEMORY]
+Count=1
+File0=E:\SharedSpace\cold_Dryer_w\colddryer_STVD\Debug\colddryer_stvd.s19

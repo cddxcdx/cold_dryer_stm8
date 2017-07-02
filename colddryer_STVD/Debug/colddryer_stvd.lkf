@@ -27,7 +27,7 @@
 # Segment configuration - section reserved for STVD
 #<BEGIN SEGMENT_CONF>
 # Segment Code,Constants:
-+seg .const -b 0x8080 -m 0x3f80 -n .const -it
++seg .const -b 0x8080 -m 0x7f80 -n .const -it
 +seg .text -a .const -n .text
 # Segment Eeprom:
 +seg .eeprom -b 0x4000 -m 0x400 -n .eeprom
@@ -62,7 +62,7 @@ Debug\stm8s_tim2.o
 Debug\stm8s_uart2.o
 Debug\stm8s_wwdg.o
 Debug\main.o
-Debug\leddisplay.o
+Debug\io.o
 Debug\stm8s_it.o
 #<END OBJECT_FILES>
 
