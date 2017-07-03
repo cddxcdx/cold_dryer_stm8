@@ -1,6 +1,10 @@
 #ifndef _IO_H_
 #define _IO_H_
 
+
+#define VREF 5000 //定义ADC的参考电压
+#define Resolution 1024
+
 /*LEDDisplay*/
 #define LED_Disp_Dig1_PORT GPIOC
 #define LED_Disp_Dig1_PIN GPIO_PIN_1
@@ -50,5 +54,5 @@
 #define NTC_Input_PIN GPIO_PIN_0
 
 void IO_Init(void);
-
+void ADC_Init(void);
 #endif

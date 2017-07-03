@@ -63,6 +63,7 @@ Debug\stm8s_uart2.o
 Debug\stm8s_wwdg.o
 Debug\main.o
 Debug\io.o
+Debug\parameter.o
 Debug\stm8s_it.o
 #<END OBJECT_FILES>
 

@@ -33,7 +33,7 @@ leddisplay_scan(unsigned char showtype, void* showcontent){  //less then 20ms ev
 void IO_Init(void)
 {
 	//define LED pins
-  GPIO_Init(Run_LED_PORT,(Run_LED_PIN|Electricalfail_LED_PIN|Tem_LED_PIN|Lowpressure_LED_PIN|Highpressure_LED_PIN),GPIO_MODE_OUT_PP_HIGH_FAST );
+	GPIO_Init(Run_LED_PORT,(Run_LED_PIN|Electricalfail_LED_PIN|Tem_LED_PIN|Lowpressure_LED_PIN|Highpressure_LED_PIN),GPIO_MODE_OUT_PP_HIGH_FAST );
 	//define key input pins
 	GPIO_Init(StartStop_KEY_PORT,(StartStop_KEY_PIN|Set_KEY_PIN),GPIO_MODE_IN_FL_IT);
 	//define error input pins
@@ -45,9 +45,24 @@ void IO_Init(void)
 	GPIO_Init(LED_Disp_Dig2_PORT,(LED_Disp_Dig2_PIN|LED_Disp_f_PIN),GPIO_MODE_OUT_PP_HIGH_FAST );
 	GPIO_Init(LED_Disp_a_PORT,LED_Disp_a_PIN,GPIO_MODE_OUT_PP_HIGH_FAST );
 	//define tem input pins
-	GPIO_Init(NTC_Input_PORT,NTC_Input_PIN,GPIO_MODE_IN_FL_IT);//???????
+	//GPIO_Init(NTC_Input_PORT,NTC_Input_PIN,GPIO_MODE_IN_FL_IT);//???????
 	//define remote control pins
 	GPIO_Init(RemoteControl_PORT,(RemoteControl_Start_PIN|RemoteControl_Stop_PIN),GPIO_MODE_IN_FL_IT );
+}
+
+void ADC_Init(void){
+	CLK_PeripheralClockConfig(CLK_PERIPHERAL_ADC , ENABLE);
+	GPIO_Init(NTC_Input_PORT, NTC_Input_PIN , GPIO_MODE_IN_FL_NO_IT);
+	ADC1_Init(ADC1_CONVERSIONMODE_SINGLE, ADC1_CHANNEL_0, ADC1_PRESSEL_FCPU_D10,  ADC1_EXTTRIG_TIM, DISABLE, ADC1_ALIGN_RIGHT, ADC1_SCHMITTTRIG_CHANNEL0, DISABLE);
+    /*
+    NOTE:
+    单次转换是指进行一次转换前需要你给一次指令。
+    连续转换的话开启后自动连续进行转换，转换的数据连续进行更新。
+    如果你采用单次转换，就需要不断发送转换的命令，读取结果，再发转换命令，再读。就是循环啦。
+    如果连续转换开启的话，就在程序中循环读就可以了.
+    */
+	ADC1_Cmd(ENABLE);
+	ADC1_StartConversion();
 }
 
 /*Followed for test*/
