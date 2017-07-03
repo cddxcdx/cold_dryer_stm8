@@ -57,13 +57,13 @@ Release\stm8s_exti.o
 Release\stm8s_flash.o
 Release\stm8s_gpio.o
 Release\stm8s_iwdg.o
-Release\stm8s_tim1.o
-Release\stm8s_tim2.o
+Release\stm8s_tim3.o
+Release\stm8s_tim4.o
 Release\stm8s_uart2.o
 Release\stm8s_wwdg.o
 Release\main.o
-Release\io.o
 Release\parameter.o
+Release\periph_init.o
 Release\stm8s_it.o
 #<END OBJECT_FILES>
 

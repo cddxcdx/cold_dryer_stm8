@@ -1,6 +1,9 @@
 #ifndef _PARAMETER_H_
 #define _PARAMETER_H_
 
+//温度校正增量
+#define TEM_OFFSET 2       //2相当于0.2，基准，一次加减都是 这个值
+
 //内部EERPOM地址分配情况
 #define HUMSetting_MEM  0x4000   // 湿度设定值
 #define TEMPSetting_MEM 0x4001   // 温度设定值
@@ -33,4 +36,5 @@
 #define TT2          0X401A //延时状态S2，单位是分钟，用于特殊处理跳到主处理的延时，单位min'
 
 void Read_parameters(void);
+
 #endif

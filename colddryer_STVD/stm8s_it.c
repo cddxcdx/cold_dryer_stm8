@@ -29,15 +29,25 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm8s_it.h"
-
+#include "Periph_Init.h"
 /** @addtogroup Template_Project
   * @{
   */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+
+#define E_Error_DelayTime 3000
+#define LP_Error_DelayTime 3000
+#define HP_Error_DelayTime 3000
+#define RemoteControl_Start_DelayTime 3000
+#define RemoteControl_Stop_DelayTime 3000
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+uint16_t Conversion_Value = 0;
+uint16_t E_Error_Delay_Count = 0,LP_Error_Delay_Count = 0,HP_Error_Delay_Count = 0,RemoteControl_Start_Delay_Count = 0,RemoteControl_Stop_Delay_Count = 0;
+bool E_Error_Exist_Flag = FALSE;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /* Public functions ----------------------------------------------------------*/
@@ -306,6 +316,8 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+	/* Cleat Interrupt Pending bit */
+  TIM3_ClearITPendingBit(TIM3_IT_UPDATE);
  }
 
 /**
@@ -463,6 +475,10 @@ INTERRUPT_HANDLER(I2C_IRQHandler, 19)
     /* In order to detect unexpected events during development,
        it is recommended to set a breakpoint on the following instruction.
     */
+		/* Get converted value */
+    Conversion_Value = ADC1_GetConversionValue();
+		
+		ADC1_ClearITPendingBit(ADC1_IT_EOC);
  }
 #endif /* (STM8S208) || (STM8S207) || (STM8AF52Ax) || (STM8AF62Ax) */
 
@@ -489,6 +505,43 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+	//uint16 E_Error_Delay_Count = 0,LP_Error_Delay_Count = 0,HP_Error_Delay_Count = 0,RemoteControl_Start_Delay_Count = 0,RemoteControl_Stop_Delay_Count = 0;
+	if(!GPIO_ReadInputPin(Error_Input_PORT,E_Error_PIN)){
+		if(++E_Error_Delay_Count == E_Error_DelayTime && E_Error_Exist_Flag == FALSE){
+			E_Error_Delay_Count = 0;
+			E_Error_Exist_Flag = TRUE;
+			GPIO_WriteLow(Run_LED_PORT,Electricalfail_LED_PIN);
+		}
+	}
+	else{
+		E_Error_Delay_Count = 0;
+	}
+	if(GPIO_ReadInputPin(Error_Input_PORT,LP_Error_PIN)){
+	}
+	if(GPIO_ReadInputPin(Error_Input_PORT,HP_Error_PIN)){
+	}
+	
+	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Start_PIN)){
+		
+	}
+	else{
+		
+	}
+	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Stop_PIN)){
+		
+	}
+	else{
+		
+	}
+	
+	if(E_Error_Exist_Flag == TRUE){
+		if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
+			E_Error_Exist_Flag = 0;
+		GPIO_WriteHigh(Run_LED_PORT,Electricalfail_LED_PIN);}
+	}
+	
+	/* Cleat Interrupt Pending bit */
+  TIM4_ClearITPendingBit(TIM4_IT_UPDATE);
  }
 #endif /* (STM8S903) || (STM8AF622x)*/
 

@@ -5,6 +5,9 @@
 #define VREF 5000 //定义ADC的参考电压
 #define Resolution 1024
 
+#define TIM4_PERIOD       124
+#define TIM3_PERIOD       2480
+
 /*LEDDisplay*/
 #define LED_Disp_Dig1_PORT GPIOC
 #define LED_Disp_Dig1_PIN GPIO_PIN_1
@@ -53,6 +56,7 @@
 #define NTC_Input_PORT GPIOB
 #define NTC_Input_PIN GPIO_PIN_0
 
-void IO_Init(void);
-void ADC_Init(void);
+void system_init(void);
+void Input_test(void);
+
 #endif
