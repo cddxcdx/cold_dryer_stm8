@@ -42,7 +42,7 @@ void IO_Init(void)
 	//define error input pins
 	GPIO_Init(Error_Input_PORT,(E_Error_PIN|LP_Error_PIN|HP_Error_PIN),GPIO_MODE_IN_FL_NO_IT);
 	//define relay output pins
-	GPIO_Init(RelayControl_PORT,RelayControl_PIN,GPIO_MODE_OUT_PP_HIGH_FAST );
+	GPIO_Init(RelayControl_PORT,RelayControl_PIN,GPIO_MODE_OUT_PP_LOW_SLOW );
 	//define LED Disp pins
 	GPIO_Init(LED_Disp_Dig1_PORT,(LED_Disp_Dig1_PIN|LED_Disp_b_PIN|LED_Disp_c_PIN|LED_Disp_e_PIN|LED_Disp_d_PIN|LED_Disp_g_PIN|LED_Disp_dp_PIN),GPIO_MODE_OUT_PP_HIGH_FAST );
 	GPIO_Init(LED_Disp_Dig2_PORT,(LED_Disp_Dig2_PIN|LED_Disp_f_PIN),GPIO_MODE_OUT_PP_HIGH_FAST );
@@ -60,7 +60,7 @@ void ADC_Init(void){
 	GPIO_Init(NTC_Input_PORT, NTC_Input_PIN , GPIO_MODE_IN_FL_NO_IT);
   ADC1_DeInit();
 	ADC1_Init(ADC1_CONVERSIONMODE_CONTINUOUS, ADC1_CHANNEL_0, ADC1_PRESSEL_FCPU_D10,  ADC1_EXTTRIG_TIM, DISABLE, ADC1_ALIGN_RIGHT, ADC1_SCHMITTTRIG_CHANNEL0, DISABLE);
- // ADC1_ITConfig(ADC1_IT_EOCIE, ENABLE);
+  ADC1_ITConfig(ADC1_IT_EOCIE, ENABLE);
 	ADC1_StartConversion();
 }
 

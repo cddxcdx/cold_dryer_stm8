@@ -37,9 +37,9 @@
 #define Tem_LED_PIN GPIO_PIN_7
 /*KEY*/
 #define StartStop_KEY_PORT GPIOA
-#define StartStop_KEY_PIN GPIO_PIN_5
+#define StartStop_KEY_PIN GPIO_PIN_6
 #define Set_KEY_PORT StartStop_KEY_PORT
-#define Set_KEY_PIN GPIO_PIN_6
+#define Set_KEY_PIN GPIO_PIN_5
 /*Error Input*/
 #define Error_Input_PORT GPIOB
 #define E_Error_PIN GPIO_PIN_3

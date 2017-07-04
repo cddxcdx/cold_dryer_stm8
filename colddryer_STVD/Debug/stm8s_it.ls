@@ -1,336 +1,1610 @@
    1                     ; C Compiler for STM8 (COSMIC Software)
    2                     ; Parser V4.11.9 - 08 Feb 2017
    3                     ; Generator (Limited) V4.4.6 - 08 Feb 2017
-  14                     	bsct
-  15  0000               _Conversion_Value:
-  16  0000 0000          	dc.w	0
-  17  0002               _E_Error_Delay_Count:
-  18  0002 0000          	dc.w	0
-  19  0004               _LP_Error_Delay_Count:
-  20  0004 0000          	dc.w	0
-  21  0006               _HP_Error_Delay_Count:
-  22  0006 0000          	dc.w	0
-  23  0008               _RemoteControl_Start_Delay_Count:
-  24  0008 0000          	dc.w	0
-  25  000a               _RemoteControl_Stop_Delay_Count:
-  26  000a 0000          	dc.w	0
-  27  000c               _E_Error_Exist_Flag:
-  28  000c 00            	dc.b	0
-  58                     ; 63 INTERRUPT_HANDLER(NonHandledInterrupt, 25)
-  58                     ; 64 {
-  59                     	switch	.text
-  60  0000               f_NonHandledInterrupt:
-  64                     ; 68 }
-  67  0000 80            	iret
-  89                     ; 76 INTERRUPT_HANDLER_TRAP(TRAP_IRQHandler)
-  89                     ; 77 {
-  90                     	switch	.text
-  91  0001               f_TRAP_IRQHandler:
-  95                     ; 81 }
-  98  0001 80            	iret
- 120                     ; 88 INTERRUPT_HANDLER(TLI_IRQHandler, 0)
- 120                     ; 89 
- 120                     ; 90 {
- 121                     	switch	.text
- 122  0002               f_TLI_IRQHandler:
- 126                     ; 94 }
- 129  0002 80            	iret
- 151                     ; 101 INTERRUPT_HANDLER(AWU_IRQHandler, 1)
- 151                     ; 102 {
- 152                     	switch	.text
- 153  0003               f_AWU_IRQHandler:
- 157                     ; 106 }
- 160  0003 80            	iret
- 182                     ; 113 INTERRUPT_HANDLER(CLK_IRQHandler, 2)
- 182                     ; 114 {
- 183                     	switch	.text
- 184  0004               f_CLK_IRQHandler:
- 188                     ; 118 }
- 191  0004 80            	iret
- 214                     ; 125 INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
- 214                     ; 126 {
- 215                     	switch	.text
- 216  0005               f_EXTI_PORTA_IRQHandler:
- 220                     ; 130 }
- 223  0005 80            	iret
- 246                     ; 137 INTERRUPT_HANDLER(EXTI_PORTB_IRQHandler, 4)
- 246                     ; 138 {
- 247                     	switch	.text
- 248  0006               f_EXTI_PORTB_IRQHandler:
- 252                     ; 142 }
- 255  0006 80            	iret
- 278                     ; 149 INTERRUPT_HANDLER(EXTI_PORTC_IRQHandler, 5)
- 278                     ; 150 {
- 279                     	switch	.text
- 280  0007               f_EXTI_PORTC_IRQHandler:
- 284                     ; 154 }
- 287  0007 80            	iret
- 310                     ; 161 INTERRUPT_HANDLER(EXTI_PORTD_IRQHandler, 6)
- 310                     ; 162 {
- 311                     	switch	.text
- 312  0008               f_EXTI_PORTD_IRQHandler:
- 316                     ; 166 }
- 319  0008 80            	iret
- 342                     ; 173 INTERRUPT_HANDLER(EXTI_PORTE_IRQHandler, 7)
- 342                     ; 174 {
- 343                     	switch	.text
- 344  0009               f_EXTI_PORTE_IRQHandler:
- 348                     ; 178 }
- 351  0009 80            	iret
- 373                     ; 225 INTERRUPT_HANDLER(SPI_IRQHandler, 10)
- 373                     ; 226 {
- 374                     	switch	.text
- 375  000a               f_SPI_IRQHandler:
- 379                     ; 230 }
- 382  000a 80            	iret
- 405                     ; 237 INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
- 405                     ; 238 {
- 406                     	switch	.text
- 407  000b               f_TIM1_UPD_OVF_TRG_BRK_IRQHandler:
- 411                     ; 242 }
- 414  000b 80            	iret
- 437                     ; 249 INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
- 437                     ; 250 {
- 438                     	switch	.text
- 439  000c               f_TIM1_CAP_COM_IRQHandler:
- 443                     ; 254 }
- 446  000c 80            	iret
- 469                     ; 287  INTERRUPT_HANDLER(TIM2_UPD_OVF_BRK_IRQHandler, 13)
- 469                     ; 288  {
- 470                     	switch	.text
- 471  000d               f_TIM2_UPD_OVF_BRK_IRQHandler:
- 475                     ; 292  }
- 478  000d 80            	iret
- 501                     ; 299  INTERRUPT_HANDLER(TIM2_CAP_COM_IRQHandler, 14)
- 501                     ; 300  {
- 502                     	switch	.text
- 503  000e               f_TIM2_CAP_COM_IRQHandler:
- 507                     ; 304  }
- 510  000e 80            	iret
- 534                     ; 314  INTERRUPT_HANDLER(TIM3_UPD_OVF_BRK_IRQHandler, 15)
- 534                     ; 315  {
- 535                     	switch	.text
- 536  000f               f_TIM3_UPD_OVF_BRK_IRQHandler:
- 538  000f 8a            	push	cc
- 539  0010 84            	pop	a
- 540  0011 a4bf          	and	a,#191
- 541  0013 88            	push	a
- 542  0014 86            	pop	cc
- 543  0015 3b0002        	push	c_x+2
- 544  0018 be00          	ldw	x,c_x
- 545  001a 89            	pushw	x
- 546  001b 3b0002        	push	c_y+2
- 547  001e be00          	ldw	x,c_y
- 548  0020 89            	pushw	x
- 551                     ; 320   TIM3_ClearITPendingBit(TIM3_IT_UPDATE);
- 553  0021 a601          	ld	a,#1
- 554  0023 cd0000        	call	_TIM3_ClearITPendingBit
- 556                     ; 321  }
- 559  0026 85            	popw	x
- 560  0027 bf00          	ldw	c_y,x
- 561  0029 320002        	pop	c_y+2
- 562  002c 85            	popw	x
- 563  002d bf00          	ldw	c_x,x
- 564  002f 320002        	pop	c_x+2
- 565  0032 80            	iret
- 588                     ; 328  INTERRUPT_HANDLER(TIM3_CAP_COM_IRQHandler, 16)
- 588                     ; 329  {
- 589                     	switch	.text
- 590  0033               f_TIM3_CAP_COM_IRQHandler:
- 594                     ; 333  }
- 597  0033 80            	iret
- 619                     ; 394 INTERRUPT_HANDLER(I2C_IRQHandler, 19)
- 619                     ; 395 {
- 620                     	switch	.text
- 621  0034               f_I2C_IRQHandler:
- 625                     ; 399 }
- 628  0034 80            	iret
- 651                     ; 407  INTERRUPT_HANDLER(UART2_TX_IRQHandler, 20)
- 651                     ; 408  {
- 652                     	switch	.text
- 653  0035               f_UART2_TX_IRQHandler:
- 657                     ; 412  }
- 660  0035 80            	iret
- 683                     ; 419  INTERRUPT_HANDLER(UART2_RX_IRQHandler, 21)
- 683                     ; 420  {
- 684                     	switch	.text
- 685  0036               f_UART2_RX_IRQHandler:
- 689                     ; 424  }
- 692  0036 80            	iret
- 717                     ; 473  INTERRUPT_HANDLER(ADC1_IRQHandler, 22)
- 717                     ; 474  {
- 718                     	switch	.text
- 719  0037               f_ADC1_IRQHandler:
- 721  0037 8a            	push	cc
- 722  0038 84            	pop	a
- 723  0039 a4bf          	and	a,#191
- 724  003b 88            	push	a
- 725  003c 86            	pop	cc
- 726  003d 3b0002        	push	c_x+2
- 727  0040 be00          	ldw	x,c_x
- 728  0042 89            	pushw	x
- 729  0043 3b0002        	push	c_y+2
- 730  0046 be00          	ldw	x,c_y
- 731  0048 89            	pushw	x
- 734                     ; 479     Conversion_Value = ADC1_GetConversionValue();
- 736  0049 cd0000        	call	_ADC1_GetConversionValue
- 738  004c bf00          	ldw	_Conversion_Value,x
- 739                     ; 481 		ADC1_ClearITPendingBit(ADC1_IT_EOC);
- 741  004e ae0080        	ldw	x,#128
- 742  0051 cd0000        	call	_ADC1_ClearITPendingBit
- 744                     ; 482  }
- 747  0054 85            	popw	x
- 748  0055 bf00          	ldw	c_y,x
- 749  0057 320002        	pop	c_y+2
- 750  005a 85            	popw	x
- 751  005b bf00          	ldw	c_x,x
- 752  005d 320002        	pop	c_x+2
- 753  0060 80            	iret
- 782                     ; 503  INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
- 782                     ; 504  {
- 783                     	switch	.text
- 784  0061               f_TIM4_UPD_OVF_IRQHandler:
- 786  0061 8a            	push	cc
- 787  0062 84            	pop	a
- 788  0063 a4bf          	and	a,#191
- 789  0065 88            	push	a
- 790  0066 86            	pop	cc
- 791  0067 3b0002        	push	c_x+2
- 792  006a be00          	ldw	x,c_x
- 793  006c 89            	pushw	x
- 794  006d 3b0002        	push	c_y+2
- 795  0070 be00          	ldw	x,c_y
- 796  0072 89            	pushw	x
- 799                     ; 509 	if(!GPIO_ReadInputPin(Error_Input_PORT,E_Error_PIN)){
- 801  0073 4b08          	push	#8
- 802  0075 ae5005        	ldw	x,#20485
- 803  0078 cd0000        	call	_GPIO_ReadInputPin
- 805  007b 5b01          	addw	sp,#1
- 806  007d 4d            	tnz	a
- 807  007e 2622          	jrne	L172
- 808                     ; 510 		if(++E_Error_Delay_Count == E_Error_DelayTime && E_Error_Exist_Flag == FALSE){
- 810  0080 be02          	ldw	x,_E_Error_Delay_Count
- 811  0082 1c0001        	addw	x,#1
- 812  0085 bf02          	ldw	_E_Error_Delay_Count,x
- 813  0087 a30bb8        	cpw	x,#3000
- 814  008a 2619          	jrne	L572
- 816  008c 3d0c          	tnz	_E_Error_Exist_Flag
- 817  008e 2615          	jrne	L572
- 818                     ; 511 			E_Error_Delay_Count = 0;
- 820  0090 5f            	clrw	x
- 821  0091 bf02          	ldw	_E_Error_Delay_Count,x
- 822                     ; 512 			E_Error_Exist_Flag = TRUE;
- 824  0093 3501000c      	mov	_E_Error_Exist_Flag,#1
- 825                     ; 513 			GPIO_WriteLow(Run_LED_PORT,Electricalfail_LED_PIN);
- 827  0097 4b10          	push	#16
- 828  0099 ae500f        	ldw	x,#20495
- 829  009c cd0000        	call	_GPIO_WriteLow
- 831  009f 84            	pop	a
- 832  00a0 2003          	jra	L572
- 833  00a2               L172:
- 834                     ; 517 		E_Error_Delay_Count = 0;
- 836  00a2 5f            	clrw	x
- 837  00a3 bf02          	ldw	_E_Error_Delay_Count,x
- 838  00a5               L572:
- 839                     ; 519 	if(GPIO_ReadInputPin(Error_Input_PORT,LP_Error_PIN)){
- 841  00a5 4b04          	push	#4
- 842  00a7 ae5005        	ldw	x,#20485
- 843  00aa cd0000        	call	_GPIO_ReadInputPin
- 845  00ad 5b01          	addw	sp,#1
- 846  00af 4d            	tnz	a
- 847                     ; 521 	if(GPIO_ReadInputPin(Error_Input_PORT,HP_Error_PIN)){
- 849  00b0 4b02          	push	#2
- 850  00b2 ae5005        	ldw	x,#20485
- 851  00b5 cd0000        	call	_GPIO_ReadInputPin
- 853  00b8 5b01          	addw	sp,#1
- 854  00ba 4d            	tnz	a
- 855                     ; 524 	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Start_PIN)){
- 857  00bb 4b20          	push	#32
- 858  00bd ae5005        	ldw	x,#20485
- 859  00c0 cd0000        	call	_GPIO_ReadInputPin
- 861  00c3 5b01          	addw	sp,#1
- 862  00c5 4d            	tnz	a
- 864  00c6               L503:
- 865                     ; 530 	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Stop_PIN)){
- 867  00c6 4b10          	push	#16
- 868  00c8 ae5005        	ldw	x,#20485
- 869  00cb cd0000        	call	_GPIO_ReadInputPin
- 871  00ce 5b01          	addw	sp,#1
- 872  00d0 4d            	tnz	a
- 874  00d1               L113:
- 875                     ; 537 	if(E_Error_Exist_Flag == TRUE){
- 877  00d1 b60c          	ld	a,_E_Error_Exist_Flag
- 878  00d3 a101          	cp	a,#1
- 879  00d5 2618          	jrne	L313
- 880                     ; 538 		if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
- 882  00d7 4b20          	push	#32
- 883  00d9 ae5000        	ldw	x,#20480
- 884  00dc cd0000        	call	_GPIO_ReadInputPin
- 886  00df 5b01          	addw	sp,#1
- 887  00e1 4d            	tnz	a
- 888  00e2 260b          	jrne	L313
- 889                     ; 539 			E_Error_Exist_Flag = 0;
- 891  00e4 3f0c          	clr	_E_Error_Exist_Flag
- 892                     ; 540 		GPIO_WriteHigh(Run_LED_PORT,Electricalfail_LED_PIN);}
- 894  00e6 4b10          	push	#16
- 895  00e8 ae500f        	ldw	x,#20495
- 896  00eb cd0000        	call	_GPIO_WriteHigh
- 898  00ee 84            	pop	a
- 899  00ef               L313:
- 900                     ; 544   TIM4_ClearITPendingBit(TIM4_IT_UPDATE);
- 902  00ef a601          	ld	a,#1
- 903  00f1 cd0000        	call	_TIM4_ClearITPendingBit
- 905                     ; 545  }
- 908  00f4 85            	popw	x
- 909  00f5 bf00          	ldw	c_y,x
- 910  00f7 320002        	pop	c_y+2
- 911  00fa 85            	popw	x
- 912  00fb bf00          	ldw	c_x,x
- 913  00fd 320002        	pop	c_x+2
- 914  0100 80            	iret
- 937                     ; 553 INTERRUPT_HANDLER(EEPROM_EEC_IRQHandler, 24)
- 937                     ; 554 {
- 938                     	switch	.text
- 939  0101               f_EEPROM_EEC_IRQHandler:
- 943                     ; 558 }
- 946  0101 80            	iret
-1049                     	xdef	_E_Error_Exist_Flag
-1050                     	xdef	_RemoteControl_Stop_Delay_Count
-1051                     	xdef	_RemoteControl_Start_Delay_Count
-1052                     	xdef	_HP_Error_Delay_Count
-1053                     	xdef	_LP_Error_Delay_Count
-1054                     	xdef	_E_Error_Delay_Count
-1055                     	xdef	_Conversion_Value
-1056                     	xdef	f_EEPROM_EEC_IRQHandler
-1057                     	xdef	f_TIM4_UPD_OVF_IRQHandler
-1058                     	xdef	f_ADC1_IRQHandler
-1059                     	xdef	f_UART2_TX_IRQHandler
-1060                     	xdef	f_UART2_RX_IRQHandler
-1061                     	xdef	f_I2C_IRQHandler
-1062                     	xdef	f_TIM3_CAP_COM_IRQHandler
-1063                     	xdef	f_TIM3_UPD_OVF_BRK_IRQHandler
-1064                     	xdef	f_TIM2_CAP_COM_IRQHandler
-1065                     	xdef	f_TIM2_UPD_OVF_BRK_IRQHandler
-1066                     	xdef	f_TIM1_UPD_OVF_TRG_BRK_IRQHandler
-1067                     	xdef	f_TIM1_CAP_COM_IRQHandler
-1068                     	xdef	f_SPI_IRQHandler
-1069                     	xdef	f_EXTI_PORTE_IRQHandler
-1070                     	xdef	f_EXTI_PORTD_IRQHandler
-1071                     	xdef	f_EXTI_PORTC_IRQHandler
-1072                     	xdef	f_EXTI_PORTB_IRQHandler
-1073                     	xdef	f_EXTI_PORTA_IRQHandler
-1074                     	xdef	f_CLK_IRQHandler
-1075                     	xdef	f_AWU_IRQHandler
-1076                     	xdef	f_TLI_IRQHandler
-1077                     	xdef	f_TRAP_IRQHandler
-1078                     	xdef	f_NonHandledInterrupt
-1079                     	xref	_TIM4_ClearITPendingBit
-1080                     	xref	_TIM3_ClearITPendingBit
-1081                     	xref	_GPIO_ReadInputPin
-1082                     	xref	_GPIO_WriteLow
-1083                     	xref	_GPIO_WriteHigh
-1084                     	xref	_ADC1_ClearITPendingBit
-1085                     	xref	_ADC1_GetConversionValue
-1086                     	xref.b	c_x
-1087                     	xref.b	c_y
-1106                     	end
+  14                     .const:	section	.text
+  15  0000               _TEMP_TABLE:
+  16  0000 0301          	dc.w	769
+  17  0002 0305          	dc.w	773
+  18  0004 0308          	dc.w	776
+  19  0006 030c          	dc.w	780
+  20  0008 0310          	dc.w	784
+  21  000a 0313          	dc.w	787
+  22  000c 0317          	dc.w	791
+  23  000e 031b          	dc.w	795
+  24  0010 031f          	dc.w	799
+  25  0012 0323          	dc.w	803
+  26  0014 0326          	dc.w	806
+  27  0016 032a          	dc.w	810
+  28  0018 032e          	dc.w	814
+  29  001a 0332          	dc.w	818
+  30  001c 0336          	dc.w	822
+  31  001e 0339          	dc.w	825
+  32  0020 033d          	dc.w	829
+  33  0022 0341          	dc.w	833
+  34  0024 0345          	dc.w	837
+  35  0026 0349          	dc.w	841
+  36  0028 034d          	dc.w	845
+  37  002a 0351          	dc.w	849
+  38  002c 0355          	dc.w	853
+  39  002e 0359          	dc.w	857
+  40  0030 035d          	dc.w	861
+  41  0032 0361          	dc.w	865
+  42  0034 0365          	dc.w	869
+  43  0036 0369          	dc.w	873
+  44  0038 036d          	dc.w	877
+  45  003a 0371          	dc.w	881
+  46  003c 0375          	dc.w	885
+  47  003e 0379          	dc.w	889
+  48  0040 037d          	dc.w	893
+  49  0042 0381          	dc.w	897
+  50  0044 0385          	dc.w	901
+  51  0046 0389          	dc.w	905
+  52  0048 038d          	dc.w	909
+  53  004a 0391          	dc.w	913
+  54  004c 0395          	dc.w	917
+  55  004e 0399          	dc.w	921
+  56  0050 039d          	dc.w	925
+  57  0052 03a2          	dc.w	930
+  58  0054 03a6          	dc.w	934
+  59  0056 03aa          	dc.w	938
+  60  0058 03ae          	dc.w	942
+  61  005a 03b2          	dc.w	946
+  62  005c 03b7          	dc.w	951
+  63  005e 03bb          	dc.w	955
+  64  0060 03bf          	dc.w	959
+  65  0062 03c3          	dc.w	963
+  66  0064 03c7          	dc.w	967
+  67  0066 03cc          	dc.w	972
+  68  0068 03d0          	dc.w	976
+  69  006a 03d4          	dc.w	980
+  70  006c 03d9          	dc.w	985
+  71  006e 03dd          	dc.w	989
+  72  0070 03e1          	dc.w	993
+  73  0072 03e6          	dc.w	998
+  74  0074 03ea          	dc.w	1002
+  75  0076 03ee          	dc.w	1006
+  76  0078 03f3          	dc.w	1011
+  77  007a 03f7          	dc.w	1015
+  78  007c 03fb          	dc.w	1019
+  79  007e 0400          	dc.w	1024
+  80  0080 0404          	dc.w	1028
+  81  0082 0409          	dc.w	1033
+  82  0084 040d          	dc.w	1037
+  83  0086 0411          	dc.w	1041
+  84  0088 0416          	dc.w	1046
+  85  008a 041a          	dc.w	1050
+  86  008c 041f          	dc.w	1055
+  87  008e 0423          	dc.w	1059
+  88  0090 0428          	dc.w	1064
+  89  0092 042c          	dc.w	1068
+  90  0094 0431          	dc.w	1073
+  91  0096 0435          	dc.w	1077
+  92  0098 043a          	dc.w	1082
+  93  009a 043e          	dc.w	1086
+  94  009c 0443          	dc.w	1091
+  95  009e 0447          	dc.w	1095
+  96  00a0 044c          	dc.w	1100
+  97  00a2 0451          	dc.w	1105
+  98  00a4 0455          	dc.w	1109
+  99  00a6 045a          	dc.w	1114
+ 100  00a8 045e          	dc.w	1118
+ 101  00aa 0463          	dc.w	1123
+ 102  00ac 0468          	dc.w	1128
+ 103  00ae 046c          	dc.w	1132
+ 104  00b0 0471          	dc.w	1137
+ 105  00b2 0476          	dc.w	1142
+ 106  00b4 047a          	dc.w	1146
+ 107  00b6 047f          	dc.w	1151
+ 108  00b8 0484          	dc.w	1156
+ 109  00ba 0488          	dc.w	1160
+ 110  00bc 048d          	dc.w	1165
+ 111  00be 0492          	dc.w	1170
+ 112  00c0 0496          	dc.w	1174
+ 113  00c2 049b          	dc.w	1179
+ 114  00c4 04a0          	dc.w	1184
+ 115  00c6 04a5          	dc.w	1189
+ 116  00c8 04aa          	dc.w	1194
+ 117  00ca 04ae          	dc.w	1198
+ 118  00cc 04b3          	dc.w	1203
+ 119  00ce 04b8          	dc.w	1208
+ 120  00d0 04bd          	dc.w	1213
+ 121  00d2 04c2          	dc.w	1218
+ 122  00d4 04c6          	dc.w	1222
+ 123  00d6 04cb          	dc.w	1227
+ 124  00d8 04d0          	dc.w	1232
+ 125  00da 04d5          	dc.w	1237
+ 126  00dc 04da          	dc.w	1242
+ 127  00de 04df          	dc.w	1247
+ 128  00e0 04e3          	dc.w	1251
+ 129  00e2 04e8          	dc.w	1256
+ 130  00e4 04ed          	dc.w	1261
+ 131  00e6 04f2          	dc.w	1266
+ 132  00e8 04f7          	dc.w	1271
+ 133  00ea 04fc          	dc.w	1276
+ 134  00ec 0501          	dc.w	1281
+ 135  00ee 0506          	dc.w	1286
+ 136  00f0 050b          	dc.w	1291
+ 137  00f2 0510          	dc.w	1296
+ 138  00f4 0515          	dc.w	1301
+ 139  00f6 051a          	dc.w	1306
+ 140  00f8 051f          	dc.w	1311
+ 141  00fa 0524          	dc.w	1316
+ 142  00fc 0529          	dc.w	1321
+ 143  00fe 052e          	dc.w	1326
+ 144  0100 0533          	dc.w	1331
+ 145  0102 0538          	dc.w	1336
+ 146  0104 053d          	dc.w	1341
+ 147  0106 0542          	dc.w	1346
+ 148  0108 0547          	dc.w	1351
+ 149  010a 054c          	dc.w	1356
+ 150  010c 0551          	dc.w	1361
+ 151  010e 0556          	dc.w	1366
+ 152  0110 055b          	dc.w	1371
+ 153  0112 0560          	dc.w	1376
+ 154  0114 0566          	dc.w	1382
+ 155  0116 056b          	dc.w	1387
+ 156  0118 0570          	dc.w	1392
+ 157  011a 0575          	dc.w	1397
+ 158  011c 057a          	dc.w	1402
+ 159  011e 057f          	dc.w	1407
+ 160  0120 0584          	dc.w	1412
+ 161  0122 058a          	dc.w	1418
+ 162  0124 058f          	dc.w	1423
+ 163  0126 0594          	dc.w	1428
+ 164  0128 0599          	dc.w	1433
+ 165  012a 059e          	dc.w	1438
+ 166  012c 05a3          	dc.w	1443
+ 167  012e 05a9          	dc.w	1449
+ 168  0130 05ae          	dc.w	1454
+ 169  0132 05b3          	dc.w	1459
+ 170  0134 05b8          	dc.w	1464
+ 171  0136 05be          	dc.w	1470
+ 172  0138 05c3          	dc.w	1475
+ 173  013a 05c8          	dc.w	1480
+ 174  013c 05cd          	dc.w	1485
+ 175  013e 05d3          	dc.w	1491
+ 176  0140 05d8          	dc.w	1496
+ 177  0142 05dd          	dc.w	1501
+ 178  0144 05e2          	dc.w	1506
+ 179  0146 05e8          	dc.w	1512
+ 180  0148 05ed          	dc.w	1517
+ 181  014a 05f2          	dc.w	1522
+ 182  014c 05f8          	dc.w	1528
+ 183  014e 05fd          	dc.w	1533
+ 184  0150 0602          	dc.w	1538
+ 185  0152 0608          	dc.w	1544
+ 186  0154 060d          	dc.w	1549
+ 187  0156 0612          	dc.w	1554
+ 188  0158 0618          	dc.w	1560
+ 189  015a 061d          	dc.w	1565
+ 190  015c 0622          	dc.w	1570
+ 191  015e 0628          	dc.w	1576
+ 192  0160 062d          	dc.w	1581
+ 193  0162 0633          	dc.w	1587
+ 194  0164 0638          	dc.w	1592
+ 195  0166 063d          	dc.w	1597
+ 196  0168 0643          	dc.w	1603
+ 197  016a 0648          	dc.w	1608
+ 198  016c 064e          	dc.w	1614
+ 199  016e 0653          	dc.w	1619
+ 200  0170 0658          	dc.w	1624
+ 201  0172 065e          	dc.w	1630
+ 202  0174 0663          	dc.w	1635
+ 203  0176 0669          	dc.w	1641
+ 204  0178 066e          	dc.w	1646
+ 205  017a 0674          	dc.w	1652
+ 206  017c 0679          	dc.w	1657
+ 207  017e 067e          	dc.w	1662
+ 208  0180 0684          	dc.w	1668
+ 209  0182 0689          	dc.w	1673
+ 210  0184 068f          	dc.w	1679
+ 211  0186 0694          	dc.w	1684
+ 212  0188 069a          	dc.w	1690
+ 213  018a 069f          	dc.w	1695
+ 214  018c 06a5          	dc.w	1701
+ 215  018e 06aa          	dc.w	1706
+ 216  0190 06b0          	dc.w	1712
+ 217  0192 06b5          	dc.w	1717
+ 218  0194 06bb          	dc.w	1723
+ 219  0196 06c0          	dc.w	1728
+ 220  0198 06c6          	dc.w	1734
+ 221  019a 06cb          	dc.w	1739
+ 222  019c 06d1          	dc.w	1745
+ 223  019e 06d7          	dc.w	1751
+ 224  01a0 06dc          	dc.w	1756
+ 225  01a2 06e2          	dc.w	1762
+ 226  01a4 06e7          	dc.w	1767
+ 227  01a6 06ed          	dc.w	1773
+ 228  01a8 06f2          	dc.w	1778
+ 229  01aa 06f8          	dc.w	1784
+ 230  01ac 06fd          	dc.w	1789
+ 231  01ae 0703          	dc.w	1795
+ 232  01b0 0709          	dc.w	1801
+ 233  01b2 070e          	dc.w	1806
+ 234  01b4 0714          	dc.w	1812
+ 235  01b6 0719          	dc.w	1817
+ 236  01b8 071f          	dc.w	1823
+ 237  01ba 0724          	dc.w	1828
+ 238  01bc 072a          	dc.w	1834
+ 239  01be 0730          	dc.w	1840
+ 240  01c0 0735          	dc.w	1845
+ 241  01c2 073b          	dc.w	1851
+ 242  01c4 0740          	dc.w	1856
+ 243  01c6 0746          	dc.w	1862
+ 244  01c8 074c          	dc.w	1868
+ 245  01ca 0751          	dc.w	1873
+ 246  01cc 0757          	dc.w	1879
+ 247  01ce 075d          	dc.w	1885
+ 248  01d0 0762          	dc.w	1890
+ 249  01d2 0768          	dc.w	1896
+ 250  01d4 076d          	dc.w	1901
+ 251  01d6 0773          	dc.w	1907
+ 252  01d8 0779          	dc.w	1913
+ 253  01da 077e          	dc.w	1918
+ 254  01dc 0784          	dc.w	1924
+ 255  01de 078a          	dc.w	1930
+ 256  01e0 078f          	dc.w	1935
+ 257  01e2 0795          	dc.w	1941
+ 258  01e4 079a          	dc.w	1946
+ 259  01e6 07a0          	dc.w	1952
+ 260  01e8 07a6          	dc.w	1958
+ 261  01ea 07ab          	dc.w	1963
+ 262  01ec 07b1          	dc.w	1969
+ 263  01ee 07b7          	dc.w	1975
+ 264  01f0 07bc          	dc.w	1980
+ 265  01f2 07c2          	dc.w	1986
+ 266  01f4 07c8          	dc.w	1992
+ 267  01f6 07cd          	dc.w	1997
+ 268  01f8 07d3          	dc.w	2003
+ 269  01fa 07d9          	dc.w	2009
+ 270  01fc 07de          	dc.w	2014
+ 271  01fe 07e4          	dc.w	2020
+ 272  0200 07ea          	dc.w	2026
+ 273  0202 07ef          	dc.w	2031
+ 274  0204 07f5          	dc.w	2037
+ 275  0206 07fb          	dc.w	2043
+ 276  0208 0800          	dc.w	2048
+ 277  020a 0806          	dc.w	2054
+ 278  020c 080c          	dc.w	2060
+ 279  020e 0811          	dc.w	2065
+ 280  0210 0817          	dc.w	2071
+ 281  0212 081d          	dc.w	2077
+ 282  0214 0822          	dc.w	2082
+ 283  0216 0828          	dc.w	2088
+ 284  0218 082e          	dc.w	2094
+ 285  021a 0833          	dc.w	2099
+ 286  021c 0839          	dc.w	2105
+ 287  021e 083f          	dc.w	2111
+ 288  0220 0845          	dc.w	2117
+ 289  0222 084a          	dc.w	2122
+ 290  0224 0850          	dc.w	2128
+ 291  0226 0856          	dc.w	2134
+ 292  0228 085b          	dc.w	2139
+ 293  022a 0861          	dc.w	2145
+ 294  022c 0867          	dc.w	2151
+ 295  022e 086c          	dc.w	2156
+ 296  0230 0872          	dc.w	2162
+ 297  0232 0878          	dc.w	2168
+ 298  0234 087d          	dc.w	2173
+ 299  0236 0883          	dc.w	2179
+ 300  0238 0889          	dc.w	2185
+ 301  023a 088e          	dc.w	2190
+ 302  023c 0894          	dc.w	2196
+ 303  023e 089a          	dc.w	2202
+ 304  0240 089f          	dc.w	2207
+ 305  0242 08a5          	dc.w	2213
+ 306  0244 08ab          	dc.w	2219
+ 307  0246 08b0          	dc.w	2224
+ 308  0248 08b6          	dc.w	2230
+ 309  024a 08bc          	dc.w	2236
+ 310  024c 08c1          	dc.w	2241
+ 311  024e 08c7          	dc.w	2247
+ 312  0250 08cd          	dc.w	2253
+ 313  0252 08d2          	dc.w	2258
+ 314  0254 08d8          	dc.w	2264
+ 315  0256 08de          	dc.w	2270
+ 316  0258 08e3          	dc.w	2275
+ 317  025a 08e9          	dc.w	2281
+ 318  025c 08ef          	dc.w	2287
+ 319  025e 08f4          	dc.w	2292
+ 320  0260 08fa          	dc.w	2298
+ 321  0262 0900          	dc.w	2304
+ 322  0264 0905          	dc.w	2309
+ 323  0266 090b          	dc.w	2315
+ 324  0268 0911          	dc.w	2321
+ 325  026a 0916          	dc.w	2326
+ 326  026c 091c          	dc.w	2332
+ 327  026e 0922          	dc.w	2338
+ 328  0270 0927          	dc.w	2343
+ 329  0272 092d          	dc.w	2349
+ 330  0274 0932          	dc.w	2354
+ 331  0276 0938          	dc.w	2360
+ 332  0278 093e          	dc.w	2366
+ 333  027a 0943          	dc.w	2371
+ 334  027c 0949          	dc.w	2377
+ 335  027e 094f          	dc.w	2383
+ 336  0280 0954          	dc.w	2388
+ 337  0282 095a          	dc.w	2394
+ 338  0284 095f          	dc.w	2399
+ 339  0286 0965          	dc.w	2405
+ 340  0288 096b          	dc.w	2411
+ 341  028a 0970          	dc.w	2416
+ 342  028c 0976          	dc.w	2422
+ 343  028e 097b          	dc.w	2427
+ 344  0290 0981          	dc.w	2433
+ 345  0292 0987          	dc.w	2439
+ 346  0294 098c          	dc.w	2444
+ 347  0296 0992          	dc.w	2450
+ 348  0298 0997          	dc.w	2455
+ 349  029a 099d          	dc.w	2461
+ 350  029c 09a3          	dc.w	2467
+ 351  029e 09a8          	dc.w	2472
+ 352  02a0 09ae          	dc.w	2478
+ 353  02a2 09b3          	dc.w	2483
+ 354  02a4 09b9          	dc.w	2489
+ 355  02a6 09be          	dc.w	2494
+ 356  02a8 09c4          	dc.w	2500
+ 357  02aa 09ca          	dc.w	2506
+ 358  02ac 09cf          	dc.w	2511
+ 359  02ae 09d5          	dc.w	2517
+ 360  02b0 09da          	dc.w	2522
+ 361  02b2 09e0          	dc.w	2528
+ 362  02b4 09e5          	dc.w	2533
+ 363  02b6 09eb          	dc.w	2539
+ 364  02b8 09f0          	dc.w	2544
+ 365  02ba 09f6          	dc.w	2550
+ 366  02bc 09fb          	dc.w	2555
+ 367  02be 0a01          	dc.w	2561
+ 368  02c0 0a06          	dc.w	2566
+ 369  02c2 0a0c          	dc.w	2572
+ 370  02c4 0a11          	dc.w	2577
+ 371  02c6 0a17          	dc.w	2583
+ 372  02c8 0a1c          	dc.w	2588
+ 373  02ca 0a22          	dc.w	2594
+ 374  02cc 0a27          	dc.w	2599
+ 375  02ce 0a2d          	dc.w	2605
+ 376  02d0 0a32          	dc.w	2610
+ 377  02d2 0a38          	dc.w	2616
+ 378  02d4 0a3d          	dc.w	2621
+ 379  02d6 0a43          	dc.w	2627
+ 380  02d8 0a48          	dc.w	2632
+ 381  02da 0a4e          	dc.w	2638
+ 382  02dc 0a53          	dc.w	2643
+ 383  02de 0a58          	dc.w	2648
+ 384  02e0 0a5e          	dc.w	2654
+ 385  02e2 0a63          	dc.w	2659
+ 386  02e4 0a69          	dc.w	2665
+ 387  02e6 0a6e          	dc.w	2670
+ 388  02e8 0a74          	dc.w	2676
+ 389  02ea 0a79          	dc.w	2681
+ 390  02ec 0a7e          	dc.w	2686
+ 391  02ee 0a84          	dc.w	2692
+ 392  02f0 0a89          	dc.w	2697
+ 393  02f2 0a8f          	dc.w	2703
+ 394  02f4 0a94          	dc.w	2708
+ 395  02f6 0a99          	dc.w	2713
+ 396  02f8 0a9f          	dc.w	2719
+ 397  02fa 0aa4          	dc.w	2724
+ 398  02fc 0aa9          	dc.w	2729
+ 399  02fe 0aaf          	dc.w	2735
+ 400  0300 0ab4          	dc.w	2740
+ 401  0302 0ab9          	dc.w	2745
+ 402  0304 0abf          	dc.w	2751
+ 403  0306 0ac4          	dc.w	2756
+ 404  0308 0ac9          	dc.w	2761
+ 405  030a 0acf          	dc.w	2767
+ 406  030c 0ad4          	dc.w	2772
+ 407  030e 0ad9          	dc.w	2777
+ 408  0310 0adf          	dc.w	2783
+ 409  0312 0ae4          	dc.w	2788
+ 410  0314 0ae9          	dc.w	2793
+ 411  0316 0aef          	dc.w	2799
+ 412  0318 0af4          	dc.w	2804
+ 413  031a 0af9          	dc.w	2809
+ 414  031c 0afe          	dc.w	2814
+ 415  031e 0b04          	dc.w	2820
+ 416  0320 0b09          	dc.w	2825
+ 417  0322 0b0e          	dc.w	2830
+ 418  0324 0b13          	dc.w	2835
+ 419  0326 0b19          	dc.w	2841
+ 420  0328 0b1e          	dc.w	2846
+ 421  032a 0b23          	dc.w	2851
+ 422  032c 0b28          	dc.w	2856
+ 423  032e 0b2d          	dc.w	2861
+ 424  0330 0b33          	dc.w	2867
+ 425  0332 0b38          	dc.w	2872
+ 426  0334 0b3d          	dc.w	2877
+ 427  0336 0b42          	dc.w	2882
+ 428  0338 0b47          	dc.w	2887
+ 429  033a 0b4d          	dc.w	2893
+ 430  033c 0b52          	dc.w	2898
+ 431  033e 0b57          	dc.w	2903
+ 432  0340 0b5c          	dc.w	2908
+ 433  0342 0b61          	dc.w	2913
+ 434  0344 0b66          	dc.w	2918
+ 435  0346 0b6b          	dc.w	2923
+ 436  0348 0b70          	dc.w	2928
+ 437  034a 0b76          	dc.w	2934
+ 438  034c 0b7b          	dc.w	2939
+ 439  034e 0b80          	dc.w	2944
+ 440  0350 0b85          	dc.w	2949
+ 441  0352 0b8a          	dc.w	2954
+ 442  0354 0b8f          	dc.w	2959
+ 443  0356 0b94          	dc.w	2964
+ 444  0358 0b99          	dc.w	2969
+ 445  035a 0b9e          	dc.w	2974
+ 446  035c 0ba3          	dc.w	2979
+ 447  035e 0ba8          	dc.w	2984
+ 448  0360 0bad          	dc.w	2989
+ 449  0362 0bb2          	dc.w	2994
+ 450  0364 0bb7          	dc.w	2999
+ 451  0366 0bbc          	dc.w	3004
+ 452  0368 0bc1          	dc.w	3009
+ 453  036a 0bc6          	dc.w	3014
+ 454  036c 0bcb          	dc.w	3019
+ 455  036e 0bd0          	dc.w	3024
+ 456  0370 0bd5          	dc.w	3029
+ 457  0372 0bda          	dc.w	3034
+ 458  0374 0bdf          	dc.w	3039
+ 459  0376 0be4          	dc.w	3044
+ 460  0378 0be9          	dc.w	3049
+ 461  037a 0bee          	dc.w	3054
+ 462  037c 0bf3          	dc.w	3059
+ 463  037e 0bf8          	dc.w	3064
+ 464  0380 0bfd          	dc.w	3069
+ 465  0382 0c02          	dc.w	3074
+ 466  0384 0c07          	dc.w	3079
+ 467  0386 0c0b          	dc.w	3083
+ 468  0388 0c10          	dc.w	3088
+ 469  038a 0c15          	dc.w	3093
+ 470  038c 0c1a          	dc.w	3098
+ 471  038e 0c1f          	dc.w	3103
+ 472  0390 0c24          	dc.w	3108
+ 473  0392 0c29          	dc.w	3113
+ 474  0394 0c2d          	dc.w	3117
+ 475  0396 0c32          	dc.w	3122
+ 476  0398 0c37          	dc.w	3127
+ 477  039a 0c3c          	dc.w	3132
+ 478  039c 0c41          	dc.w	3137
+ 479  039e 0c45          	dc.w	3141
+ 480  03a0 0c4a          	dc.w	3146
+ 481  03a2 0c4f          	dc.w	3151
+ 482  03a4 0c54          	dc.w	3156
+ 483  03a6 0c59          	dc.w	3161
+ 484  03a8 0c5d          	dc.w	3165
+ 485  03aa 0c62          	dc.w	3170
+ 486  03ac 0c67          	dc.w	3175
+ 487  03ae 0c6b          	dc.w	3179
+ 488  03b0 0c70          	dc.w	3184
+ 489  03b2 0c75          	dc.w	3189
+ 490  03b4 0c7a          	dc.w	3194
+ 491  03b6 0c7e          	dc.w	3198
+ 492  03b8 0c83          	dc.w	3203
+ 493  03ba 0c88          	dc.w	3208
+ 494  03bc 0c8c          	dc.w	3212
+ 495  03be 0c91          	dc.w	3217
+ 496  03c0 0c96          	dc.w	3222
+ 497  03c2 0c9a          	dc.w	3226
+ 498  03c4 0c9f          	dc.w	3231
+ 499  03c6 0ca4          	dc.w	3236
+ 500  03c8 0ca8          	dc.w	3240
+ 501  03ca 0cad          	dc.w	3245
+ 502  03cc 0cb1          	dc.w	3249
+ 503  03ce 0cb6          	dc.w	3254
+ 504  03d0 0cbb          	dc.w	3259
+ 505  03d2 0cbf          	dc.w	3263
+ 506  03d4 0cc4          	dc.w	3268
+ 507  03d6 0cc8          	dc.w	3272
+ 508  03d8 0ccd          	dc.w	3277
+ 509  03da 0cd1          	dc.w	3281
+ 510  03dc 0cd6          	dc.w	3286
+ 511  03de 0cda          	dc.w	3290
+ 512  03e0 0cdf          	dc.w	3295
+ 513  03e2 0ce3          	dc.w	3299
+ 514  03e4 0ce8          	dc.w	3304
+ 515  03e6 0cec          	dc.w	3308
+ 516  03e8 0cf1          	dc.w	3313
+ 517  03ea 0cf5          	dc.w	3317
+ 518  03ec 0cfa          	dc.w	3322
+ 519  03ee 0cfe          	dc.w	3326
+ 520  03f0 0d03          	dc.w	3331
+ 521  03f2 0d07          	dc.w	3335
+ 522  03f4 0d0c          	dc.w	3340
+ 523  03f6 0d10          	dc.w	3344
+ 524  03f8 0d14          	dc.w	3348
+ 525  03fa 0d19          	dc.w	3353
+ 526  03fc 0d1d          	dc.w	3357
+ 527  03fe 0d22          	dc.w	3362
+ 528  0400 0d26          	dc.w	3366
+ 529  0402 0d2a          	dc.w	3370
+ 530  0404 0d2f          	dc.w	3375
+ 531  0406 0d33          	dc.w	3379
+ 532  0408 0d37          	dc.w	3383
+ 533  040a 0d3c          	dc.w	3388
+ 534  040c 0d40          	dc.w	3392
+ 535  040e 0d44          	dc.w	3396
+ 536  0410 0d49          	dc.w	3401
+ 537  0412 0d4d          	dc.w	3405
+ 538  0414 0d51          	dc.w	3409
+ 539  0416 0d55          	dc.w	3413
+ 540  0418 0d5a          	dc.w	3418
+ 541  041a 0d5e          	dc.w	3422
+ 542  041c 0d62          	dc.w	3426
+ 543  041e 0d66          	dc.w	3430
+ 544  0420 0d6b          	dc.w	3435
+ 545  0422 0d6f          	dc.w	3439
+ 546  0424 0d73          	dc.w	3443
+ 547  0426 0d77          	dc.w	3447
+ 548  0428 0d7c          	dc.w	3452
+ 549  042a 0d80          	dc.w	3456
+ 550  042c 0d84          	dc.w	3460
+ 551  042e 0d88          	dc.w	3464
+ 552  0430 0d8c          	dc.w	3468
+ 553  0432 0d90          	dc.w	3472
+ 554  0434 0d95          	dc.w	3477
+ 555  0436 0d99          	dc.w	3481
+ 556  0438 0d9d          	dc.w	3485
+ 557  043a 0da1          	dc.w	3489
+ 558  043c 0da5          	dc.w	3493
+ 559  043e 0da9          	dc.w	3497
+ 560  0440 0dad          	dc.w	3501
+ 561  0442 0db1          	dc.w	3505
+ 562  0444 0db5          	dc.w	3509
+ 563  0446 0db9          	dc.w	3513
+ 564  0448 0dbd          	dc.w	3517
+ 565  044a 0dc2          	dc.w	3522
+ 566  044c 0dc6          	dc.w	3526
+ 567  044e 0dca          	dc.w	3530
+ 568  0450 0dce          	dc.w	3534
+ 569  0452 0dd2          	dc.w	3538
+ 570  0454 0dd6          	dc.w	3542
+ 571  0456 0dda          	dc.w	3546
+ 572  0458 0dde          	dc.w	3550
+ 573  045a 0de2          	dc.w	3554
+ 574  045c 0de6          	dc.w	3558
+ 575  045e 0de9          	dc.w	3561
+ 576  0460 0ded          	dc.w	3565
+ 577  0462 0df1          	dc.w	3569
+ 578  0464 0df5          	dc.w	3573
+ 579  0466 0df9          	dc.w	3577
+ 580  0468 0dfd          	dc.w	3581
+ 581  046a 0e01          	dc.w	3585
+ 582  046c 0e05          	dc.w	3589
+ 583  046e 0e09          	dc.w	3593
+ 584  0470 0e0d          	dc.w	3597
+ 585  0472 0e11          	dc.w	3601
+ 586  0474 0e14          	dc.w	3604
+ 587  0476 0e18          	dc.w	3608
+ 588  0478 0e1c          	dc.w	3612
+ 589  047a 0e20          	dc.w	3616
+ 590  047c 0e24          	dc.w	3620
+ 591  047e 0e28          	dc.w	3624
+ 592  0480 0e2b          	dc.w	3627
+ 593  0482 0e2f          	dc.w	3631
+ 594  0484 0e33          	dc.w	3635
+ 595  0486 0e37          	dc.w	3639
+ 596  0488 0e3a          	dc.w	3642
+ 597  048a 0e3e          	dc.w	3646
+ 598  048c 0e42          	dc.w	3650
+ 599  048e 0e46          	dc.w	3654
+ 600  0490 0e49          	dc.w	3657
+ 601  0492 0e4d          	dc.w	3661
+ 602  0494 0e51          	dc.w	3665
+ 603  0496 0e55          	dc.w	3669
+ 604  0498 0e58          	dc.w	3672
+ 605  049a 0e5c          	dc.w	3676
+ 606  049c 0e60          	dc.w	3680
+ 607  049e 0e63          	dc.w	3683
+ 608  04a0 0e67          	dc.w	3687
+ 609  04a2 0e6b          	dc.w	3691
+ 610  04a4 0e6e          	dc.w	3694
+ 611  04a6 0e72          	dc.w	3698
+ 612  04a8 0e76          	dc.w	3702
+ 613  04aa 0e79          	dc.w	3705
+ 614  04ac 0e7d          	dc.w	3709
+ 615  04ae 0e80          	dc.w	3712
+ 616  04b0 0e84          	dc.w	3716
+ 617  04b2 0e88          	dc.w	3720
+ 618  04b4 0e8b          	dc.w	3723
+ 619  04b6 0e8f          	dc.w	3727
+ 620  04b8 0e92          	dc.w	3730
+ 621  04ba 0e96          	dc.w	3734
+ 622  04bc 0e99          	dc.w	3737
+ 623  04be 0e9d          	dc.w	3741
+ 624  04c0 0ea0          	dc.w	3744
+ 625  04c2 0ea4          	dc.w	3748
+ 626  04c4 0ea7          	dc.w	3751
+ 627  04c6 0eab          	dc.w	3755
+ 628  04c8 0eae          	dc.w	3758
+ 629  04ca 0eb2          	dc.w	3762
+ 630  04cc 0eb5          	dc.w	3765
+ 631  04ce 0eb9          	dc.w	3769
+ 632  04d0 0ebc          	dc.w	3772
+ 633  04d2 0ec0          	dc.w	3776
+ 634  04d4 0ec3          	dc.w	3779
+ 635  04d6 0ec7          	dc.w	3783
+ 636  04d8 0eca          	dc.w	3786
+ 637  04da 0ecd          	dc.w	3789
+ 638  04dc 0ed1          	dc.w	3793
+ 639  04de 0ed4          	dc.w	3796
+ 640  04e0 0ed8          	dc.w	3800
+ 641  04e2 0edb          	dc.w	3803
+ 642  04e4 0ede          	dc.w	3806
+ 643  04e6 0ee2          	dc.w	3810
+ 644  04e8 0ee5          	dc.w	3813
+ 645  04ea 0ee8          	dc.w	3816
+ 646  04ec 0eec          	dc.w	3820
+ 647  04ee 0eef          	dc.w	3823
+ 648  04f0 0ef2          	dc.w	3826
+ 649  04f2 0ef6          	dc.w	3830
+ 650  04f4 0ef9          	dc.w	3833
+ 651  04f6 0efc          	dc.w	3836
+ 652  04f8 0f00          	dc.w	3840
+ 653  04fa 0f03          	dc.w	3843
+ 654  04fc 0f06          	dc.w	3846
+ 655  04fe 0f09          	dc.w	3849
+ 656  0500 0f0d          	dc.w	3853
+ 657  0502 0f10          	dc.w	3856
+ 658  0504 0f13          	dc.w	3859
+ 659  0506 0f16          	dc.w	3862
+ 660  0508 0f19          	dc.w	3865
+ 661  050a 0f1d          	dc.w	3869
+ 662  050c 0f20          	dc.w	3872
+ 663  050e 0f23          	dc.w	3875
+ 664  0510 0f26          	dc.w	3878
+ 665  0512 0f29          	dc.w	3881
+ 666  0514 0f2d          	dc.w	3885
+ 667  0516 0f30          	dc.w	3888
+ 668  0518 0f33          	dc.w	3891
+ 669  051a 0f36          	dc.w	3894
+ 670  051c 0f39          	dc.w	3897
+ 671  051e 0f3c          	dc.w	3900
+ 672  0520 0f3f          	dc.w	3903
+ 673  0522 0f42          	dc.w	3906
+ 674  0524 0f46          	dc.w	3910
+ 675  0526 0f49          	dc.w	3913
+ 676  0528 0f4c          	dc.w	3916
+ 677  052a 0f4f          	dc.w	3919
+ 678  052c 0f52          	dc.w	3922
+ 679  052e 0f55          	dc.w	3925
+ 680  0530 0f58          	dc.w	3928
+ 681  0532 0f5b          	dc.w	3931
+ 682  0534 0f5e          	dc.w	3934
+ 683  0536 0f61          	dc.w	3937
+ 684  0538 0f64          	dc.w	3940
+ 685  053a 0f67          	dc.w	3943
+ 686  053c 0f6a          	dc.w	3946
+ 687  053e 0f6d          	dc.w	3949
+ 688  0540 0f70          	dc.w	3952
+ 689  0542 0f73          	dc.w	3955
+ 690  0544 0f76          	dc.w	3958
+ 691  0546 0f79          	dc.w	3961
+ 692  0548 0f7c          	dc.w	3964
+ 693  054a 0f7f          	dc.w	3967
+ 694  054c 0f82          	dc.w	3970
+ 695  054e 0f85          	dc.w	3973
+ 696  0550 0f88          	dc.w	3976
+ 697  0552 0f8b          	dc.w	3979
+ 698  0554 0f8d          	dc.w	3981
+ 699  0556 0f90          	dc.w	3984
+ 700  0558 0f93          	dc.w	3987
+ 701  055a 0f96          	dc.w	3990
+ 702  055c 0f99          	dc.w	3993
+ 703  055e 0f9c          	dc.w	3996
+ 704  0560 0f9f          	dc.w	3999
+ 705  0562 0fa2          	dc.w	4002
+ 706  0564 0fa4          	dc.w	4004
+ 707  0566 0fa7          	dc.w	4007
+ 708  0568 0faa          	dc.w	4010
+ 709  056a 0fad          	dc.w	4013
+ 710  056c 0fb0          	dc.w	4016
+ 711  056e 0fb3          	dc.w	4019
+ 712  0570 0fb5          	dc.w	4021
+ 713  0572 0fb8          	dc.w	4024
+ 714  0574 0fbb          	dc.w	4027
+ 715  0576 0fbe          	dc.w	4030
+ 716  0578 0fc0          	dc.w	4032
+ 717  057a 0fc3          	dc.w	4035
+ 718  057c 0fc6          	dc.w	4038
+ 719  057e 0fc9          	dc.w	4041
+ 720  0580 0fcb          	dc.w	4043
+ 721  0582 0fce          	dc.w	4046
+ 722  0584 0fd1          	dc.w	4049
+ 723  0586 0fd4          	dc.w	4052
+ 724  0588 0fd6          	dc.w	4054
+ 725  058a 0fd9          	dc.w	4057
+ 726  058c 0fdc          	dc.w	4060
+ 727  058e 0fde          	dc.w	4062
+ 728  0590 0fe1          	dc.w	4065
+ 729  0592 0fe4          	dc.w	4068
+ 730  0594 0fe6          	dc.w	4070
+ 731  0596 0fe9          	dc.w	4073
+ 732  0598 0fec          	dc.w	4076
+ 733  059a 0fee          	dc.w	4078
+ 734  059c 0ff1          	dc.w	4081
+ 735  059e 0ff4          	dc.w	4084
+ 736  05a0 0ff6          	dc.w	4086
+ 737  05a2 0ff9          	dc.w	4089
+ 738  05a4 0ffb          	dc.w	4091
+ 739  05a6 0ffe          	dc.w	4094
+ 740  05a8 1001          	dc.w	4097
+ 741  05aa 1003          	dc.w	4099
+ 742  05ac 1006          	dc.w	4102
+ 743  05ae 1008          	dc.w	4104
+ 744  05b0 100b          	dc.w	4107
+ 745  05b2 100d          	dc.w	4109
+ 746  05b4 1010          	dc.w	4112
+ 747  05b6 1012          	dc.w	4114
+ 748  05b8 1015          	dc.w	4117
+ 749  05ba 1017          	dc.w	4119
+ 750  05bc 101a          	dc.w	4122
+ 751  05be 101c          	dc.w	4124
+ 752  05c0 101f          	dc.w	4127
+ 753  05c2 1021          	dc.w	4129
+ 754  05c4 1024          	dc.w	4132
+ 755  05c6 1026          	dc.w	4134
+ 756  05c8 1029          	dc.w	4137
+ 757  05ca 102b          	dc.w	4139
+ 758  05cc 102e          	dc.w	4142
+ 759  05ce 1030          	dc.w	4144
+ 760  05d0 1033          	dc.w	4147
+ 761  05d2 1035          	dc.w	4149
+ 762  05d4 1038          	dc.w	4152
+ 763  05d6 103a          	dc.w	4154
+ 764  05d8 103c          	dc.w	4156
+ 765  05da 103f          	dc.w	4159
+ 766  05dc 1041          	dc.w	4161
+ 767  05de 1044          	dc.w	4164
+ 768  05e0 1046          	dc.w	4166
+ 769  05e2 1048          	dc.w	4168
+ 770  05e4 104b          	dc.w	4171
+ 771  05e6 104d          	dc.w	4173
+ 772  05e8 104f          	dc.w	4175
+ 773  05ea 1052          	dc.w	4178
+ 774  05ec 1054          	dc.w	4180
+ 775  05ee 1057          	dc.w	4183
+ 776  05f0 1059          	dc.w	4185
+ 777  05f2 105b          	dc.w	4187
+ 778  05f4 105d          	dc.w	4189
+ 779  05f6 1060          	dc.w	4192
+ 780  05f8 1062          	dc.w	4194
+ 781  05fa 1064          	dc.w	4196
+ 782  05fc 1067          	dc.w	4199
+ 783  05fe 1069          	dc.w	4201
+ 784  0600 106b          	dc.w	4203
+ 785  0602 106e          	dc.w	4206
+ 786  0604 1070          	dc.w	4208
+ 787  0606 1072          	dc.w	4210
+ 788  0608 1074          	dc.w	4212
+ 789  060a 1077          	dc.w	4215
+ 790  060c 1079          	dc.w	4217
+ 791  060e 107b          	dc.w	4219
+ 792  0610 107d          	dc.w	4221
+ 793  0612 107f          	dc.w	4223
+ 794  0614 1082          	dc.w	4226
+ 795  0616 1084          	dc.w	4228
+ 796  0618 1086          	dc.w	4230
+ 797  061a 1088          	dc.w	4232
+ 798  061c 108a          	dc.w	4234
+ 799  061e 108d          	dc.w	4237
+ 800  0620 108f          	dc.w	4239
+ 801  0622 1091          	dc.w	4241
+ 802  0624 1093          	dc.w	4243
+ 803  0626 1095          	dc.w	4245
+ 804  0628 1097          	dc.w	4247
+ 805  062a 109a          	dc.w	4250
+ 806  062c 109c          	dc.w	4252
+ 807  062e 109e          	dc.w	4254
+ 808  0630 10a0          	dc.w	4256
+ 809  0632 10a2          	dc.w	4258
+ 810  0634 10a4          	dc.w	4260
+ 811  0636 10a6          	dc.w	4262
+ 812  0638 10a8          	dc.w	4264
+ 813  063a 10ab          	dc.w	4267
+ 814  063c 10ad          	dc.w	4269
+ 815  063e 10af          	dc.w	4271
+ 816  0640 10b1          	dc.w	4273
+ 817  0642 10b3          	dc.w	4275
+ 818  0644 10b5          	dc.w	4277
+ 819  0646 10b7          	dc.w	4279
+ 820  0648 10b9          	dc.w	4281
+ 821  064a 10bb          	dc.w	4283
+ 822  064c 10bd          	dc.w	4285
+ 823  064e 10bf          	dc.w	4287
+ 824  0650 10c1          	dc.w	4289
+ 825  0652 10c3          	dc.w	4291
+ 826  0654 10c5          	dc.w	4293
+ 827  0656 10c7          	dc.w	4295
+ 828  0658 10c9          	dc.w	4297
+ 829  065a 10cb          	dc.w	4299
+ 830  065c 10cd          	dc.w	4301
+ 831  065e 10cf          	dc.w	4303
+ 832  0660 10d1          	dc.w	4305
+ 833  0662 10d3          	dc.w	4307
+ 834  0664 10d5          	dc.w	4309
+ 835  0666 10d7          	dc.w	4311
+ 836  0668 10d9          	dc.w	4313
+ 837  066a 10db          	dc.w	4315
+ 838  066c 10dd          	dc.w	4317
+ 839  066e 10df          	dc.w	4319
+ 840  0670 10e1          	dc.w	4321
+ 841  0672 10e3          	dc.w	4323
+ 842  0674 10e5          	dc.w	4325
+ 843  0676 10e7          	dc.w	4327
+ 844  0678 10e8          	dc.w	4328
+ 845  067a 10ea          	dc.w	4330
+ 846  067c 10ec          	dc.w	4332
+ 847  067e 10ee          	dc.w	4334
+ 848  0680 10f0          	dc.w	4336
+ 849  0682 10f2          	dc.w	4338
+ 850  0684 10f4          	dc.w	4340
+ 851  0686 10f6          	dc.w	4342
+ 852  0688 10f8          	dc.w	4344
+ 853  068a 10f9          	dc.w	4345
+ 854  068c 10fb          	dc.w	4347
+ 855  068e 10fd          	dc.w	4349
+ 856  0690 10ff          	dc.w	4351
+ 857  0692 1101          	dc.w	4353
+ 858  0694 1103          	dc.w	4355
+ 859  0696 1104          	dc.w	4356
+ 860  0698 1106          	dc.w	4358
+ 861  069a 1108          	dc.w	4360
+ 862  069c 110a          	dc.w	4362
+ 863  069e 110c          	dc.w	4364
+ 864  06a0 110e          	dc.w	4366
+ 865  06a2 110f          	dc.w	4367
+ 866  06a4 1111          	dc.w	4369
+ 867  06a6 1113          	dc.w	4371
+ 868  06a8 1115          	dc.w	4373
+ 869  06aa 1116          	dc.w	4374
+ 870  06ac 1118          	dc.w	4376
+ 871  06ae 111a          	dc.w	4378
+ 872  06b0 111c          	dc.w	4380
+ 873  06b2 111d          	dc.w	4381
+ 874  06b4 111f          	dc.w	4383
+ 875  06b6 1121          	dc.w	4385
+ 876  06b8 1123          	dc.w	4387
+ 877  06ba 1124          	dc.w	4388
+ 878  06bc 1126          	dc.w	4390
+ 879  06be 1128          	dc.w	4392
+ 880  06c0 112a          	dc.w	4394
+ 881  06c2 112b          	dc.w	4395
+ 882  06c4 112d          	dc.w	4397
+ 883  06c6 112f          	dc.w	4399
+ 884  06c8 1130          	dc.w	4400
+ 885  06ca 1132          	dc.w	4402
+ 886  06cc 1134          	dc.w	4404
+ 887  06ce 1135          	dc.w	4405
+ 888  06d0 1137          	dc.w	4407
+ 889  06d2 1139          	dc.w	4409
+ 890  06d4 113a          	dc.w	4410
+ 891  06d6 113c          	dc.w	4412
+ 892  06d8 113e          	dc.w	4414
+ 893  06da 113f          	dc.w	4415
+ 894  06dc 1141          	dc.w	4417
+ 895  06de 1143          	dc.w	4419
+ 896  06e0 1144          	dc.w	4420
+ 897  06e2 1146          	dc.w	4422
+ 898  06e4 1148          	dc.w	4424
+ 899  06e6 1149          	dc.w	4425
+ 900  06e8 114b          	dc.w	4427
+ 901  06ea 114c          	dc.w	4428
+ 902  06ec 114e          	dc.w	4430
+ 903  06ee 1150          	dc.w	4432
+ 904  06f0 1151          	dc.w	4433
+ 905  06f2 1153          	dc.w	4435
+ 906  06f4 1154          	dc.w	4436
+ 907  06f6 1156          	dc.w	4438
+ 908  06f8 1158          	dc.w	4440
+ 909  06fa 1159          	dc.w	4441
+ 910  06fc 115b          	dc.w	4443
+ 911  06fe 115c          	dc.w	4444
+ 912  0700 115e          	dc.w	4446
+ 913  0702 115f          	dc.w	4447
+ 914  0704 1161          	dc.w	4449
+ 915  0706 1162          	dc.w	4450
+ 916  0708 1164          	dc.w	4452
+ 917  070a 1166          	dc.w	4454
+ 918  070c 1167          	dc.w	4455
+ 919  070e 1169          	dc.w	4457
+ 920  0710 116a          	dc.w	4458
+ 921  0712 116c          	dc.w	4460
+ 922  0714 116d          	dc.w	4461
+ 923  0716 116f          	dc.w	4463
+ 924  0718 1170          	dc.w	4464
+ 925  071a 1172          	dc.w	4466
+ 926  071c 1173          	dc.w	4467
+ 927  071e 1175          	dc.w	4469
+ 928  0720 1176          	dc.w	4470
+ 929  0722 1178          	dc.w	4472
+ 930  0724 1179          	dc.w	4473
+ 931  0726 117b          	dc.w	4475
+ 932  0728 117c          	dc.w	4476
+ 933  072a 117d          	dc.w	4477
+ 934  072c 117f          	dc.w	4479
+ 935  072e 1180          	dc.w	4480
+ 936  0730 1182          	dc.w	4482
+ 937  0732 1183          	dc.w	4483
+ 938  0734 1185          	dc.w	4485
+ 939  0736 1186          	dc.w	4486
+ 940  0738 1188          	dc.w	4488
+ 941  073a 1189          	dc.w	4489
+ 942  073c 118a          	dc.w	4490
+ 943  073e 118c          	dc.w	4492
+ 944  0740 118d          	dc.w	4493
+ 945  0742 118f          	dc.w	4495
+ 946  0744 1190          	dc.w	4496
+ 947  0746 1192          	dc.w	4498
+ 948  0748 1193          	dc.w	4499
+ 949  074a 1194          	dc.w	4500
+ 950  074c 1196          	dc.w	4502
+ 951  074e 1197          	dc.w	4503
+ 952  0750 1198          	dc.w	4504
+ 953  0752 119a          	dc.w	4506
+ 954  0754 119b          	dc.w	4507
+ 955  0756 119d          	dc.w	4509
+ 956  0758 119e          	dc.w	4510
+ 957  075a 119f          	dc.w	4511
+ 958  075c 11a1          	dc.w	4513
+ 959  075e 11a2          	dc.w	4514
+ 960  0760 11a3          	dc.w	4515
+ 961  0762 11a5          	dc.w	4517
+ 962  0764 11a6          	dc.w	4518
+ 963  0766 11a7          	dc.w	4519
+ 964  0768 11a9          	dc.w	4521
+ 965  076a 11aa          	dc.w	4522
+ 966  076c 11ab          	dc.w	4523
+ 967  076e 11ad          	dc.w	4525
+ 968  0770 11ae          	dc.w	4526
+ 969  0772 11af          	dc.w	4527
+ 970  0774 11b1          	dc.w	4529
+ 971  0776 11b2          	dc.w	4530
+ 972  0778 11b3          	dc.w	4531
+ 973  077a 11b4          	dc.w	4532
+ 974  077c 11b6          	dc.w	4534
+ 975  077e 11b7          	dc.w	4535
+ 976  0780 11b8          	dc.w	4536
+ 977  0782 11ba          	dc.w	4538
+ 978  0784 11bb          	dc.w	4539
+ 979  0786 11bc          	dc.w	4540
+ 980  0788 11bd          	dc.w	4541
+ 981  078a 11bf          	dc.w	4543
+ 982  078c 11c0          	dc.w	4544
+ 983  078e 11c1          	dc.w	4545
+ 984  0790 11c2          	dc.w	4546
+ 985  0792 11c4          	dc.w	4548
+ 986  0794 11c5          	dc.w	4549
+ 987  0796 11c6          	dc.w	4550
+ 988  0798 11c7          	dc.w	4551
+ 989  079a 11c9          	dc.w	4553
+ 990  079c 11ca          	dc.w	4554
+ 991  079e 11cb          	dc.w	4555
+ 992  07a0 11cc          	dc.w	4556
+ 993  07a2 11ce          	dc.w	4558
+ 994  07a4 11cf          	dc.w	4559
+ 995  07a6 11d0          	dc.w	4560
+ 996  07a8 11d1          	dc.w	4561
+ 997  07aa 11d2          	dc.w	4562
+ 998  07ac 11d4          	dc.w	4564
+ 999  07ae 11d5          	dc.w	4565
+1000  07b0 11d6          	dc.w	4566
+1001  07b2 11d7          	dc.w	4567
+1002  07b4 11d8          	dc.w	4568
+1003  07b6 11da          	dc.w	4570
+1004  07b8 11db          	dc.w	4571
+1005  07ba 11dc          	dc.w	4572
+1006  07bc 11dd          	dc.w	4573
+1007  07be 11de          	dc.w	4574
+1008  07c0 11df          	dc.w	4575
+1009  07c2 11e1          	dc.w	4577
+1010  07c4 11e2          	dc.w	4578
+1011  07c6 11e3          	dc.w	4579
+1012  07c8 11e4          	dc.w	4580
+1013  07ca 11e5          	dc.w	4581
+1014  07cc 11e6          	dc.w	4582
+1015  07ce 11e7          	dc.w	4583
+1016  07d0 11e9          	dc.w	4585
+1017  07d2 11ea          	dc.w	4586
+1018  07d4 11eb          	dc.w	4587
+1019  07d6 11ec          	dc.w	4588
+1020  07d8 11ed          	dc.w	4589
+1021  07da 11ee          	dc.w	4590
+1022  07dc 11ef          	dc.w	4591
+1023  07de 11f0          	dc.w	4592
+1024  07e0 11f2          	dc.w	4594
+1025  07e2 11f3          	dc.w	4595
+1026  07e4 11f4          	dc.w	4596
+1027  07e6 11f5          	dc.w	4597
+1028  07e8 11f6          	dc.w	4598
+1029  07ea 11f7          	dc.w	4599
+1030  07ec 11f8          	dc.w	4600
+1031  07ee 11f9          	dc.w	4601
+1032  07f0 11fa          	dc.w	4602
+1033  07f2 11fb          	dc.w	4603
+1034  07f4 11fc          	dc.w	4604
+1035  07f6 11fe          	dc.w	4606
+1036  07f8 11ff          	dc.w	4607
+1037  07fa 1200          	dc.w	4608
+1038  07fc 1201          	dc.w	4609
+1039  07fe 1202          	dc.w	4610
+1040  0800 1203          	dc.w	4611
+1041  0802 1204          	dc.w	4612
+1042  0804 1205          	dc.w	4613
+1043  0806 1206          	dc.w	4614
+1044  0808 1207          	dc.w	4615
+1045  080a 1208          	dc.w	4616
+1046  080c 1209          	dc.w	4617
+1047  080e 120a          	dc.w	4618
+1048  0810 120b          	dc.w	4619
+1049  0812 120c          	dc.w	4620
+1050  0814 120d          	dc.w	4621
+1051  0816 120e          	dc.w	4622
+1052  0818 120f          	dc.w	4623
+1053  081a 1210          	dc.w	4624
+1054  081c 1211          	dc.w	4625
+1055  081e 1212          	dc.w	4626
+1056  0820 1213          	dc.w	4627
+1057  0822 1214          	dc.w	4628
+1058  0824 1215          	dc.w	4629
+1059  0826 1216          	dc.w	4630
+1060  0828 1217          	dc.w	4631
+1061  082a 1218          	dc.w	4632
+1062  082c 1219          	dc.w	4633
+1063  082e 121a          	dc.w	4634
+1064  0830 121b          	dc.w	4635
+1065  0832 121c          	dc.w	4636
+1066  0834 121d          	dc.w	4637
+1067  0836 121e          	dc.w	4638
+1068  0838 121f          	dc.w	4639
+1069  083a 1220          	dc.w	4640
+1070  083c 1221          	dc.w	4641
+1071  083e 1222          	dc.w	4642
+1072  0840 1223          	dc.w	4643
+1073  0842 1224          	dc.w	4644
+1074  0844 1225          	dc.w	4645
+1075  0846 1226          	dc.w	4646
+1076  0848 1227          	dc.w	4647
+1077  084a 1228          	dc.w	4648
+1078  084c 1229          	dc.w	4649
+1079  084e 122a          	dc.w	4650
+1080  0850 122b          	dc.w	4651
+1081  0852 122c          	dc.w	4652
+1082  0854 122c          	dc.w	4652
+1083  0856 122d          	dc.w	4653
+1084  0858 122e          	dc.w	4654
+1085  085a 122f          	dc.w	4655
+1086  085c 1230          	dc.w	4656
+1087  085e 1231          	dc.w	4657
+1088  0860 1232          	dc.w	4658
+1089  0862 1233          	dc.w	4659
+1090  0864 1234          	dc.w	4660
+1091  0866 1235          	dc.w	4661
+1092  0868 1236          	dc.w	4662
+1093  086a 1237          	dc.w	4663
+1094  086c 1237          	dc.w	4663
+1095  086e 1238          	dc.w	4664
+1096  0870 1239          	dc.w	4665
+1097  0872 123a          	dc.w	4666
+1098  0874 123b          	dc.w	4667
+1099  0876 123c          	dc.w	4668
+1100  0878 123d          	dc.w	4669
+1101  087a 123e          	dc.w	4670
+1102  087c 123f          	dc.w	4671
+1103  087e 123f          	dc.w	4671
+1104  0880 1240          	dc.w	4672
+1105  0882 1241          	dc.w	4673
+1106                     	bsct
+1107  0000               _NTC_Conversion_Value:
+1108  0000 0000          	dc.w	0
+1109  0002               _NTC_TEM_Value:
+1110  0002 0000          	dc.w	0
+1111  0004               _SUM:
+1112  0004 0000          	dc.w	0
+1113  0006               _NTC_ADC_Count:
+1114  0006 0000          	dc.w	0
+1115  0008               _E_Error_Delay_Count:
+1116  0008 0000          	dc.w	0
+1117  000a               _LP_Error_Delay_Count:
+1118  000a 0000          	dc.w	0
+1119  000c               _HP_Error_Delay_Count:
+1120  000c 0000          	dc.w	0
+1121  000e               _RemoteControl_Start_Delay_Count:
+1122  000e 0000          	dc.w	0
+1123  0010               _RemoteControl_Stop_Delay_Count:
+1124  0010 0000          	dc.w	0
+1125  0012               _StartStop_KEY_Count:
+1126  0012 0000          	dc.w	0
+1127  0014               _E_Error_Exist_Flag:
+1128  0014 00            	dc.b	0
+1129  0015               _LP_Error_Exist_Flag:
+1130  0015 00            	dc.b	0
+1131  0016               _HP_Error_Exist_Flag:
+1132  0016 00            	dc.b	0
+1162                     ; 1158 INTERRUPT_HANDLER(NonHandledInterrupt, 25)
+1162                     ; 1159 {
+1163                     	switch	.text
+1164  0000               f_NonHandledInterrupt:
+1168                     ; 1163 }
+1171  0000 80            	iret
+1193                     ; 1171 INTERRUPT_HANDLER_TRAP(TRAP_IRQHandler)
+1193                     ; 1172 {
+1194                     	switch	.text
+1195  0001               f_TRAP_IRQHandler:
+1199                     ; 1176 }
+1202  0001 80            	iret
+1224                     ; 1183 INTERRUPT_HANDLER(TLI_IRQHandler, 0)
+1224                     ; 1184 
+1224                     ; 1185 {
+1225                     	switch	.text
+1226  0002               f_TLI_IRQHandler:
+1230                     ; 1189 }
+1233  0002 80            	iret
+1255                     ; 1196 INTERRUPT_HANDLER(AWU_IRQHandler, 1)
+1255                     ; 1197 {
+1256                     	switch	.text
+1257  0003               f_AWU_IRQHandler:
+1261                     ; 1201 }
+1264  0003 80            	iret
+1286                     ; 1208 INTERRUPT_HANDLER(CLK_IRQHandler, 2)
+1286                     ; 1209 {
+1287                     	switch	.text
+1288  0004               f_CLK_IRQHandler:
+1292                     ; 1213 }
+1295  0004 80            	iret
+1318                     ; 1220 INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
+1318                     ; 1221 {
+1319                     	switch	.text
+1320  0005               f_EXTI_PORTA_IRQHandler:
+1324                     ; 1225 }
+1327  0005 80            	iret
+1350                     ; 1232 INTERRUPT_HANDLER(EXTI_PORTB_IRQHandler, 4)
+1350                     ; 1233 {
+1351                     	switch	.text
+1352  0006               f_EXTI_PORTB_IRQHandler:
+1356                     ; 1237 }
+1359  0006 80            	iret
+1382                     ; 1244 INTERRUPT_HANDLER(EXTI_PORTC_IRQHandler, 5)
+1382                     ; 1245 {
+1383                     	switch	.text
+1384  0007               f_EXTI_PORTC_IRQHandler:
+1388                     ; 1249 }
+1391  0007 80            	iret
+1414                     ; 1256 INTERRUPT_HANDLER(EXTI_PORTD_IRQHandler, 6)
+1414                     ; 1257 {
+1415                     	switch	.text
+1416  0008               f_EXTI_PORTD_IRQHandler:
+1420                     ; 1261 }
+1423  0008 80            	iret
+1446                     ; 1268 INTERRUPT_HANDLER(EXTI_PORTE_IRQHandler, 7)
+1446                     ; 1269 {
+1447                     	switch	.text
+1448  0009               f_EXTI_PORTE_IRQHandler:
+1452                     ; 1273 }
+1455  0009 80            	iret
+1477                     ; 1320 INTERRUPT_HANDLER(SPI_IRQHandler, 10)
+1477                     ; 1321 {
+1478                     	switch	.text
+1479  000a               f_SPI_IRQHandler:
+1483                     ; 1325 }
+1486  000a 80            	iret
+1509                     ; 1332 INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
+1509                     ; 1333 {
+1510                     	switch	.text
+1511  000b               f_TIM1_UPD_OVF_TRG_BRK_IRQHandler:
+1515                     ; 1337 }
+1518  000b 80            	iret
+1541                     ; 1344 INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
+1541                     ; 1345 {
+1542                     	switch	.text
+1543  000c               f_TIM1_CAP_COM_IRQHandler:
+1547                     ; 1349 }
+1550  000c 80            	iret
+1573                     ; 1382  INTERRUPT_HANDLER(TIM2_UPD_OVF_BRK_IRQHandler, 13)
+1573                     ; 1383  {
+1574                     	switch	.text
+1575  000d               f_TIM2_UPD_OVF_BRK_IRQHandler:
+1579                     ; 1387  }
+1582  000d 80            	iret
+1605                     ; 1394  INTERRUPT_HANDLER(TIM2_CAP_COM_IRQHandler, 14)
+1605                     ; 1395  {
+1606                     	switch	.text
+1607  000e               f_TIM2_CAP_COM_IRQHandler:
+1611                     ; 1399  }
+1614  000e 80            	iret
+1638                     ; 1409  INTERRUPT_HANDLER(TIM3_UPD_OVF_BRK_IRQHandler, 15)
+1638                     ; 1410  {
+1639                     	switch	.text
+1640  000f               f_TIM3_UPD_OVF_BRK_IRQHandler:
+1642  000f 8a            	push	cc
+1643  0010 84            	pop	a
+1644  0011 a4bf          	and	a,#191
+1645  0013 88            	push	a
+1646  0014 86            	pop	cc
+1647  0015 3b0002        	push	c_x+2
+1648  0018 be00          	ldw	x,c_x
+1649  001a 89            	pushw	x
+1650  001b 3b0002        	push	c_y+2
+1651  001e be00          	ldw	x,c_y
+1652  0020 89            	pushw	x
+1655                     ; 1415   TIM3_ClearITPendingBit(TIM3_IT_UPDATE);
+1657  0021 a601          	ld	a,#1
+1658  0023 cd0000        	call	_TIM3_ClearITPendingBit
+1660                     ; 1416  }
+1663  0026 85            	popw	x
+1664  0027 bf00          	ldw	c_y,x
+1665  0029 320002        	pop	c_y+2
+1666  002c 85            	popw	x
+1667  002d bf00          	ldw	c_x,x
+1668  002f 320002        	pop	c_x+2
+1669  0032 80            	iret
+1692                     ; 1423  INTERRUPT_HANDLER(TIM3_CAP_COM_IRQHandler, 16)
+1692                     ; 1424  {
+1693                     	switch	.text
+1694  0033               f_TIM3_CAP_COM_IRQHandler:
+1698                     ; 1428  }
+1701  0033 80            	iret
+1723                     ; 1489 INTERRUPT_HANDLER(I2C_IRQHandler, 19)
+1723                     ; 1490 {
+1724                     	switch	.text
+1725  0034               f_I2C_IRQHandler:
+1729                     ; 1494 }
+1732  0034 80            	iret
+1755                     ; 1502  INTERRUPT_HANDLER(UART2_TX_IRQHandler, 20)
+1755                     ; 1503  {
+1756                     	switch	.text
+1757  0035               f_UART2_TX_IRQHandler:
+1761                     ; 1507  }
+1764  0035 80            	iret
+1787                     ; 1514  INTERRUPT_HANDLER(UART2_RX_IRQHandler, 21)
+1787                     ; 1515  {
+1788                     	switch	.text
+1789  0036               f_UART2_RX_IRQHandler:
+1793                     ; 1519  }
+1796  0036 80            	iret
+1824                     ; 1568  INTERRUPT_HANDLER(ADC1_IRQHandler, 22)
+1824                     ; 1569  {
+1825                     	switch	.text
+1826  0037               f_ADC1_IRQHandler:
+1828  0037 8a            	push	cc
+1829  0038 84            	pop	a
+1830  0039 a4bf          	and	a,#191
+1831  003b 88            	push	a
+1832  003c 86            	pop	cc
+1833  003d 3b0002        	push	c_x+2
+1834  0040 be00          	ldw	x,c_x
+1835  0042 89            	pushw	x
+1836  0043 3b0002        	push	c_y+2
+1837  0046 be00          	ldw	x,c_y
+1838  0048 89            	pushw	x
+1841                     ; 1574     SUM += ADC1_GetConversionValue();
+1843  0049 cd0000        	call	_ADC1_GetConversionValue
+1845  004c 72bb0004      	addw	x,_SUM
+1846  0050 bf04          	ldw	_SUM,x
+1847                     ; 1575 		if(++NTC_ADC_Count == NTC_ADC_COUNT_UPLIMIT){
+1849  0052 be06          	ldw	x,_NTC_ADC_Count
+1850  0054 1c0001        	addw	x,#1
+1851  0057 bf06          	ldw	_NTC_ADC_Count,x
+1852  0059 a30008        	cpw	x,#8
+1853  005c 2616          	jrne	L162
+1854                     ; 1576 			NTC_ADC_Count = 0;
+1856  005e 5f            	clrw	x
+1857  005f bf06          	ldw	_NTC_ADC_Count,x
+1858                     ; 1577 			NTC_Conversion_Value = (SUM/NTC_ADC_COUNT_UPLIMIT);
+1860  0061 be04          	ldw	x,_SUM
+1861  0063 54            	srlw	x
+1862  0064 54            	srlw	x
+1863  0065 54            	srlw	x
+1864  0066 bf00          	ldw	_NTC_Conversion_Value,x
+1865                     ; 1578 			SUM = 0;
+1867  0068 5f            	clrw	x
+1868  0069 bf04          	ldw	_SUM,x
+1869                     ; 1579 			ADC1_ITConfig(ADC1_IT_EOCIE, DISABLE);
+1871  006b 4b00          	push	#0
+1872  006d ae0020        	ldw	x,#32
+1873  0070 cd0000        	call	_ADC1_ITConfig
+1875  0073 84            	pop	a
+1876  0074               L162:
+1877                     ; 1581 		ADC1_ClearITPendingBit(ADC1_IT_EOC);
+1879  0074 ae0080        	ldw	x,#128
+1880  0077 cd0000        	call	_ADC1_ClearITPendingBit
+1882                     ; 1582  }
+1885  007a 85            	popw	x
+1886  007b bf00          	ldw	c_y,x
+1887  007d 320002        	pop	c_y+2
+1888  0080 85            	popw	x
+1889  0081 bf00          	ldw	c_x,x
+1890  0083 320002        	pop	c_x+2
+1891  0086 80            	iret
+1928                     ; 1603  INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
+1928                     ; 1604  {
+1929                     	switch	.text
+1930  0087               f_TIM4_UPD_OVF_IRQHandler:
+1932  0087 8a            	push	cc
+1933  0088 84            	pop	a
+1934  0089 a4bf          	and	a,#191
+1935  008b 88            	push	a
+1936  008c 86            	pop	cc
+1937  008d 3b0002        	push	c_x+2
+1938  0090 be00          	ldw	x,c_x
+1939  0092 89            	pushw	x
+1940  0093 3b0002        	push	c_y+2
+1941  0096 be00          	ldw	x,c_y
+1942  0098 89            	pushw	x
+1945                     ; 1608 	if(!GPIO_ReadInputPin(Error_Input_PORT,E_Error_PIN)){
+1947  0099 4b08          	push	#8
+1948  009b ae5005        	ldw	x,#20485
+1949  009e cd0000        	call	_GPIO_ReadInputPin
+1951  00a1 5b01          	addw	sp,#1
+1952  00a3 4d            	tnz	a
+1953  00a4 2622          	jrne	L372
+1954                     ; 1609 		if(++E_Error_Delay_Count == E_Error_DelayTime && E_Error_Exist_Flag == FALSE){
+1956  00a6 be08          	ldw	x,_E_Error_Delay_Count
+1957  00a8 1c0001        	addw	x,#1
+1958  00ab bf08          	ldw	_E_Error_Delay_Count,x
+1959  00ad a30bb8        	cpw	x,#3000
+1960  00b0 2619          	jrne	L772
+1962  00b2 3d14          	tnz	_E_Error_Exist_Flag
+1963  00b4 2615          	jrne	L772
+1964                     ; 1610 			E_Error_Delay_Count = 0;
+1966  00b6 5f            	clrw	x
+1967  00b7 bf08          	ldw	_E_Error_Delay_Count,x
+1968                     ; 1611 			E_Error_Exist_Flag = TRUE;
+1970  00b9 35010014      	mov	_E_Error_Exist_Flag,#1
+1971                     ; 1612 			GPIO_WriteLow(Electricalfail_LED_PORT,Electricalfail_LED_PIN);
+1973  00bd 4b10          	push	#16
+1974  00bf ae500f        	ldw	x,#20495
+1975  00c2 cd0000        	call	_GPIO_WriteLow
+1977  00c5 84            	pop	a
+1978  00c6 2003          	jra	L772
+1979  00c8               L372:
+1980                     ; 1616 		E_Error_Delay_Count = 0;
+1982  00c8 5f            	clrw	x
+1983  00c9 bf08          	ldw	_E_Error_Delay_Count,x
+1984  00cb               L772:
+1985                     ; 1618 	if(!GPIO_ReadInputPin(Error_Input_PORT,LP_Error_PIN)){
+1987  00cb 4b04          	push	#4
+1988  00cd ae5005        	ldw	x,#20485
+1989  00d0 cd0000        	call	_GPIO_ReadInputPin
+1991  00d3 5b01          	addw	sp,#1
+1992  00d5 4d            	tnz	a
+1993  00d6 2622          	jrne	L103
+1994                     ; 1619 		if(++LP_Error_Delay_Count == LP_Error_DelayTime && LP_Error_Exist_Flag == FALSE){
+1996  00d8 be0a          	ldw	x,_LP_Error_Delay_Count
+1997  00da 1c0001        	addw	x,#1
+1998  00dd bf0a          	ldw	_LP_Error_Delay_Count,x
+1999  00df a30bb8        	cpw	x,#3000
+2000  00e2 2619          	jrne	L503
+2002  00e4 3d15          	tnz	_LP_Error_Exist_Flag
+2003  00e6 2615          	jrne	L503
+2004                     ; 1620 			LP_Error_Delay_Count = 0;
+2006  00e8 5f            	clrw	x
+2007  00e9 bf0a          	ldw	_LP_Error_Delay_Count,x
+2008                     ; 1621 			LP_Error_Exist_Flag = TRUE;
+2010  00eb 35010015      	mov	_LP_Error_Exist_Flag,#1
+2011                     ; 1622 			GPIO_WriteLow(Lowpressure_LED_PORT,Lowpressure_LED_PIN);
+2013  00ef 4b20          	push	#32
+2014  00f1 ae500f        	ldw	x,#20495
+2015  00f4 cd0000        	call	_GPIO_WriteLow
+2017  00f7 84            	pop	a
+2018  00f8 2003          	jra	L503
+2019  00fa               L103:
+2020                     ; 1626 		LP_Error_Delay_Count = 0;
+2022  00fa 5f            	clrw	x
+2023  00fb bf0a          	ldw	_LP_Error_Delay_Count,x
+2024  00fd               L503:
+2025                     ; 1628 	if(!GPIO_ReadInputPin(Error_Input_PORT,HP_Error_PIN)){
+2027  00fd 4b02          	push	#2
+2028  00ff ae5005        	ldw	x,#20485
+2029  0102 cd0000        	call	_GPIO_ReadInputPin
+2031  0105 5b01          	addw	sp,#1
+2032  0107 4d            	tnz	a
+2033  0108 2622          	jrne	L703
+2034                     ; 1629 		if(++HP_Error_Delay_Count == HP_Error_DelayTime && HP_Error_Exist_Flag == FALSE){
+2036  010a be0c          	ldw	x,_HP_Error_Delay_Count
+2037  010c 1c0001        	addw	x,#1
+2038  010f bf0c          	ldw	_HP_Error_Delay_Count,x
+2039  0111 a30bb8        	cpw	x,#3000
+2040  0114 2619          	jrne	L313
+2042  0116 3d16          	tnz	_HP_Error_Exist_Flag
+2043  0118 2615          	jrne	L313
+2044                     ; 1630 			HP_Error_Delay_Count = 0;
+2046  011a 5f            	clrw	x
+2047  011b bf0c          	ldw	_HP_Error_Delay_Count,x
+2048                     ; 1631 			HP_Error_Exist_Flag = TRUE;
+2050  011d 35010016      	mov	_HP_Error_Exist_Flag,#1
+2051                     ; 1632 			GPIO_WriteLow(Highpressure_LED_PORT,Highpressure_LED_PIN);
+2053  0121 4b40          	push	#64
+2054  0123 ae500f        	ldw	x,#20495
+2055  0126 cd0000        	call	_GPIO_WriteLow
+2057  0129 84            	pop	a
+2058  012a 2003          	jra	L313
+2059  012c               L703:
+2060                     ; 1636 		HP_Error_Delay_Count = 0;
+2062  012c 5f            	clrw	x
+2063  012d bf0c          	ldw	_HP_Error_Delay_Count,x
+2064  012f               L313:
+2065                     ; 1639 	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Start_PIN)){
+2067  012f 4b20          	push	#32
+2068  0131 ae5005        	ldw	x,#20485
+2069  0134 cd0000        	call	_GPIO_ReadInputPin
+2071  0137 5b01          	addw	sp,#1
+2072  0139 4d            	tnz	a
+2073  013a 261a          	jrne	L513
+2074                     ; 1640 		if(++RemoteControl_Start_Delay_Count == RemoteControl_Start_DelayTime ){
+2076  013c be0e          	ldw	x,_RemoteControl_Start_Delay_Count
+2077  013e 1c0001        	addw	x,#1
+2078  0141 bf0e          	ldw	_RemoteControl_Start_Delay_Count,x
+2079  0143 a30bb8        	cpw	x,#3000
+2080  0146 2611          	jrne	L123
+2081                     ; 1641 			RemoteControl_Start_Delay_Count = 0;
+2083  0148 5f            	clrw	x
+2084  0149 bf0e          	ldw	_RemoteControl_Start_Delay_Count,x
+2085                     ; 1642 			GPIO_WriteHigh(RelayControl_PORT,RelayControl_PIN);
+2087  014b 4b10          	push	#16
+2088  014d ae5000        	ldw	x,#20480
+2089  0150 cd0000        	call	_GPIO_WriteHigh
+2091  0153 84            	pop	a
+2092  0154 2003          	jra	L123
+2093  0156               L513:
+2094                     ; 1646 		RemoteControl_Start_Delay_Count = 0;
+2096  0156 5f            	clrw	x
+2097  0157 bf0e          	ldw	_RemoteControl_Start_Delay_Count,x
+2098  0159               L123:
+2099                     ; 1648 	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Stop_PIN)){
+2101  0159 4b10          	push	#16
+2102  015b ae5005        	ldw	x,#20485
+2103  015e cd0000        	call	_GPIO_ReadInputPin
+2105  0161 5b01          	addw	sp,#1
+2106  0163 4d            	tnz	a
+2107  0164 261a          	jrne	L323
+2108                     ; 1649 		if(++RemoteControl_Stop_Delay_Count == RemoteControl_Stop_DelayTime){
+2110  0166 be10          	ldw	x,_RemoteControl_Stop_Delay_Count
+2111  0168 1c0001        	addw	x,#1
+2112  016b bf10          	ldw	_RemoteControl_Stop_Delay_Count,x
+2113  016d a30bb8        	cpw	x,#3000
+2114  0170 2611          	jrne	L723
+2115                     ; 1650 			RemoteControl_Stop_Delay_Count = 0;
+2117  0172 5f            	clrw	x
+2118  0173 bf10          	ldw	_RemoteControl_Stop_Delay_Count,x
+2119                     ; 1651 			GPIO_WriteLow(RelayControl_PORT,RelayControl_PIN);
+2121  0175 4b10          	push	#16
+2122  0177 ae5000        	ldw	x,#20480
+2123  017a cd0000        	call	_GPIO_WriteLow
+2125  017d 84            	pop	a
+2126  017e 2003          	jra	L723
+2127  0180               L323:
+2128                     ; 1655 		RemoteControl_Stop_Delay_Count = 0;
+2130  0180 5f            	clrw	x
+2131  0181 bf10          	ldw	_RemoteControl_Stop_Delay_Count,x
+2132  0183               L723:
+2133                     ; 1658 	if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
+2135  0183 4b40          	push	#64
+2136  0185 ae5000        	ldw	x,#20480
+2137  0188 cd0000        	call	_GPIO_ReadInputPin
+2139  018b 5b01          	addw	sp,#1
+2140  018d 4d            	tnz	a
+2141  018e 2659          	jrne	L133
+2142                     ; 1659 		if(++StartStop_KEY_Count == StartStop_KEY_DelayTime){
+2144  0190 be12          	ldw	x,_StartStop_KEY_Count
+2145  0192 1c0001        	addw	x,#1
+2146  0195 bf12          	ldw	_StartStop_KEY_Count,x
+2147  0197 a30bb8        	cpw	x,#3000
+2148  019a 264a          	jrne	L333
+2149                     ; 1660 			StartStop_KEY_Count = 0;
+2151  019c 5f            	clrw	x
+2152  019d bf12          	ldw	_StartStop_KEY_Count,x
+2153                     ; 1662 			if(HP_Error_Exist_Flag == TRUE || LP_Error_Exist_Flag == TRUE || E_Error_Exist_Flag == TRUE){
+2155  019f b616          	ld	a,_HP_Error_Exist_Flag
+2156  01a1 a101          	cp	a,#1
+2157  01a3 270c          	jreq	L733
+2159  01a5 b615          	ld	a,_LP_Error_Exist_Flag
+2160  01a7 a101          	cp	a,#1
+2161  01a9 2706          	jreq	L733
+2163  01ab b614          	ld	a,_E_Error_Exist_Flag
+2164  01ad a101          	cp	a,#1
+2165  01af 2621          	jrne	L533
+2166  01b1               L733:
+2167                     ; 1663 				HP_Error_Exist_Flag = 0;
+2169  01b1 3f16          	clr	_HP_Error_Exist_Flag
+2170                     ; 1664 				LP_Error_Exist_Flag = 0;
+2172  01b3 3f15          	clr	_LP_Error_Exist_Flag
+2173                     ; 1665 				E_Error_Exist_Flag = 0;
+2175  01b5 3f14          	clr	_E_Error_Exist_Flag
+2176                     ; 1666 				GPIO_WriteHigh(Highpressure_LED_PORT,Highpressure_LED_PIN);
+2178  01b7 4b40          	push	#64
+2179  01b9 ae500f        	ldw	x,#20495
+2180  01bc cd0000        	call	_GPIO_WriteHigh
+2182  01bf 84            	pop	a
+2183                     ; 1667 				GPIO_WriteHigh(Electricalfail_LED_PORT,Electricalfail_LED_PIN);
+2185  01c0 4b10          	push	#16
+2186  01c2 ae500f        	ldw	x,#20495
+2187  01c5 cd0000        	call	_GPIO_WriteHigh
+2189  01c8 84            	pop	a
+2190                     ; 1668 				GPIO_WriteHigh(Lowpressure_LED_PORT,Lowpressure_LED_PIN);
+2192  01c9 4b20          	push	#32
+2193  01cb ae500f        	ldw	x,#20495
+2194  01ce cd0000        	call	_GPIO_WriteHigh
+2196  01d1 84            	pop	a
+2197  01d2               L533:
+2198                     ; 1670 			GPIO_WriteReverse(RelayControl_PORT,RelayControl_PIN);
+2200  01d2 4b10          	push	#16
+2201  01d4 ae5000        	ldw	x,#20480
+2202  01d7 cd0000        	call	_GPIO_WriteReverse
+2204  01da 84            	pop	a
+2205                     ; 1671 			GPIO_WriteReverse(Run_LED_PORT,Run_LED_PIN);
+2207  01db 4b08          	push	#8
+2208  01dd ae500f        	ldw	x,#20495
+2209  01e0 cd0000        	call	_GPIO_WriteReverse
+2211  01e3 84            	pop	a
+2213  01e4 2003          	jra	L133
+2214  01e6               L333:
+2215                     ; 1674 			StartStop_KEY_Count = 0;
+2217  01e6 5f            	clrw	x
+2218  01e7 bf12          	ldw	_StartStop_KEY_Count,x
+2219  01e9               L133:
+2220                     ; 1679   TIM4_ClearITPendingBit(TIM4_IT_UPDATE);
+2222  01e9 a601          	ld	a,#1
+2223  01eb cd0000        	call	_TIM4_ClearITPendingBit
+2225                     ; 1680  }
+2228  01ee 85            	popw	x
+2229  01ef bf00          	ldw	c_y,x
+2230  01f1 320002        	pop	c_y+2
+2231  01f4 85            	popw	x
+2232  01f5 bf00          	ldw	c_x,x
+2233  01f7 320002        	pop	c_x+2
+2234  01fa 80            	iret
+2257                     ; 1688 INTERRUPT_HANDLER(EEPROM_EEC_IRQHandler, 24)
+2257                     ; 1689 {
+2258                     	switch	.text
+2259  01fb               f_EEPROM_EEC_IRQHandler:
+2263                     ; 1693 }
+2266  01fb 80            	iret
+2439                     	xdef	_HP_Error_Exist_Flag
+2440                     	xdef	_LP_Error_Exist_Flag
+2441                     	xdef	_E_Error_Exist_Flag
+2442                     	xdef	_StartStop_KEY_Count
+2443                     	xdef	_RemoteControl_Stop_Delay_Count
+2444                     	xdef	_RemoteControl_Start_Delay_Count
+2445                     	xdef	_HP_Error_Delay_Count
+2446                     	xdef	_LP_Error_Delay_Count
+2447                     	xdef	_E_Error_Delay_Count
+2448                     	xdef	_NTC_ADC_Count
+2449                     	xdef	_SUM
+2450                     	xdef	f_EEPROM_EEC_IRQHandler
+2451                     	xdef	f_TIM4_UPD_OVF_IRQHandler
+2452                     	xdef	f_ADC1_IRQHandler
+2453                     	xdef	f_UART2_TX_IRQHandler
+2454                     	xdef	f_UART2_RX_IRQHandler
+2455                     	xdef	f_I2C_IRQHandler
+2456                     	xdef	f_TIM3_CAP_COM_IRQHandler
+2457                     	xdef	f_TIM3_UPD_OVF_BRK_IRQHandler
+2458                     	xdef	f_TIM2_CAP_COM_IRQHandler
+2459                     	xdef	f_TIM2_UPD_OVF_BRK_IRQHandler
+2460                     	xdef	f_TIM1_UPD_OVF_TRG_BRK_IRQHandler
+2461                     	xdef	f_TIM1_CAP_COM_IRQHandler
+2462                     	xdef	f_SPI_IRQHandler
+2463                     	xdef	f_EXTI_PORTE_IRQHandler
+2464                     	xdef	f_EXTI_PORTD_IRQHandler
+2465                     	xdef	f_EXTI_PORTC_IRQHandler
+2466                     	xdef	f_EXTI_PORTB_IRQHandler
+2467                     	xdef	f_EXTI_PORTA_IRQHandler
+2468                     	xdef	f_CLK_IRQHandler
+2469                     	xdef	f_AWU_IRQHandler
+2470                     	xdef	f_TLI_IRQHandler
+2471                     	xdef	f_TRAP_IRQHandler
+2472                     	xdef	f_NonHandledInterrupt
+2473                     	xdef	_NTC_TEM_Value
+2474                     	xdef	_NTC_Conversion_Value
+2475                     	xdef	_TEMP_TABLE
+2476                     	xref	_TIM4_ClearITPendingBit
+2477                     	xref	_TIM3_ClearITPendingBit
+2478                     	xref	_GPIO_ReadInputPin
+2479                     	xref	_GPIO_WriteReverse
+2480                     	xref	_GPIO_WriteLow
+2481                     	xref	_GPIO_WriteHigh
+2482                     	xref	_ADC1_ClearITPendingBit
+2483                     	xref	_ADC1_GetConversionValue
+2484                     	xref	_ADC1_ITConfig
+2485                     	xref.b	c_x
+2486                     	xref.b	c_y
+2505                     	end
