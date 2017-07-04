@@ -1483,13 +1483,13 @@
 2137  0188 cd0000        	call	_GPIO_ReadInputPin
 2139  018b 5b01          	addw	sp,#1
 2140  018d 4d            	tnz	a
-2141  018e 2659          	jrne	L133
+2141  018e 2656          	jrne	L133
 2142                     ; 1659 		if(++StartStop_KEY_Count == StartStop_KEY_DelayTime){
 2144  0190 be12          	ldw	x,_StartStop_KEY_Count
 2145  0192 1c0001        	addw	x,#1
 2146  0195 bf12          	ldw	_StartStop_KEY_Count,x
 2147  0197 a30bb8        	cpw	x,#3000
-2148  019a 264a          	jrne	L333
+2148  019a 264d          	jrne	L343
 2149                     ; 1660 			StartStop_KEY_Count = 0;
 2151  019c 5f            	clrw	x
 2152  019d bf12          	ldw	_StartStop_KEY_Count,x
@@ -1536,75 +1536,75 @@
 2208  01dd ae500f        	ldw	x,#20495
 2209  01e0 cd0000        	call	_GPIO_WriteReverse
 2211  01e3 84            	pop	a
-2213  01e4 2003          	jra	L133
-2214  01e6               L333:
-2215                     ; 1674 			StartStop_KEY_Count = 0;
-2217  01e6 5f            	clrw	x
-2218  01e7 bf12          	ldw	_StartStop_KEY_Count,x
-2219  01e9               L133:
-2220                     ; 1679   TIM4_ClearITPendingBit(TIM4_IT_UPDATE);
-2222  01e9 a601          	ld	a,#1
-2223  01eb cd0000        	call	_TIM4_ClearITPendingBit
-2225                     ; 1680  }
-2228  01ee 85            	popw	x
-2229  01ef bf00          	ldw	c_y,x
-2230  01f1 320002        	pop	c_y+2
-2231  01f4 85            	popw	x
-2232  01f5 bf00          	ldw	c_x,x
-2233  01f7 320002        	pop	c_x+2
-2234  01fa 80            	iret
-2257                     ; 1688 INTERRUPT_HANDLER(EEPROM_EEC_IRQHandler, 24)
-2257                     ; 1689 {
-2258                     	switch	.text
-2259  01fb               f_EEPROM_EEC_IRQHandler:
-2263                     ; 1693 }
-2266  01fb 80            	iret
-2439                     	xdef	_HP_Error_Exist_Flag
-2440                     	xdef	_LP_Error_Exist_Flag
-2441                     	xdef	_E_Error_Exist_Flag
-2442                     	xdef	_StartStop_KEY_Count
-2443                     	xdef	_RemoteControl_Stop_Delay_Count
-2444                     	xdef	_RemoteControl_Start_Delay_Count
-2445                     	xdef	_HP_Error_Delay_Count
-2446                     	xdef	_LP_Error_Delay_Count
-2447                     	xdef	_E_Error_Delay_Count
-2448                     	xdef	_NTC_ADC_Count
-2449                     	xdef	_SUM
-2450                     	xdef	f_EEPROM_EEC_IRQHandler
-2451                     	xdef	f_TIM4_UPD_OVF_IRQHandler
-2452                     	xdef	f_ADC1_IRQHandler
-2453                     	xdef	f_UART2_TX_IRQHandler
-2454                     	xdef	f_UART2_RX_IRQHandler
-2455                     	xdef	f_I2C_IRQHandler
-2456                     	xdef	f_TIM3_CAP_COM_IRQHandler
-2457                     	xdef	f_TIM3_UPD_OVF_BRK_IRQHandler
-2458                     	xdef	f_TIM2_CAP_COM_IRQHandler
-2459                     	xdef	f_TIM2_UPD_OVF_BRK_IRQHandler
-2460                     	xdef	f_TIM1_UPD_OVF_TRG_BRK_IRQHandler
-2461                     	xdef	f_TIM1_CAP_COM_IRQHandler
-2462                     	xdef	f_SPI_IRQHandler
-2463                     	xdef	f_EXTI_PORTE_IRQHandler
-2464                     	xdef	f_EXTI_PORTD_IRQHandler
-2465                     	xdef	f_EXTI_PORTC_IRQHandler
-2466                     	xdef	f_EXTI_PORTB_IRQHandler
-2467                     	xdef	f_EXTI_PORTA_IRQHandler
-2468                     	xdef	f_CLK_IRQHandler
-2469                     	xdef	f_AWU_IRQHandler
-2470                     	xdef	f_TLI_IRQHandler
-2471                     	xdef	f_TRAP_IRQHandler
-2472                     	xdef	f_NonHandledInterrupt
-2473                     	xdef	_NTC_TEM_Value
-2474                     	xdef	_NTC_Conversion_Value
-2475                     	xdef	_TEMP_TABLE
-2476                     	xref	_TIM4_ClearITPendingBit
-2477                     	xref	_TIM3_ClearITPendingBit
-2478                     	xref	_GPIO_ReadInputPin
-2479                     	xref	_GPIO_WriteReverse
-2480                     	xref	_GPIO_WriteLow
-2481                     	xref	_GPIO_WriteHigh
-2482                     	xref	_ADC1_ClearITPendingBit
-2483                     	xref	_ADC1_GetConversionValue
-2484                     	xref	_ADC1_ITConfig
-2485                     	xref.b	c_x
-2486                     	xref.b	c_y
-2505                     	end
+2212  01e4 2003          	jra	L343
+2213  01e6               L133:
+2214                     ; 1675 			StartStop_KEY_Count = 0;
+2216  01e6 5f            	clrw	x
+2217  01e7 bf12          	ldw	_StartStop_KEY_Count,x
+2218  01e9               L343:
+2219                     ; 1678   TIM4_ClearITPendingBit(TIM4_IT_UPDATE);
+2221  01e9 a601          	ld	a,#1
+2222  01eb cd0000        	call	_TIM4_ClearITPendingBit
+2224                     ; 1679  }
+2227  01ee 85            	popw	x
+2228  01ef bf00          	ldw	c_y,x
+2229  01f1 320002        	pop	c_y+2
+2230  01f4 85            	popw	x
+2231  01f5 bf00          	ldw	c_x,x
+2232  01f7 320002        	pop	c_x+2
+2233  01fa 80            	iret
+2256                     ; 1687 INTERRUPT_HANDLER(EEPROM_EEC_IRQHandler, 24)
+2256                     ; 1688 {
+2257                     	switch	.text
+2258  01fb               f_EEPROM_EEC_IRQHandler:
+2262                     ; 1692 }
+2265  01fb 80            	iret
+2438                     	xdef	_HP_Error_Exist_Flag
+2439                     	xdef	_LP_Error_Exist_Flag
+2440                     	xdef	_E_Error_Exist_Flag
+2441                     	xdef	_StartStop_KEY_Count
+2442                     	xdef	_RemoteControl_Stop_Delay_Count
+2443                     	xdef	_RemoteControl_Start_Delay_Count
+2444                     	xdef	_HP_Error_Delay_Count
+2445                     	xdef	_LP_Error_Delay_Count
+2446                     	xdef	_E_Error_Delay_Count
+2447                     	xdef	_NTC_ADC_Count
+2448                     	xdef	_SUM
+2449                     	xdef	f_EEPROM_EEC_IRQHandler
+2450                     	xdef	f_TIM4_UPD_OVF_IRQHandler
+2451                     	xdef	f_ADC1_IRQHandler
+2452                     	xdef	f_UART2_TX_IRQHandler
+2453                     	xdef	f_UART2_RX_IRQHandler
+2454                     	xdef	f_I2C_IRQHandler
+2455                     	xdef	f_TIM3_CAP_COM_IRQHandler
+2456                     	xdef	f_TIM3_UPD_OVF_BRK_IRQHandler
+2457                     	xdef	f_TIM2_CAP_COM_IRQHandler
+2458                     	xdef	f_TIM2_UPD_OVF_BRK_IRQHandler
+2459                     	xdef	f_TIM1_UPD_OVF_TRG_BRK_IRQHandler
+2460                     	xdef	f_TIM1_CAP_COM_IRQHandler
+2461                     	xdef	f_SPI_IRQHandler
+2462                     	xdef	f_EXTI_PORTE_IRQHandler
+2463                     	xdef	f_EXTI_PORTD_IRQHandler
+2464                     	xdef	f_EXTI_PORTC_IRQHandler
+2465                     	xdef	f_EXTI_PORTB_IRQHandler
+2466                     	xdef	f_EXTI_PORTA_IRQHandler
+2467                     	xdef	f_CLK_IRQHandler
+2468                     	xdef	f_AWU_IRQHandler
+2469                     	xdef	f_TLI_IRQHandler
+2470                     	xdef	f_TRAP_IRQHandler
+2471                     	xdef	f_NonHandledInterrupt
+2472                     	xdef	_NTC_TEM_Value
+2473                     	xdef	_NTC_Conversion_Value
+2474                     	xdef	_TEMP_TABLE
+2475                     	xref	_TIM4_ClearITPendingBit
+2476                     	xref	_TIM3_ClearITPendingBit
+2477                     	xref	_GPIO_ReadInputPin
+2478                     	xref	_GPIO_WriteReverse
+2479                     	xref	_GPIO_WriteLow
+2480                     	xref	_GPIO_WriteHigh
+2481                     	xref	_ADC1_ClearITPendingBit
+2482                     	xref	_ADC1_GetConversionValue
+2483                     	xref	_ADC1_ITConfig
+2484                     	xref.b	c_x
+2485                     	xref.b	c_y
+2504                     	end

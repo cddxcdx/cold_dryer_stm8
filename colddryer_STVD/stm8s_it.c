@@ -1670,11 +1670,10 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 			GPIO_WriteReverse(RelayControl_PORT,RelayControl_PIN);
 			GPIO_WriteReverse(Run_LED_PORT,Run_LED_PIN);
 		}
-		else{
-			StartStop_KEY_Count = 0;
-		}
 	}
-		
+	else{
+			StartStop_KEY_Count = 0;
+	}	
 	/* Cleat Interrupt Pending bit */
   TIM4_ClearITPendingBit(TIM4_IT_UPDATE);
  }
