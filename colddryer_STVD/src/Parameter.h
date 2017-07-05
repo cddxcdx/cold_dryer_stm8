@@ -1,12 +1,6 @@
 #ifndef _PARAMETER_H_
 #define _PARAMETER_H_
 
-typedef enum{
-	Tem_Alarm_Limit = 1,
-	Start_DelayTime_Select,
-	Exit
-}parametersettingstate_e;
-
 //温度校正增量
 #define TEM_OFFSET 2       //2相当于2，基准，一次加减都是 这个值
 

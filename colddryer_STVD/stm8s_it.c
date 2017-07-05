@@ -30,6 +30,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm8s_it.h"
 #include "Periph_Init.h"
+#include "LED_Disp.h"
+
+
 /** @addtogroup Template_Project
   * @{
   */
@@ -1143,9 +1146,11 @@ const uint16_t TEMP_TABLE[] =//NTC B:3980 R:10K
 4673
 };
 bool Parameter_Set_Flag = FALSE;
-uint16_t NTC_Conversion_Value = 0,NTC_TEM_Value = 0,SUM = 0,NTC_ADC_Count = 0;
+uint16_t NTC_Conversion_Value = 0,SUM = 0,NTC_ADC_Count = 0;
+int16_t NTC_TEM_Value = 0;
 uint16_t E_Error_Delay_Count = 0,LP_Error_Delay_Count = 0,HP_Error_Delay_Count = 0,Tem_Alarm_Delay_Count = 0,RemoteControl_Start_Delay_Count = 0,RemoteControl_Stop_Delay_Count = 0,StartStop_KEY_Delay_Count = 0, Set_KEY_Delay_Count = 0;
 bool E_Error_Exist_Flag = FALSE,LP_Error_Exist_Flag = FALSE,HP_Error_Exist_Flag = FALSE,TEM_Error_Exist_Flag = FALSE;
+bool Dig_Switch_Flag = FALSE;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /* Public functions ----------------------------------------------------------*/
@@ -1420,6 +1425,15 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+	
+	if(Dig_Switch_Flag == TRUE){
+		LD_DIG1;
+	}
+	else{
+		LD_DIG2;
+	}		
+	Dig_Switch_Flag = !Dig_Switch_Flag;
+
 	/* Cleat Interrupt Pending bit */
   TIM3_ClearITPendingBit(TIM3_IT_UPDATE);
  }
