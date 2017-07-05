@@ -62,6 +62,7 @@ Release\stm8s_tim4.o
 Release\stm8s_uart2.o
 Release\stm8s_wwdg.o
 Release\main.o
+Release\led_disp.o
 Release\parameter.o
 Release\periph_init.o
 Release\stm8s_it.o

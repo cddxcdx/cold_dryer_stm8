@@ -1,7 +1,6 @@
 #include "stm8s.h"
 #include "Periph_Init.h"
 
-
 void Input_test(void);
 /*LEDDISP Show*/
 //#define LD_number_one {GPIO_WriteHigh(Run_LED_PIN, Run_LED_PIN);}
@@ -38,7 +37,8 @@ void IO_Init(void)
 	//define LED pins
 	GPIO_Init(Run_LED_PORT,(Run_LED_PIN|Electricalfail_LED_PIN|Tem_LED_PIN|Lowpressure_LED_PIN|Highpressure_LED_PIN),GPIO_MODE_OUT_PP_HIGH_FAST );
 	//define key input pins
-	GPIO_Init(StartStop_KEY_PORT,(StartStop_KEY_PIN|Set_KEY_PIN),GPIO_MODE_IN_FL_NO_IT);
+	GPIO_Init(StartStop_KEY_PORT,(StartStop_KEY_PIN|Set_KEY_PIN),GPIO_MODE_IN_FL_IT);
+	EXTI_SetExtIntSensitivity(EXTI_PORT_GPIOA, EXTI_SENSITIVITY_FALL_ONLY);
 	//define error input pins
 	GPIO_Init(Error_Input_PORT,(E_Error_PIN|LP_Error_PIN|HP_Error_PIN),GPIO_MODE_IN_FL_NO_IT);
 	//define relay output pins

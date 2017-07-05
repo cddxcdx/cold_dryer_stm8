@@ -5,32 +5,24 @@
 #include "stm8s.h"
 #include "stm8s_it.h"
 #include "Periph_Init.h"
-#include "parameter.h"
-
-
-typedef enum{
-	paramsetmode = 1,
-	normalmode
-}runningmode_e;
-
-void task_param_set(void){}
+#include "Parameter.h"
 
 main(){
-	runningmode_e runningmode = paramsetmode;
 	uint16_t i;
+	uint16_t current_tem_offset = 0;
 	system_init();
 	while (1){
-		if(runningmode == paramsetmode)
-			task_param_set();
+		/*Parameters_Seting Mode*/
+		task_parameterssetting();
 			
+		/*NTC Temperature Value Calculate*/	
 		for(i = 0; i < 1090; i++){
 			if(TEMP_TABLE[i] > (uint16_t)((float)NTC_Conversion_Value/Resolution*VREF)){
-				NTC_TEM_Value = i - 90;
+				NTC_TEM_Value = (i - 90 + 5)/10 + current_tem_offset;
 				ADC1_ITConfig(ADC1_IT_EOCIE, ENABLE);
 				break;
 			}
 		}
-		
 		/* Reload IWDG counter */
     IWDG_ReloadCounter(); 
 	}

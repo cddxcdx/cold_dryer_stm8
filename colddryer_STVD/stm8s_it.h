@@ -36,6 +36,7 @@
 /* Exported constants --------------------------------------------------------*/
 extern const uint16_t TEMP_TABLE[];
 extern uint16_t NTC_Conversion_Value,NTC_TEM_Value;
+extern bool Parameter_Set_Flag;
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 #ifdef _COSMIC_

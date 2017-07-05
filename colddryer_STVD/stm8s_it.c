@@ -43,6 +43,8 @@
 #define RemoteControl_Start_DelayTime 3000
 #define RemoteControl_Stop_DelayTime 3000
 #define StartStop_KEY_DelayTime 3000
+#define Set_KEY_DelayTime 3000
+#define Tem_Alarm_DelayTime 3000
 
 #define NTC_ADC_COUNT_UPLIMIT 8
 /* Private macro -------------------------------------------------------------*/
@@ -1140,9 +1142,10 @@ const uint16_t TEMP_TABLE[] =//NTC B:3980 R:10K
 4672,
 4673
 };
+bool Parameter_Set_Flag = FALSE;
 uint16_t NTC_Conversion_Value = 0,NTC_TEM_Value = 0,SUM = 0,NTC_ADC_Count = 0;
-uint16_t E_Error_Delay_Count = 0,LP_Error_Delay_Count = 0,HP_Error_Delay_Count = 0,RemoteControl_Start_Delay_Count = 0,RemoteControl_Stop_Delay_Count = 0,StartStop_KEY_Count = 0;
-bool E_Error_Exist_Flag = FALSE,LP_Error_Exist_Flag = FALSE,HP_Error_Exist_Flag = FALSE;
+uint16_t E_Error_Delay_Count = 0,LP_Error_Delay_Count = 0,HP_Error_Delay_Count = 0,Tem_Alarm_Delay_Count = 0,RemoteControl_Start_Delay_Count = 0,RemoteControl_Stop_Delay_Count = 0,StartStop_KEY_Delay_Count = 0, Set_KEY_Delay_Count = 0;
+bool E_Error_Exist_Flag = FALSE,LP_Error_Exist_Flag = FALSE,HP_Error_Exist_Flag = FALSE,TEM_Error_Exist_Flag = FALSE;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /* Public functions ----------------------------------------------------------*/
@@ -1222,6 +1225,12 @@ INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+	if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
+		
+	}
+	if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
+		
+	}
 }
 
 /**
@@ -1635,7 +1644,16 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	else{
 		HP_Error_Delay_Count = 0;
 	}
-	
+	if( NTC_TEM_Value > 28 && TEM_Error_Exist_Flag == FALSE ){
+		if(++Tem_Alarm_Delay_Count == Tem_Alarm_DelayTime ){
+			Tem_Alarm_Delay_Count = 0;
+			TEM_Error_Exist_Flag = TRUE;
+			GPIO_WriteLow(Tem_LED_PORT,Tem_LED_PIN);
+		}
+	}
+	else
+		Tem_Alarm_Delay_Count = 0;
+	//
 	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Start_PIN)){
 		if(++RemoteControl_Start_Delay_Count == RemoteControl_Start_DelayTime ){
 			RemoteControl_Start_Delay_Count = 0;
@@ -1654,26 +1672,39 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	else{
 		RemoteControl_Stop_Delay_Count = 0;
 	}
-	
+	//
 	if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
-		if(++StartStop_KEY_Count == StartStop_KEY_DelayTime){
-			StartStop_KEY_Count = 0;
+		if(++StartStop_KEY_Delay_Count == StartStop_KEY_DelayTime){
+			StartStop_KEY_Delay_Count = 0;
 			
-			if(HP_Error_Exist_Flag == TRUE || LP_Error_Exist_Flag == TRUE || E_Error_Exist_Flag == TRUE){
+			if(HP_Error_Exist_Flag || LP_Error_Exist_Flag || E_Error_Exist_Flag || TEM_Error_Exist_Flag){
 				HP_Error_Exist_Flag = 0;
 				LP_Error_Exist_Flag = 0;
 				E_Error_Exist_Flag = 0;
+				TEM_Error_Exist_Flag = 0;
 				GPIO_WriteHigh(Highpressure_LED_PORT,Highpressure_LED_PIN);
 				GPIO_WriteHigh(Electricalfail_LED_PORT,Electricalfail_LED_PIN);
 				GPIO_WriteHigh(Lowpressure_LED_PORT,Lowpressure_LED_PIN);
+				GPIO_WriteHigh(Tem_LED_PORT,Tem_LED_PIN);
 			}
 			GPIO_WriteReverse(RelayControl_PORT,RelayControl_PIN);
 			GPIO_WriteReverse(Run_LED_PORT,Run_LED_PIN);
 		}
 	}
 	else{
-			StartStop_KEY_Count = 0;
+			StartStop_KEY_Delay_Count = 0;
 	}	
+	
+	if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
+		if(++Set_KEY_Delay_Count == Set_KEY_DelayTime){
+			Set_KEY_Delay_Count = 0;
+			Parameter_Set_Flag = TRUE;
+		}
+	}
+	else{
+			Set_KEY_Delay_Count = 0;
+	}		
+	
 	/* Cleat Interrupt Pending bit */
   TIM4_ClearITPendingBit(TIM4_IT_UPDATE);
  }

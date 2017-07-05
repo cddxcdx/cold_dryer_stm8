@@ -1,87 +1,81 @@
    1                     ; C Compiler for STM8 (COSMIC Software)
    2                     ; Parser V4.11.9 - 08 Feb 2017
    3                     ; Generator (Limited) V4.4.6 - 08 Feb 2017
-  42                     ; 16 void task_param_set(void){}
-  44                     	switch	.text
-  45  0000               _task_param_set:
-  52  0000 81            	ret
- 123                     ; 18 main(){
- 124                     	switch	.text
- 125  0001               _main:
- 127  0001 5203          	subw	sp,#3
- 128       00000003      OFST:	set	3
- 131                     ; 19 	runningmode_e runningmode = paramsetmode;
- 133  0003 a601          	ld	a,#1
- 134  0005 6b01          	ld	(OFST-2,sp),a
- 136                     ; 21 	system_init();
- 138  0007 cd0000        	call	_system_init
- 140  000a               L35:
- 141                     ; 23 		if(runningmode == paramsetmode)
- 143  000a 7b01          	ld	a,(OFST-2,sp)
- 144  000c a101          	cp	a,#1
- 145  000e 2602          	jrne	L75
- 146                     ; 24 			task_param_set();
- 148  0010 adee          	call	_task_param_set
- 150  0012               L75:
- 151                     ; 26 		for(i = 0; i < 1090; i++){
- 153  0012 5f            	clrw	x
- 154  0013 1f02          	ldw	(OFST-1,sp),x
- 156  0015               L16:
- 157                     ; 27 			if(TEMP_TABLE[i] > (uint16_t)((float)NTC_Conversion_Value/Resolution*VREF)){
- 159  0015 be00          	ldw	x,_NTC_Conversion_Value
- 160  0017 cd0000        	call	c_uitof
- 162  001a ae0004        	ldw	x,#L57
- 163  001d cd0000        	call	c_fdiv
- 165  0020 ae0000        	ldw	x,#L501
- 166  0023 cd0000        	call	c_fmul
- 168  0026 cd0000        	call	c_ftoi
- 170  0029 1602          	ldw	y,(OFST-1,sp)
- 171  002b 9058          	sllw	y
- 172  002d bf00          	ldw	c_x,x
- 173  002f 93            	ldw	x,y
- 174  0030 de0000        	ldw	x,(_TEMP_TABLE,x)
- 175  0033 b300          	cpw	x,c_x
- 176  0035 2312          	jrule	L76
- 177                     ; 28 				NTC_TEM_Value = i - 90;
- 179  0037 1e02          	ldw	x,(OFST-1,sp)
- 180  0039 1d005a        	subw	x,#90
- 181  003c bf00          	ldw	_NTC_TEM_Value,x
- 182                     ; 29 				ADC1_ITConfig(ADC1_IT_EOCIE, ENABLE);
- 184  003e 4b01          	push	#1
- 185  0040 ae0020        	ldw	x,#32
- 186  0043 cd0000        	call	_ADC1_ITConfig
- 188  0046 84            	pop	a
- 189                     ; 30 				break;
- 191  0047 200e          	jra	L56
- 192  0049               L76:
- 193                     ; 26 		for(i = 0; i < 1090; i++){
- 195  0049 1e02          	ldw	x,(OFST-1,sp)
- 196  004b 1c0001        	addw	x,#1
- 197  004e 1f02          	ldw	(OFST-1,sp),x
- 201  0050 1e02          	ldw	x,(OFST-1,sp)
- 202  0052 a30442        	cpw	x,#1090
- 203  0055 25be          	jrult	L16
- 204  0057               L56:
- 205                     ; 35     IWDG_ReloadCounter(); 
- 207  0057 cd0000        	call	_IWDG_ReloadCounter
- 210  005a 20ae          	jra	L35
- 223                     	xdef	_main
- 224                     	xdef	_task_param_set
- 225                     	xref	_system_init
- 226                     	xref.b	_NTC_TEM_Value
- 227                     	xref.b	_NTC_Conversion_Value
- 228                     	xref	_TEMP_TABLE
- 229                     	xref	_IWDG_ReloadCounter
- 230                     	xref	_ADC1_ITConfig
- 231                     .const:	section	.text
- 232  0000               L501:
- 233  0000 459c4000      	dc.w	17820,16384
- 234  0004               L57:
- 235  0004 44800000      	dc.w	17536,0
- 236                     	xref.b	c_lreg
- 237                     	xref.b	c_x
- 257                     	xref	c_ftoi
- 258                     	xref	c_fmul
- 259                     	xref	c_fdiv
- 260                     	xref	c_uitof
- 261                     	end
+  69                     ; 10 main(){
+  71                     	switch	.text
+  72  0000               _main:
+  74  0000 5204          	subw	sp,#4
+  75       00000004      OFST:	set	4
+  78                     ; 12 	uint16_t current_tem_offset = 0;
+  80  0002 5f            	clrw	x
+  81  0003 1f01          	ldw	(OFST-3,sp),x
+  83                     ; 13 	system_init();
+  85  0005 cd0000        	call	_system_init
+  87  0008               L33:
+  88                     ; 16 		task_parameterssetting();
+  90  0008 cd0000        	call	_task_parameterssetting
+  92                     ; 19 		for(i = 0; i < 1090; i++){
+  94  000b 5f            	clrw	x
+  95  000c 1f03          	ldw	(OFST-1,sp),x
+  97  000e               L73:
+  98                     ; 20 			if(TEMP_TABLE[i] > (uint16_t)((float)NTC_Conversion_Value/Resolution*VREF)){
+ 100  000e be00          	ldw	x,_NTC_Conversion_Value
+ 101  0010 cd0000        	call	c_uitof
+ 103  0013 ae0004        	ldw	x,#L35
+ 104  0016 cd0000        	call	c_fdiv
+ 106  0019 ae0000        	ldw	x,#L36
+ 107  001c cd0000        	call	c_fmul
+ 109  001f cd0000        	call	c_ftoi
+ 111  0022 1603          	ldw	y,(OFST-1,sp)
+ 112  0024 9058          	sllw	y
+ 113  0026 bf00          	ldw	c_x,x
+ 114  0028 93            	ldw	x,y
+ 115  0029 de0000        	ldw	x,(_TEMP_TABLE,x)
+ 116  002c b300          	cpw	x,c_x
+ 117  002e 2318          	jrule	L54
+ 118                     ; 21 				NTC_TEM_Value = (i - 90 + 5)/10 + current_tem_offset;
+ 120  0030 1e03          	ldw	x,(OFST-1,sp)
+ 121  0032 1d0055        	subw	x,#85
+ 122  0035 a60a          	ld	a,#10
+ 123  0037 62            	div	x,a
+ 124  0038 72fb01        	addw	x,(OFST-3,sp)
+ 125  003b bf00          	ldw	_NTC_TEM_Value,x
+ 126                     ; 22 				ADC1_ITConfig(ADC1_IT_EOCIE, ENABLE);
+ 128  003d 4b01          	push	#1
+ 129  003f ae0020        	ldw	x,#32
+ 130  0042 cd0000        	call	_ADC1_ITConfig
+ 132  0045 84            	pop	a
+ 133                     ; 23 				break;
+ 135  0046 200e          	jra	L34
+ 136  0048               L54:
+ 137                     ; 19 		for(i = 0; i < 1090; i++){
+ 139  0048 1e03          	ldw	x,(OFST-1,sp)
+ 140  004a 1c0001        	addw	x,#1
+ 141  004d 1f03          	ldw	(OFST-1,sp),x
+ 145  004f 1e03          	ldw	x,(OFST-1,sp)
+ 146  0051 a30442        	cpw	x,#1090
+ 147  0054 25b8          	jrult	L73
+ 148  0056               L34:
+ 149                     ; 27     IWDG_ReloadCounter(); 
+ 151  0056 cd0000        	call	_IWDG_ReloadCounter
+ 154  0059 20ad          	jra	L33
+ 167                     	xdef	_main
+ 168                     	xref	_task_parameterssetting
+ 169                     	xref	_system_init
+ 170                     	xref.b	_NTC_TEM_Value
+ 171                     	xref.b	_NTC_Conversion_Value
+ 172                     	xref	_TEMP_TABLE
+ 173                     	xref	_IWDG_ReloadCounter
+ 174                     	xref	_ADC1_ITConfig
+ 175                     .const:	section	.text
+ 176  0000               L36:
+ 177  0000 459c4000      	dc.w	17820,16384
+ 178  0004               L35:
+ 179  0004 44800000      	dc.w	17536,0
+ 180                     	xref.b	c_lreg
+ 181                     	xref.b	c_x
+ 201                     	xref	c_ftoi
+ 202                     	xref	c_fmul
+ 203                     	xref	c_fdiv
+ 204                     	xref	c_uitof
+ 205                     	end

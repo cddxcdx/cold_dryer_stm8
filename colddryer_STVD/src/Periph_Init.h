@@ -26,7 +26,7 @@
 #define LED_Disp_a_PIN GPIO_PIN_0
 /*LED*/
 #define Run_LED_PORT GPIOD
-#define Run_LED_PIN GPIO_PIN_3
+#define Run_LED_PIN GPIO_PIN_7
 #define Electricalfail_LED_PORT Run_LED_PORT
 #define Electricalfail_LED_PIN GPIO_PIN_4
 #define Lowpressure_LED_PORT Run_LED_PORT
@@ -34,7 +34,7 @@
 #define Highpressure_LED_PORT Run_LED_PORT
 #define Highpressure_LED_PIN GPIO_PIN_6
 #define Tem_LED_PORT Run_LED_PORT
-#define Tem_LED_PIN GPIO_PIN_7
+#define Tem_LED_PIN GPIO_PIN_3
 /*KEY*/
 #define StartStop_KEY_PORT GPIOA
 #define StartStop_KEY_PIN GPIO_PIN_6
@@ -57,6 +57,5 @@
 #define NTC_Input_PIN GPIO_PIN_0
 
 void system_init(void);
-void Input_test(void);
 
 #endif

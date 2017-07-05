@@ -1094,517 +1094,616 @@
 1104  0880 1240          	dc.w	4672
 1105  0882 1241          	dc.w	4673
 1106                     	bsct
-1107  0000               _NTC_Conversion_Value:
-1108  0000 0000          	dc.w	0
-1109  0002               _NTC_TEM_Value:
-1110  0002 0000          	dc.w	0
-1111  0004               _SUM:
-1112  0004 0000          	dc.w	0
-1113  0006               _NTC_ADC_Count:
-1114  0006 0000          	dc.w	0
-1115  0008               _E_Error_Delay_Count:
-1116  0008 0000          	dc.w	0
-1117  000a               _LP_Error_Delay_Count:
-1118  000a 0000          	dc.w	0
-1119  000c               _HP_Error_Delay_Count:
-1120  000c 0000          	dc.w	0
-1121  000e               _RemoteControl_Start_Delay_Count:
-1122  000e 0000          	dc.w	0
-1123  0010               _RemoteControl_Stop_Delay_Count:
-1124  0010 0000          	dc.w	0
-1125  0012               _StartStop_KEY_Count:
-1126  0012 0000          	dc.w	0
-1127  0014               _E_Error_Exist_Flag:
-1128  0014 00            	dc.b	0
-1129  0015               _LP_Error_Exist_Flag:
-1130  0015 00            	dc.b	0
-1131  0016               _HP_Error_Exist_Flag:
-1132  0016 00            	dc.b	0
-1162                     ; 1158 INTERRUPT_HANDLER(NonHandledInterrupt, 25)
-1162                     ; 1159 {
-1163                     	switch	.text
-1164  0000               f_NonHandledInterrupt:
-1168                     ; 1163 }
-1171  0000 80            	iret
-1193                     ; 1171 INTERRUPT_HANDLER_TRAP(TRAP_IRQHandler)
-1193                     ; 1172 {
-1194                     	switch	.text
-1195  0001               f_TRAP_IRQHandler:
-1199                     ; 1176 }
-1202  0001 80            	iret
-1224                     ; 1183 INTERRUPT_HANDLER(TLI_IRQHandler, 0)
-1224                     ; 1184 
-1224                     ; 1185 {
-1225                     	switch	.text
-1226  0002               f_TLI_IRQHandler:
-1230                     ; 1189 }
-1233  0002 80            	iret
-1255                     ; 1196 INTERRUPT_HANDLER(AWU_IRQHandler, 1)
-1255                     ; 1197 {
-1256                     	switch	.text
-1257  0003               f_AWU_IRQHandler:
-1261                     ; 1201 }
-1264  0003 80            	iret
-1286                     ; 1208 INTERRUPT_HANDLER(CLK_IRQHandler, 2)
-1286                     ; 1209 {
-1287                     	switch	.text
-1288  0004               f_CLK_IRQHandler:
-1292                     ; 1213 }
-1295  0004 80            	iret
-1318                     ; 1220 INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
-1318                     ; 1221 {
-1319                     	switch	.text
-1320  0005               f_EXTI_PORTA_IRQHandler:
-1324                     ; 1225 }
-1327  0005 80            	iret
-1350                     ; 1232 INTERRUPT_HANDLER(EXTI_PORTB_IRQHandler, 4)
-1350                     ; 1233 {
-1351                     	switch	.text
-1352  0006               f_EXTI_PORTB_IRQHandler:
-1356                     ; 1237 }
-1359  0006 80            	iret
-1382                     ; 1244 INTERRUPT_HANDLER(EXTI_PORTC_IRQHandler, 5)
-1382                     ; 1245 {
-1383                     	switch	.text
-1384  0007               f_EXTI_PORTC_IRQHandler:
-1388                     ; 1249 }
-1391  0007 80            	iret
-1414                     ; 1256 INTERRUPT_HANDLER(EXTI_PORTD_IRQHandler, 6)
-1414                     ; 1257 {
-1415                     	switch	.text
-1416  0008               f_EXTI_PORTD_IRQHandler:
-1420                     ; 1261 }
-1423  0008 80            	iret
-1446                     ; 1268 INTERRUPT_HANDLER(EXTI_PORTE_IRQHandler, 7)
-1446                     ; 1269 {
-1447                     	switch	.text
-1448  0009               f_EXTI_PORTE_IRQHandler:
-1452                     ; 1273 }
-1455  0009 80            	iret
-1477                     ; 1320 INTERRUPT_HANDLER(SPI_IRQHandler, 10)
-1477                     ; 1321 {
-1478                     	switch	.text
-1479  000a               f_SPI_IRQHandler:
-1483                     ; 1325 }
-1486  000a 80            	iret
-1509                     ; 1332 INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
-1509                     ; 1333 {
-1510                     	switch	.text
-1511  000b               f_TIM1_UPD_OVF_TRG_BRK_IRQHandler:
-1515                     ; 1337 }
-1518  000b 80            	iret
-1541                     ; 1344 INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
-1541                     ; 1345 {
-1542                     	switch	.text
-1543  000c               f_TIM1_CAP_COM_IRQHandler:
-1547                     ; 1349 }
-1550  000c 80            	iret
-1573                     ; 1382  INTERRUPT_HANDLER(TIM2_UPD_OVF_BRK_IRQHandler, 13)
-1573                     ; 1383  {
-1574                     	switch	.text
-1575  000d               f_TIM2_UPD_OVF_BRK_IRQHandler:
-1579                     ; 1387  }
-1582  000d 80            	iret
-1605                     ; 1394  INTERRUPT_HANDLER(TIM2_CAP_COM_IRQHandler, 14)
-1605                     ; 1395  {
-1606                     	switch	.text
-1607  000e               f_TIM2_CAP_COM_IRQHandler:
-1611                     ; 1399  }
-1614  000e 80            	iret
-1638                     ; 1409  INTERRUPT_HANDLER(TIM3_UPD_OVF_BRK_IRQHandler, 15)
-1638                     ; 1410  {
-1639                     	switch	.text
-1640  000f               f_TIM3_UPD_OVF_BRK_IRQHandler:
-1642  000f 8a            	push	cc
-1643  0010 84            	pop	a
-1644  0011 a4bf          	and	a,#191
-1645  0013 88            	push	a
-1646  0014 86            	pop	cc
-1647  0015 3b0002        	push	c_x+2
-1648  0018 be00          	ldw	x,c_x
-1649  001a 89            	pushw	x
-1650  001b 3b0002        	push	c_y+2
-1651  001e be00          	ldw	x,c_y
-1652  0020 89            	pushw	x
-1655                     ; 1415   TIM3_ClearITPendingBit(TIM3_IT_UPDATE);
-1657  0021 a601          	ld	a,#1
-1658  0023 cd0000        	call	_TIM3_ClearITPendingBit
-1660                     ; 1416  }
-1663  0026 85            	popw	x
-1664  0027 bf00          	ldw	c_y,x
-1665  0029 320002        	pop	c_y+2
-1666  002c 85            	popw	x
-1667  002d bf00          	ldw	c_x,x
-1668  002f 320002        	pop	c_x+2
-1669  0032 80            	iret
-1692                     ; 1423  INTERRUPT_HANDLER(TIM3_CAP_COM_IRQHandler, 16)
-1692                     ; 1424  {
-1693                     	switch	.text
-1694  0033               f_TIM3_CAP_COM_IRQHandler:
-1698                     ; 1428  }
-1701  0033 80            	iret
-1723                     ; 1489 INTERRUPT_HANDLER(I2C_IRQHandler, 19)
-1723                     ; 1490 {
-1724                     	switch	.text
-1725  0034               f_I2C_IRQHandler:
-1729                     ; 1494 }
-1732  0034 80            	iret
-1755                     ; 1502  INTERRUPT_HANDLER(UART2_TX_IRQHandler, 20)
-1755                     ; 1503  {
-1756                     	switch	.text
-1757  0035               f_UART2_TX_IRQHandler:
-1761                     ; 1507  }
-1764  0035 80            	iret
-1787                     ; 1514  INTERRUPT_HANDLER(UART2_RX_IRQHandler, 21)
-1787                     ; 1515  {
-1788                     	switch	.text
-1789  0036               f_UART2_RX_IRQHandler:
-1793                     ; 1519  }
-1796  0036 80            	iret
-1824                     ; 1568  INTERRUPT_HANDLER(ADC1_IRQHandler, 22)
-1824                     ; 1569  {
-1825                     	switch	.text
-1826  0037               f_ADC1_IRQHandler:
-1828  0037 8a            	push	cc
-1829  0038 84            	pop	a
-1830  0039 a4bf          	and	a,#191
-1831  003b 88            	push	a
-1832  003c 86            	pop	cc
-1833  003d 3b0002        	push	c_x+2
-1834  0040 be00          	ldw	x,c_x
-1835  0042 89            	pushw	x
-1836  0043 3b0002        	push	c_y+2
-1837  0046 be00          	ldw	x,c_y
-1838  0048 89            	pushw	x
-1841                     ; 1574     SUM += ADC1_GetConversionValue();
-1843  0049 cd0000        	call	_ADC1_GetConversionValue
-1845  004c 72bb0004      	addw	x,_SUM
-1846  0050 bf04          	ldw	_SUM,x
-1847                     ; 1575 		if(++NTC_ADC_Count == NTC_ADC_COUNT_UPLIMIT){
-1849  0052 be06          	ldw	x,_NTC_ADC_Count
-1850  0054 1c0001        	addw	x,#1
-1851  0057 bf06          	ldw	_NTC_ADC_Count,x
-1852  0059 a30008        	cpw	x,#8
-1853  005c 2616          	jrne	L162
-1854                     ; 1576 			NTC_ADC_Count = 0;
-1856  005e 5f            	clrw	x
-1857  005f bf06          	ldw	_NTC_ADC_Count,x
-1858                     ; 1577 			NTC_Conversion_Value = (SUM/NTC_ADC_COUNT_UPLIMIT);
-1860  0061 be04          	ldw	x,_SUM
-1861  0063 54            	srlw	x
-1862  0064 54            	srlw	x
-1863  0065 54            	srlw	x
-1864  0066 bf00          	ldw	_NTC_Conversion_Value,x
-1865                     ; 1578 			SUM = 0;
-1867  0068 5f            	clrw	x
-1868  0069 bf04          	ldw	_SUM,x
-1869                     ; 1579 			ADC1_ITConfig(ADC1_IT_EOCIE, DISABLE);
-1871  006b 4b00          	push	#0
-1872  006d ae0020        	ldw	x,#32
-1873  0070 cd0000        	call	_ADC1_ITConfig
-1875  0073 84            	pop	a
-1876  0074               L162:
-1877                     ; 1581 		ADC1_ClearITPendingBit(ADC1_IT_EOC);
-1879  0074 ae0080        	ldw	x,#128
-1880  0077 cd0000        	call	_ADC1_ClearITPendingBit
-1882                     ; 1582  }
-1885  007a 85            	popw	x
-1886  007b bf00          	ldw	c_y,x
-1887  007d 320002        	pop	c_y+2
-1888  0080 85            	popw	x
-1889  0081 bf00          	ldw	c_x,x
-1890  0083 320002        	pop	c_x+2
-1891  0086 80            	iret
-1928                     ; 1603  INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
-1928                     ; 1604  {
-1929                     	switch	.text
-1930  0087               f_TIM4_UPD_OVF_IRQHandler:
-1932  0087 8a            	push	cc
-1933  0088 84            	pop	a
-1934  0089 a4bf          	and	a,#191
-1935  008b 88            	push	a
-1936  008c 86            	pop	cc
-1937  008d 3b0002        	push	c_x+2
-1938  0090 be00          	ldw	x,c_x
-1939  0092 89            	pushw	x
-1940  0093 3b0002        	push	c_y+2
-1941  0096 be00          	ldw	x,c_y
-1942  0098 89            	pushw	x
-1945                     ; 1608 	if(!GPIO_ReadInputPin(Error_Input_PORT,E_Error_PIN)){
-1947  0099 4b08          	push	#8
-1948  009b ae5005        	ldw	x,#20485
-1949  009e cd0000        	call	_GPIO_ReadInputPin
-1951  00a1 5b01          	addw	sp,#1
-1952  00a3 4d            	tnz	a
-1953  00a4 2622          	jrne	L372
-1954                     ; 1609 		if(++E_Error_Delay_Count == E_Error_DelayTime && E_Error_Exist_Flag == FALSE){
-1956  00a6 be08          	ldw	x,_E_Error_Delay_Count
-1957  00a8 1c0001        	addw	x,#1
-1958  00ab bf08          	ldw	_E_Error_Delay_Count,x
-1959  00ad a30bb8        	cpw	x,#3000
-1960  00b0 2619          	jrne	L772
-1962  00b2 3d14          	tnz	_E_Error_Exist_Flag
-1963  00b4 2615          	jrne	L772
-1964                     ; 1610 			E_Error_Delay_Count = 0;
-1966  00b6 5f            	clrw	x
-1967  00b7 bf08          	ldw	_E_Error_Delay_Count,x
-1968                     ; 1611 			E_Error_Exist_Flag = TRUE;
-1970  00b9 35010014      	mov	_E_Error_Exist_Flag,#1
-1971                     ; 1612 			GPIO_WriteLow(Electricalfail_LED_PORT,Electricalfail_LED_PIN);
-1973  00bd 4b10          	push	#16
-1974  00bf ae500f        	ldw	x,#20495
-1975  00c2 cd0000        	call	_GPIO_WriteLow
-1977  00c5 84            	pop	a
-1978  00c6 2003          	jra	L772
-1979  00c8               L372:
-1980                     ; 1616 		E_Error_Delay_Count = 0;
-1982  00c8 5f            	clrw	x
-1983  00c9 bf08          	ldw	_E_Error_Delay_Count,x
-1984  00cb               L772:
-1985                     ; 1618 	if(!GPIO_ReadInputPin(Error_Input_PORT,LP_Error_PIN)){
-1987  00cb 4b04          	push	#4
-1988  00cd ae5005        	ldw	x,#20485
-1989  00d0 cd0000        	call	_GPIO_ReadInputPin
-1991  00d3 5b01          	addw	sp,#1
-1992  00d5 4d            	tnz	a
-1993  00d6 2622          	jrne	L103
-1994                     ; 1619 		if(++LP_Error_Delay_Count == LP_Error_DelayTime && LP_Error_Exist_Flag == FALSE){
-1996  00d8 be0a          	ldw	x,_LP_Error_Delay_Count
-1997  00da 1c0001        	addw	x,#1
-1998  00dd bf0a          	ldw	_LP_Error_Delay_Count,x
-1999  00df a30bb8        	cpw	x,#3000
-2000  00e2 2619          	jrne	L503
-2002  00e4 3d15          	tnz	_LP_Error_Exist_Flag
-2003  00e6 2615          	jrne	L503
-2004                     ; 1620 			LP_Error_Delay_Count = 0;
-2006  00e8 5f            	clrw	x
-2007  00e9 bf0a          	ldw	_LP_Error_Delay_Count,x
-2008                     ; 1621 			LP_Error_Exist_Flag = TRUE;
-2010  00eb 35010015      	mov	_LP_Error_Exist_Flag,#1
-2011                     ; 1622 			GPIO_WriteLow(Lowpressure_LED_PORT,Lowpressure_LED_PIN);
-2013  00ef 4b20          	push	#32
-2014  00f1 ae500f        	ldw	x,#20495
-2015  00f4 cd0000        	call	_GPIO_WriteLow
-2017  00f7 84            	pop	a
-2018  00f8 2003          	jra	L503
-2019  00fa               L103:
-2020                     ; 1626 		LP_Error_Delay_Count = 0;
-2022  00fa 5f            	clrw	x
-2023  00fb bf0a          	ldw	_LP_Error_Delay_Count,x
-2024  00fd               L503:
-2025                     ; 1628 	if(!GPIO_ReadInputPin(Error_Input_PORT,HP_Error_PIN)){
-2027  00fd 4b02          	push	#2
-2028  00ff ae5005        	ldw	x,#20485
-2029  0102 cd0000        	call	_GPIO_ReadInputPin
-2031  0105 5b01          	addw	sp,#1
-2032  0107 4d            	tnz	a
-2033  0108 2622          	jrne	L703
-2034                     ; 1629 		if(++HP_Error_Delay_Count == HP_Error_DelayTime && HP_Error_Exist_Flag == FALSE){
-2036  010a be0c          	ldw	x,_HP_Error_Delay_Count
-2037  010c 1c0001        	addw	x,#1
-2038  010f bf0c          	ldw	_HP_Error_Delay_Count,x
-2039  0111 a30bb8        	cpw	x,#3000
-2040  0114 2619          	jrne	L313
-2042  0116 3d16          	tnz	_HP_Error_Exist_Flag
-2043  0118 2615          	jrne	L313
-2044                     ; 1630 			HP_Error_Delay_Count = 0;
-2046  011a 5f            	clrw	x
-2047  011b bf0c          	ldw	_HP_Error_Delay_Count,x
-2048                     ; 1631 			HP_Error_Exist_Flag = TRUE;
-2050  011d 35010016      	mov	_HP_Error_Exist_Flag,#1
-2051                     ; 1632 			GPIO_WriteLow(Highpressure_LED_PORT,Highpressure_LED_PIN);
-2053  0121 4b40          	push	#64
-2054  0123 ae500f        	ldw	x,#20495
-2055  0126 cd0000        	call	_GPIO_WriteLow
-2057  0129 84            	pop	a
-2058  012a 2003          	jra	L313
-2059  012c               L703:
-2060                     ; 1636 		HP_Error_Delay_Count = 0;
-2062  012c 5f            	clrw	x
-2063  012d bf0c          	ldw	_HP_Error_Delay_Count,x
-2064  012f               L313:
-2065                     ; 1639 	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Start_PIN)){
-2067  012f 4b20          	push	#32
-2068  0131 ae5005        	ldw	x,#20485
-2069  0134 cd0000        	call	_GPIO_ReadInputPin
-2071  0137 5b01          	addw	sp,#1
-2072  0139 4d            	tnz	a
-2073  013a 261a          	jrne	L513
-2074                     ; 1640 		if(++RemoteControl_Start_Delay_Count == RemoteControl_Start_DelayTime ){
-2076  013c be0e          	ldw	x,_RemoteControl_Start_Delay_Count
-2077  013e 1c0001        	addw	x,#1
-2078  0141 bf0e          	ldw	_RemoteControl_Start_Delay_Count,x
-2079  0143 a30bb8        	cpw	x,#3000
-2080  0146 2611          	jrne	L123
-2081                     ; 1641 			RemoteControl_Start_Delay_Count = 0;
-2083  0148 5f            	clrw	x
-2084  0149 bf0e          	ldw	_RemoteControl_Start_Delay_Count,x
-2085                     ; 1642 			GPIO_WriteHigh(RelayControl_PORT,RelayControl_PIN);
-2087  014b 4b10          	push	#16
-2088  014d ae5000        	ldw	x,#20480
-2089  0150 cd0000        	call	_GPIO_WriteHigh
-2091  0153 84            	pop	a
-2092  0154 2003          	jra	L123
-2093  0156               L513:
-2094                     ; 1646 		RemoteControl_Start_Delay_Count = 0;
-2096  0156 5f            	clrw	x
-2097  0157 bf0e          	ldw	_RemoteControl_Start_Delay_Count,x
-2098  0159               L123:
-2099                     ; 1648 	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Stop_PIN)){
-2101  0159 4b10          	push	#16
-2102  015b ae5005        	ldw	x,#20485
-2103  015e cd0000        	call	_GPIO_ReadInputPin
-2105  0161 5b01          	addw	sp,#1
-2106  0163 4d            	tnz	a
-2107  0164 261a          	jrne	L323
-2108                     ; 1649 		if(++RemoteControl_Stop_Delay_Count == RemoteControl_Stop_DelayTime){
-2110  0166 be10          	ldw	x,_RemoteControl_Stop_Delay_Count
-2111  0168 1c0001        	addw	x,#1
-2112  016b bf10          	ldw	_RemoteControl_Stop_Delay_Count,x
-2113  016d a30bb8        	cpw	x,#3000
-2114  0170 2611          	jrne	L723
-2115                     ; 1650 			RemoteControl_Stop_Delay_Count = 0;
-2117  0172 5f            	clrw	x
-2118  0173 bf10          	ldw	_RemoteControl_Stop_Delay_Count,x
-2119                     ; 1651 			GPIO_WriteLow(RelayControl_PORT,RelayControl_PIN);
-2121  0175 4b10          	push	#16
-2122  0177 ae5000        	ldw	x,#20480
-2123  017a cd0000        	call	_GPIO_WriteLow
-2125  017d 84            	pop	a
-2126  017e 2003          	jra	L723
-2127  0180               L323:
-2128                     ; 1655 		RemoteControl_Stop_Delay_Count = 0;
-2130  0180 5f            	clrw	x
-2131  0181 bf10          	ldw	_RemoteControl_Stop_Delay_Count,x
-2132  0183               L723:
-2133                     ; 1658 	if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
-2135  0183 4b40          	push	#64
-2136  0185 ae5000        	ldw	x,#20480
-2137  0188 cd0000        	call	_GPIO_ReadInputPin
-2139  018b 5b01          	addw	sp,#1
-2140  018d 4d            	tnz	a
-2141  018e 2656          	jrne	L133
-2142                     ; 1659 		if(++StartStop_KEY_Count == StartStop_KEY_DelayTime){
-2144  0190 be12          	ldw	x,_StartStop_KEY_Count
-2145  0192 1c0001        	addw	x,#1
-2146  0195 bf12          	ldw	_StartStop_KEY_Count,x
-2147  0197 a30bb8        	cpw	x,#3000
-2148  019a 264d          	jrne	L343
-2149                     ; 1660 			StartStop_KEY_Count = 0;
-2151  019c 5f            	clrw	x
-2152  019d bf12          	ldw	_StartStop_KEY_Count,x
-2153                     ; 1662 			if(HP_Error_Exist_Flag == TRUE || LP_Error_Exist_Flag == TRUE || E_Error_Exist_Flag == TRUE){
-2155  019f b616          	ld	a,_HP_Error_Exist_Flag
-2156  01a1 a101          	cp	a,#1
-2157  01a3 270c          	jreq	L733
-2159  01a5 b615          	ld	a,_LP_Error_Exist_Flag
-2160  01a7 a101          	cp	a,#1
-2161  01a9 2706          	jreq	L733
-2163  01ab b614          	ld	a,_E_Error_Exist_Flag
-2164  01ad a101          	cp	a,#1
-2165  01af 2621          	jrne	L533
-2166  01b1               L733:
-2167                     ; 1663 				HP_Error_Exist_Flag = 0;
-2169  01b1 3f16          	clr	_HP_Error_Exist_Flag
-2170                     ; 1664 				LP_Error_Exist_Flag = 0;
-2172  01b3 3f15          	clr	_LP_Error_Exist_Flag
-2173                     ; 1665 				E_Error_Exist_Flag = 0;
-2175  01b5 3f14          	clr	_E_Error_Exist_Flag
-2176                     ; 1666 				GPIO_WriteHigh(Highpressure_LED_PORT,Highpressure_LED_PIN);
-2178  01b7 4b40          	push	#64
-2179  01b9 ae500f        	ldw	x,#20495
-2180  01bc cd0000        	call	_GPIO_WriteHigh
-2182  01bf 84            	pop	a
-2183                     ; 1667 				GPIO_WriteHigh(Electricalfail_LED_PORT,Electricalfail_LED_PIN);
-2185  01c0 4b10          	push	#16
-2186  01c2 ae500f        	ldw	x,#20495
-2187  01c5 cd0000        	call	_GPIO_WriteHigh
-2189  01c8 84            	pop	a
-2190                     ; 1668 				GPIO_WriteHigh(Lowpressure_LED_PORT,Lowpressure_LED_PIN);
-2192  01c9 4b20          	push	#32
-2193  01cb ae500f        	ldw	x,#20495
-2194  01ce cd0000        	call	_GPIO_WriteHigh
-2196  01d1 84            	pop	a
-2197  01d2               L533:
-2198                     ; 1670 			GPIO_WriteReverse(RelayControl_PORT,RelayControl_PIN);
-2200  01d2 4b10          	push	#16
-2201  01d4 ae5000        	ldw	x,#20480
-2202  01d7 cd0000        	call	_GPIO_WriteReverse
-2204  01da 84            	pop	a
-2205                     ; 1671 			GPIO_WriteReverse(Run_LED_PORT,Run_LED_PIN);
-2207  01db 4b08          	push	#8
-2208  01dd ae500f        	ldw	x,#20495
-2209  01e0 cd0000        	call	_GPIO_WriteReverse
-2211  01e3 84            	pop	a
-2212  01e4 2003          	jra	L343
-2213  01e6               L133:
-2214                     ; 1675 			StartStop_KEY_Count = 0;
-2216  01e6 5f            	clrw	x
-2217  01e7 bf12          	ldw	_StartStop_KEY_Count,x
-2218  01e9               L343:
-2219                     ; 1678   TIM4_ClearITPendingBit(TIM4_IT_UPDATE);
-2221  01e9 a601          	ld	a,#1
-2222  01eb cd0000        	call	_TIM4_ClearITPendingBit
-2224                     ; 1679  }
-2227  01ee 85            	popw	x
-2228  01ef bf00          	ldw	c_y,x
-2229  01f1 320002        	pop	c_y+2
-2230  01f4 85            	popw	x
-2231  01f5 bf00          	ldw	c_x,x
-2232  01f7 320002        	pop	c_x+2
-2233  01fa 80            	iret
-2256                     ; 1687 INTERRUPT_HANDLER(EEPROM_EEC_IRQHandler, 24)
-2256                     ; 1688 {
-2257                     	switch	.text
-2258  01fb               f_EEPROM_EEC_IRQHandler:
-2262                     ; 1692 }
-2265  01fb 80            	iret
-2438                     	xdef	_HP_Error_Exist_Flag
-2439                     	xdef	_LP_Error_Exist_Flag
-2440                     	xdef	_E_Error_Exist_Flag
-2441                     	xdef	_StartStop_KEY_Count
-2442                     	xdef	_RemoteControl_Stop_Delay_Count
-2443                     	xdef	_RemoteControl_Start_Delay_Count
-2444                     	xdef	_HP_Error_Delay_Count
-2445                     	xdef	_LP_Error_Delay_Count
-2446                     	xdef	_E_Error_Delay_Count
-2447                     	xdef	_NTC_ADC_Count
-2448                     	xdef	_SUM
-2449                     	xdef	f_EEPROM_EEC_IRQHandler
-2450                     	xdef	f_TIM4_UPD_OVF_IRQHandler
-2451                     	xdef	f_ADC1_IRQHandler
-2452                     	xdef	f_UART2_TX_IRQHandler
-2453                     	xdef	f_UART2_RX_IRQHandler
-2454                     	xdef	f_I2C_IRQHandler
-2455                     	xdef	f_TIM3_CAP_COM_IRQHandler
-2456                     	xdef	f_TIM3_UPD_OVF_BRK_IRQHandler
-2457                     	xdef	f_TIM2_CAP_COM_IRQHandler
-2458                     	xdef	f_TIM2_UPD_OVF_BRK_IRQHandler
-2459                     	xdef	f_TIM1_UPD_OVF_TRG_BRK_IRQHandler
-2460                     	xdef	f_TIM1_CAP_COM_IRQHandler
-2461                     	xdef	f_SPI_IRQHandler
-2462                     	xdef	f_EXTI_PORTE_IRQHandler
-2463                     	xdef	f_EXTI_PORTD_IRQHandler
-2464                     	xdef	f_EXTI_PORTC_IRQHandler
-2465                     	xdef	f_EXTI_PORTB_IRQHandler
-2466                     	xdef	f_EXTI_PORTA_IRQHandler
-2467                     	xdef	f_CLK_IRQHandler
-2468                     	xdef	f_AWU_IRQHandler
-2469                     	xdef	f_TLI_IRQHandler
-2470                     	xdef	f_TRAP_IRQHandler
-2471                     	xdef	f_NonHandledInterrupt
-2472                     	xdef	_NTC_TEM_Value
-2473                     	xdef	_NTC_Conversion_Value
-2474                     	xdef	_TEMP_TABLE
-2475                     	xref	_TIM4_ClearITPendingBit
-2476                     	xref	_TIM3_ClearITPendingBit
-2477                     	xref	_GPIO_ReadInputPin
-2478                     	xref	_GPIO_WriteReverse
-2479                     	xref	_GPIO_WriteLow
-2480                     	xref	_GPIO_WriteHigh
-2481                     	xref	_ADC1_ClearITPendingBit
-2482                     	xref	_ADC1_GetConversionValue
-2483                     	xref	_ADC1_ITConfig
-2484                     	xref.b	c_x
-2485                     	xref.b	c_y
-2504                     	end
+1107  0000               _Parameter_Set_Flag:
+1108  0000 00            	dc.b	0
+1109  0001               _NTC_Conversion_Value:
+1110  0001 0000          	dc.w	0
+1111  0003               _NTC_TEM_Value:
+1112  0003 0000          	dc.w	0
+1113  0005               _SUM:
+1114  0005 0000          	dc.w	0
+1115  0007               _NTC_ADC_Count:
+1116  0007 0000          	dc.w	0
+1117  0009               _E_Error_Delay_Count:
+1118  0009 0000          	dc.w	0
+1119  000b               _LP_Error_Delay_Count:
+1120  000b 0000          	dc.w	0
+1121  000d               _HP_Error_Delay_Count:
+1122  000d 0000          	dc.w	0
+1123  000f               _Tem_Alarm_Delay_Count:
+1124  000f 0000          	dc.w	0
+1125  0011               _RemoteControl_Start_Delay_Count:
+1126  0011 0000          	dc.w	0
+1127  0013               _RemoteControl_Stop_Delay_Count:
+1128  0013 0000          	dc.w	0
+1129  0015               _StartStop_KEY_Delay_Count:
+1130  0015 0000          	dc.w	0
+1131  0017               _Set_KEY_Delay_Count:
+1132  0017 0000          	dc.w	0
+1133  0019               _E_Error_Exist_Flag:
+1134  0019 00            	dc.b	0
+1135  001a               _LP_Error_Exist_Flag:
+1136  001a 00            	dc.b	0
+1137  001b               _HP_Error_Exist_Flag:
+1138  001b 00            	dc.b	0
+1139  001c               _TEM_Error_Exist_Flag:
+1140  001c 00            	dc.b	0
+1170                     ; 1161 INTERRUPT_HANDLER(NonHandledInterrupt, 25)
+1170                     ; 1162 {
+1171                     	switch	.text
+1172  0000               f_NonHandledInterrupt:
+1176                     ; 1166 }
+1179  0000 80            	iret
+1201                     ; 1174 INTERRUPT_HANDLER_TRAP(TRAP_IRQHandler)
+1201                     ; 1175 {
+1202                     	switch	.text
+1203  0001               f_TRAP_IRQHandler:
+1207                     ; 1179 }
+1210  0001 80            	iret
+1232                     ; 1186 INTERRUPT_HANDLER(TLI_IRQHandler, 0)
+1232                     ; 1187 
+1232                     ; 1188 {
+1233                     	switch	.text
+1234  0002               f_TLI_IRQHandler:
+1238                     ; 1192 }
+1241  0002 80            	iret
+1263                     ; 1199 INTERRUPT_HANDLER(AWU_IRQHandler, 1)
+1263                     ; 1200 {
+1264                     	switch	.text
+1265  0003               f_AWU_IRQHandler:
+1269                     ; 1204 }
+1272  0003 80            	iret
+1294                     ; 1211 INTERRUPT_HANDLER(CLK_IRQHandler, 2)
+1294                     ; 1212 {
+1295                     	switch	.text
+1296  0004               f_CLK_IRQHandler:
+1300                     ; 1216 }
+1303  0004 80            	iret
+1327                     ; 1223 INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
+1327                     ; 1224 {
+1328                     	switch	.text
+1329  0005               f_EXTI_PORTA_IRQHandler:
+1331  0005 8a            	push	cc
+1332  0006 84            	pop	a
+1333  0007 a4bf          	and	a,#191
+1334  0009 88            	push	a
+1335  000a 86            	pop	cc
+1336  000b 3b0002        	push	c_x+2
+1337  000e be00          	ldw	x,c_x
+1338  0010 89            	pushw	x
+1339  0011 3b0002        	push	c_y+2
+1340  0014 be00          	ldw	x,c_y
+1341  0016 89            	pushw	x
+1344                     ; 1228 	if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
+1346  0017 4b20          	push	#32
+1347  0019 ae5000        	ldw	x,#20480
+1348  001c cd0000        	call	_GPIO_ReadInputPin
+1350  001f 5b01          	addw	sp,#1
+1351  0021 4d            	tnz	a
+1352                     ; 1231 	if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
+1354  0022 4b40          	push	#64
+1355  0024 ae5000        	ldw	x,#20480
+1356  0027 cd0000        	call	_GPIO_ReadInputPin
+1358  002a 5b01          	addw	sp,#1
+1359  002c 4d            	tnz	a
+1360                     ; 1234 }
+1363  002d 85            	popw	x
+1364  002e bf00          	ldw	c_y,x
+1365  0030 320002        	pop	c_y+2
+1366  0033 85            	popw	x
+1367  0034 bf00          	ldw	c_x,x
+1368  0036 320002        	pop	c_x+2
+1369  0039 80            	iret
+1392                     ; 1241 INTERRUPT_HANDLER(EXTI_PORTB_IRQHandler, 4)
+1392                     ; 1242 {
+1393                     	switch	.text
+1394  003a               f_EXTI_PORTB_IRQHandler:
+1398                     ; 1246 }
+1401  003a 80            	iret
+1424                     ; 1253 INTERRUPT_HANDLER(EXTI_PORTC_IRQHandler, 5)
+1424                     ; 1254 {
+1425                     	switch	.text
+1426  003b               f_EXTI_PORTC_IRQHandler:
+1430                     ; 1258 }
+1433  003b 80            	iret
+1456                     ; 1265 INTERRUPT_HANDLER(EXTI_PORTD_IRQHandler, 6)
+1456                     ; 1266 {
+1457                     	switch	.text
+1458  003c               f_EXTI_PORTD_IRQHandler:
+1462                     ; 1270 }
+1465  003c 80            	iret
+1488                     ; 1277 INTERRUPT_HANDLER(EXTI_PORTE_IRQHandler, 7)
+1488                     ; 1278 {
+1489                     	switch	.text
+1490  003d               f_EXTI_PORTE_IRQHandler:
+1494                     ; 1282 }
+1497  003d 80            	iret
+1519                     ; 1329 INTERRUPT_HANDLER(SPI_IRQHandler, 10)
+1519                     ; 1330 {
+1520                     	switch	.text
+1521  003e               f_SPI_IRQHandler:
+1525                     ; 1334 }
+1528  003e 80            	iret
+1551                     ; 1341 INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
+1551                     ; 1342 {
+1552                     	switch	.text
+1553  003f               f_TIM1_UPD_OVF_TRG_BRK_IRQHandler:
+1557                     ; 1346 }
+1560  003f 80            	iret
+1583                     ; 1353 INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
+1583                     ; 1354 {
+1584                     	switch	.text
+1585  0040               f_TIM1_CAP_COM_IRQHandler:
+1589                     ; 1358 }
+1592  0040 80            	iret
+1615                     ; 1391  INTERRUPT_HANDLER(TIM2_UPD_OVF_BRK_IRQHandler, 13)
+1615                     ; 1392  {
+1616                     	switch	.text
+1617  0041               f_TIM2_UPD_OVF_BRK_IRQHandler:
+1621                     ; 1396  }
+1624  0041 80            	iret
+1647                     ; 1403  INTERRUPT_HANDLER(TIM2_CAP_COM_IRQHandler, 14)
+1647                     ; 1404  {
+1648                     	switch	.text
+1649  0042               f_TIM2_CAP_COM_IRQHandler:
+1653                     ; 1408  }
+1656  0042 80            	iret
+1680                     ; 1418  INTERRUPT_HANDLER(TIM3_UPD_OVF_BRK_IRQHandler, 15)
+1680                     ; 1419  {
+1681                     	switch	.text
+1682  0043               f_TIM3_UPD_OVF_BRK_IRQHandler:
+1684  0043 8a            	push	cc
+1685  0044 84            	pop	a
+1686  0045 a4bf          	and	a,#191
+1687  0047 88            	push	a
+1688  0048 86            	pop	cc
+1689  0049 3b0002        	push	c_x+2
+1690  004c be00          	ldw	x,c_x
+1691  004e 89            	pushw	x
+1692  004f 3b0002        	push	c_y+2
+1693  0052 be00          	ldw	x,c_y
+1694  0054 89            	pushw	x
+1697                     ; 1424   TIM3_ClearITPendingBit(TIM3_IT_UPDATE);
+1699  0055 a601          	ld	a,#1
+1700  0057 cd0000        	call	_TIM3_ClearITPendingBit
+1702                     ; 1425  }
+1705  005a 85            	popw	x
+1706  005b bf00          	ldw	c_y,x
+1707  005d 320002        	pop	c_y+2
+1708  0060 85            	popw	x
+1709  0061 bf00          	ldw	c_x,x
+1710  0063 320002        	pop	c_x+2
+1711  0066 80            	iret
+1734                     ; 1432  INTERRUPT_HANDLER(TIM3_CAP_COM_IRQHandler, 16)
+1734                     ; 1433  {
+1735                     	switch	.text
+1736  0067               f_TIM3_CAP_COM_IRQHandler:
+1740                     ; 1437  }
+1743  0067 80            	iret
+1765                     ; 1498 INTERRUPT_HANDLER(I2C_IRQHandler, 19)
+1765                     ; 1499 {
+1766                     	switch	.text
+1767  0068               f_I2C_IRQHandler:
+1771                     ; 1503 }
+1774  0068 80            	iret
+1797                     ; 1511  INTERRUPT_HANDLER(UART2_TX_IRQHandler, 20)
+1797                     ; 1512  {
+1798                     	switch	.text
+1799  0069               f_UART2_TX_IRQHandler:
+1803                     ; 1516  }
+1806  0069 80            	iret
+1829                     ; 1523  INTERRUPT_HANDLER(UART2_RX_IRQHandler, 21)
+1829                     ; 1524  {
+1830                     	switch	.text
+1831  006a               f_UART2_RX_IRQHandler:
+1835                     ; 1528  }
+1838  006a 80            	iret
+1866                     ; 1577  INTERRUPT_HANDLER(ADC1_IRQHandler, 22)
+1866                     ; 1578  {
+1867                     	switch	.text
+1868  006b               f_ADC1_IRQHandler:
+1870  006b 8a            	push	cc
+1871  006c 84            	pop	a
+1872  006d a4bf          	and	a,#191
+1873  006f 88            	push	a
+1874  0070 86            	pop	cc
+1875  0071 3b0002        	push	c_x+2
+1876  0074 be00          	ldw	x,c_x
+1877  0076 89            	pushw	x
+1878  0077 3b0002        	push	c_y+2
+1879  007a be00          	ldw	x,c_y
+1880  007c 89            	pushw	x
+1883                     ; 1583     SUM += ADC1_GetConversionValue();
+1885  007d cd0000        	call	_ADC1_GetConversionValue
+1887  0080 72bb0005      	addw	x,_SUM
+1888  0084 bf05          	ldw	_SUM,x
+1889                     ; 1584 		if(++NTC_ADC_Count == NTC_ADC_COUNT_UPLIMIT){
+1891  0086 be07          	ldw	x,_NTC_ADC_Count
+1892  0088 1c0001        	addw	x,#1
+1893  008b bf07          	ldw	_NTC_ADC_Count,x
+1894  008d a30008        	cpw	x,#8
+1895  0090 2616          	jrne	L562
+1896                     ; 1585 			NTC_ADC_Count = 0;
+1898  0092 5f            	clrw	x
+1899  0093 bf07          	ldw	_NTC_ADC_Count,x
+1900                     ; 1586 			NTC_Conversion_Value = (SUM/NTC_ADC_COUNT_UPLIMIT);
+1902  0095 be05          	ldw	x,_SUM
+1903  0097 54            	srlw	x
+1904  0098 54            	srlw	x
+1905  0099 54            	srlw	x
+1906  009a bf01          	ldw	_NTC_Conversion_Value,x
+1907                     ; 1587 			SUM = 0;
+1909  009c 5f            	clrw	x
+1910  009d bf05          	ldw	_SUM,x
+1911                     ; 1588 			ADC1_ITConfig(ADC1_IT_EOCIE, DISABLE);
+1913  009f 4b00          	push	#0
+1914  00a1 ae0020        	ldw	x,#32
+1915  00a4 cd0000        	call	_ADC1_ITConfig
+1917  00a7 84            	pop	a
+1918  00a8               L562:
+1919                     ; 1590 		ADC1_ClearITPendingBit(ADC1_IT_EOC);
+1921  00a8 ae0080        	ldw	x,#128
+1922  00ab cd0000        	call	_ADC1_ClearITPendingBit
+1924                     ; 1591  }
+1927  00ae 85            	popw	x
+1928  00af bf00          	ldw	c_y,x
+1929  00b1 320002        	pop	c_y+2
+1930  00b4 85            	popw	x
+1931  00b5 bf00          	ldw	c_x,x
+1932  00b7 320002        	pop	c_x+2
+1933  00ba 80            	iret
+1975                     ; 1612  INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
+1975                     ; 1613  {
+1976                     	switch	.text
+1977  00bb               f_TIM4_UPD_OVF_IRQHandler:
+1979  00bb 8a            	push	cc
+1980  00bc 84            	pop	a
+1981  00bd a4bf          	and	a,#191
+1982  00bf 88            	push	a
+1983  00c0 86            	pop	cc
+1984  00c1 3b0002        	push	c_x+2
+1985  00c4 be00          	ldw	x,c_x
+1986  00c6 89            	pushw	x
+1987  00c7 3b0002        	push	c_y+2
+1988  00ca be00          	ldw	x,c_y
+1989  00cc 89            	pushw	x
+1992                     ; 1617 	if(!GPIO_ReadInputPin(Error_Input_PORT,E_Error_PIN)){
+1994  00cd 4b08          	push	#8
+1995  00cf ae5005        	ldw	x,#20485
+1996  00d2 cd0000        	call	_GPIO_ReadInputPin
+1998  00d5 5b01          	addw	sp,#1
+1999  00d7 4d            	tnz	a
+2000  00d8 2622          	jrne	L772
+2001                     ; 1618 		if(++E_Error_Delay_Count == E_Error_DelayTime && E_Error_Exist_Flag == FALSE){
+2003  00da be09          	ldw	x,_E_Error_Delay_Count
+2004  00dc 1c0001        	addw	x,#1
+2005  00df bf09          	ldw	_E_Error_Delay_Count,x
+2006  00e1 a30bb8        	cpw	x,#3000
+2007  00e4 2619          	jrne	L303
+2009  00e6 3d19          	tnz	_E_Error_Exist_Flag
+2010  00e8 2615          	jrne	L303
+2011                     ; 1619 			E_Error_Delay_Count = 0;
+2013  00ea 5f            	clrw	x
+2014  00eb bf09          	ldw	_E_Error_Delay_Count,x
+2015                     ; 1620 			E_Error_Exist_Flag = TRUE;
+2017  00ed 35010019      	mov	_E_Error_Exist_Flag,#1
+2018                     ; 1621 			GPIO_WriteLow(Electricalfail_LED_PORT,Electricalfail_LED_PIN);
+2020  00f1 4b10          	push	#16
+2021  00f3 ae500f        	ldw	x,#20495
+2022  00f6 cd0000        	call	_GPIO_WriteLow
+2024  00f9 84            	pop	a
+2025  00fa 2003          	jra	L303
+2026  00fc               L772:
+2027                     ; 1625 		E_Error_Delay_Count = 0;
+2029  00fc 5f            	clrw	x
+2030  00fd bf09          	ldw	_E_Error_Delay_Count,x
+2031  00ff               L303:
+2032                     ; 1627 	if(!GPIO_ReadInputPin(Error_Input_PORT,LP_Error_PIN)){
+2034  00ff 4b04          	push	#4
+2035  0101 ae5005        	ldw	x,#20485
+2036  0104 cd0000        	call	_GPIO_ReadInputPin
+2038  0107 5b01          	addw	sp,#1
+2039  0109 4d            	tnz	a
+2040  010a 2622          	jrne	L503
+2041                     ; 1628 		if(++LP_Error_Delay_Count == LP_Error_DelayTime && LP_Error_Exist_Flag == FALSE){
+2043  010c be0b          	ldw	x,_LP_Error_Delay_Count
+2044  010e 1c0001        	addw	x,#1
+2045  0111 bf0b          	ldw	_LP_Error_Delay_Count,x
+2046  0113 a30bb8        	cpw	x,#3000
+2047  0116 2619          	jrne	L113
+2049  0118 3d1a          	tnz	_LP_Error_Exist_Flag
+2050  011a 2615          	jrne	L113
+2051                     ; 1629 			LP_Error_Delay_Count = 0;
+2053  011c 5f            	clrw	x
+2054  011d bf0b          	ldw	_LP_Error_Delay_Count,x
+2055                     ; 1630 			LP_Error_Exist_Flag = TRUE;
+2057  011f 3501001a      	mov	_LP_Error_Exist_Flag,#1
+2058                     ; 1631 			GPIO_WriteLow(Lowpressure_LED_PORT,Lowpressure_LED_PIN);
+2060  0123 4b20          	push	#32
+2061  0125 ae500f        	ldw	x,#20495
+2062  0128 cd0000        	call	_GPIO_WriteLow
+2064  012b 84            	pop	a
+2065  012c 2003          	jra	L113
+2066  012e               L503:
+2067                     ; 1635 		LP_Error_Delay_Count = 0;
+2069  012e 5f            	clrw	x
+2070  012f bf0b          	ldw	_LP_Error_Delay_Count,x
+2071  0131               L113:
+2072                     ; 1637 	if(!GPIO_ReadInputPin(Error_Input_PORT,HP_Error_PIN)){
+2074  0131 4b02          	push	#2
+2075  0133 ae5005        	ldw	x,#20485
+2076  0136 cd0000        	call	_GPIO_ReadInputPin
+2078  0139 5b01          	addw	sp,#1
+2079  013b 4d            	tnz	a
+2080  013c 2622          	jrne	L313
+2081                     ; 1638 		if(++HP_Error_Delay_Count == HP_Error_DelayTime && HP_Error_Exist_Flag == FALSE){
+2083  013e be0d          	ldw	x,_HP_Error_Delay_Count
+2084  0140 1c0001        	addw	x,#1
+2085  0143 bf0d          	ldw	_HP_Error_Delay_Count,x
+2086  0145 a30bb8        	cpw	x,#3000
+2087  0148 2619          	jrne	L713
+2089  014a 3d1b          	tnz	_HP_Error_Exist_Flag
+2090  014c 2615          	jrne	L713
+2091                     ; 1639 			HP_Error_Delay_Count = 0;
+2093  014e 5f            	clrw	x
+2094  014f bf0d          	ldw	_HP_Error_Delay_Count,x
+2095                     ; 1640 			HP_Error_Exist_Flag = TRUE;
+2097  0151 3501001b      	mov	_HP_Error_Exist_Flag,#1
+2098                     ; 1641 			GPIO_WriteLow(Highpressure_LED_PORT,Highpressure_LED_PIN);
+2100  0155 4b40          	push	#64
+2101  0157 ae500f        	ldw	x,#20495
+2102  015a cd0000        	call	_GPIO_WriteLow
+2104  015d 84            	pop	a
+2105  015e 2003          	jra	L713
+2106  0160               L313:
+2107                     ; 1645 		HP_Error_Delay_Count = 0;
+2109  0160 5f            	clrw	x
+2110  0161 bf0d          	ldw	_HP_Error_Delay_Count,x
+2111  0163               L713:
+2112                     ; 1647 	if( NTC_TEM_Value > 28 && TEM_Error_Exist_Flag == FALSE ){
+2114  0163 be03          	ldw	x,_NTC_TEM_Value
+2115  0165 a3001d        	cpw	x,#29
+2116  0168 2522          	jrult	L123
+2118  016a 3d1c          	tnz	_TEM_Error_Exist_Flag
+2119  016c 261e          	jrne	L123
+2120                     ; 1648 		if(++Tem_Alarm_Delay_Count == Tem_Alarm_DelayTime ){
+2122  016e be0f          	ldw	x,_Tem_Alarm_Delay_Count
+2123  0170 1c0001        	addw	x,#1
+2124  0173 bf0f          	ldw	_Tem_Alarm_Delay_Count,x
+2125  0175 a30bb8        	cpw	x,#3000
+2126  0178 2615          	jrne	L523
+2127                     ; 1649 			Tem_Alarm_Delay_Count = 0;
+2129  017a 5f            	clrw	x
+2130  017b bf0f          	ldw	_Tem_Alarm_Delay_Count,x
+2131                     ; 1650 			TEM_Error_Exist_Flag = TRUE;
+2133  017d 3501001c      	mov	_TEM_Error_Exist_Flag,#1
+2134                     ; 1651 			GPIO_WriteLow(Tem_LED_PORT,Tem_LED_PIN);
+2136  0181 4b08          	push	#8
+2137  0183 ae500f        	ldw	x,#20495
+2138  0186 cd0000        	call	_GPIO_WriteLow
+2140  0189 84            	pop	a
+2141  018a 2003          	jra	L523
+2142  018c               L123:
+2143                     ; 1655 		Tem_Alarm_Delay_Count = 0;
+2145  018c 5f            	clrw	x
+2146  018d bf0f          	ldw	_Tem_Alarm_Delay_Count,x
+2147  018f               L523:
+2148                     ; 1657 	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Start_PIN)){
+2150  018f 4b20          	push	#32
+2151  0191 ae5005        	ldw	x,#20485
+2152  0194 cd0000        	call	_GPIO_ReadInputPin
+2154  0197 5b01          	addw	sp,#1
+2155  0199 4d            	tnz	a
+2156  019a 261a          	jrne	L723
+2157                     ; 1658 		if(++RemoteControl_Start_Delay_Count == RemoteControl_Start_DelayTime ){
+2159  019c be11          	ldw	x,_RemoteControl_Start_Delay_Count
+2160  019e 1c0001        	addw	x,#1
+2161  01a1 bf11          	ldw	_RemoteControl_Start_Delay_Count,x
+2162  01a3 a30bb8        	cpw	x,#3000
+2163  01a6 2611          	jrne	L333
+2164                     ; 1659 			RemoteControl_Start_Delay_Count = 0;
+2166  01a8 5f            	clrw	x
+2167  01a9 bf11          	ldw	_RemoteControl_Start_Delay_Count,x
+2168                     ; 1660 			GPIO_WriteHigh(RelayControl_PORT,RelayControl_PIN);
+2170  01ab 4b10          	push	#16
+2171  01ad ae5000        	ldw	x,#20480
+2172  01b0 cd0000        	call	_GPIO_WriteHigh
+2174  01b3 84            	pop	a
+2175  01b4 2003          	jra	L333
+2176  01b6               L723:
+2177                     ; 1664 		RemoteControl_Start_Delay_Count = 0;
+2179  01b6 5f            	clrw	x
+2180  01b7 bf11          	ldw	_RemoteControl_Start_Delay_Count,x
+2181  01b9               L333:
+2182                     ; 1666 	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Stop_PIN)){
+2184  01b9 4b10          	push	#16
+2185  01bb ae5005        	ldw	x,#20485
+2186  01be cd0000        	call	_GPIO_ReadInputPin
+2188  01c1 5b01          	addw	sp,#1
+2189  01c3 4d            	tnz	a
+2190  01c4 261a          	jrne	L533
+2191                     ; 1667 		if(++RemoteControl_Stop_Delay_Count == RemoteControl_Stop_DelayTime){
+2193  01c6 be13          	ldw	x,_RemoteControl_Stop_Delay_Count
+2194  01c8 1c0001        	addw	x,#1
+2195  01cb bf13          	ldw	_RemoteControl_Stop_Delay_Count,x
+2196  01cd a30bb8        	cpw	x,#3000
+2197  01d0 2611          	jrne	L143
+2198                     ; 1668 			RemoteControl_Stop_Delay_Count = 0;
+2200  01d2 5f            	clrw	x
+2201  01d3 bf13          	ldw	_RemoteControl_Stop_Delay_Count,x
+2202                     ; 1669 			GPIO_WriteLow(RelayControl_PORT,RelayControl_PIN);
+2204  01d5 4b10          	push	#16
+2205  01d7 ae5000        	ldw	x,#20480
+2206  01da cd0000        	call	_GPIO_WriteLow
+2208  01dd 84            	pop	a
+2209  01de 2003          	jra	L143
+2210  01e0               L533:
+2211                     ; 1673 		RemoteControl_Stop_Delay_Count = 0;
+2213  01e0 5f            	clrw	x
+2214  01e1 bf13          	ldw	_RemoteControl_Stop_Delay_Count,x
+2215  01e3               L143:
+2216                     ; 1676 	if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
+2218  01e3 4b40          	push	#64
+2219  01e5 ae5000        	ldw	x,#20480
+2220  01e8 cd0000        	call	_GPIO_ReadInputPin
+2222  01eb 5b01          	addw	sp,#1
+2223  01ed 4d            	tnz	a
+2224  01ee 265f          	jrne	L343
+2225                     ; 1677 		if(++StartStop_KEY_Delay_Count == StartStop_KEY_DelayTime){
+2227  01f0 be15          	ldw	x,_StartStop_KEY_Delay_Count
+2228  01f2 1c0001        	addw	x,#1
+2229  01f5 bf15          	ldw	_StartStop_KEY_Delay_Count,x
+2230  01f7 a30bb8        	cpw	x,#3000
+2231  01fa 2656          	jrne	L753
+2232                     ; 1678 			StartStop_KEY_Delay_Count = 0;
+2234  01fc 5f            	clrw	x
+2235  01fd bf15          	ldw	_StartStop_KEY_Delay_Count,x
+2236                     ; 1680 			if(HP_Error_Exist_Flag || LP_Error_Exist_Flag || E_Error_Exist_Flag || TEM_Error_Exist_Flag){
+2238  01ff 3d1b          	tnz	_HP_Error_Exist_Flag
+2239  0201 260c          	jrne	L153
+2241  0203 3d1a          	tnz	_LP_Error_Exist_Flag
+2242  0205 2608          	jrne	L153
+2244  0207 3d19          	tnz	_E_Error_Exist_Flag
+2245  0209 2604          	jrne	L153
+2247  020b 3d1c          	tnz	_TEM_Error_Exist_Flag
+2248  020d 272c          	jreq	L743
+2249  020f               L153:
+2250                     ; 1681 				HP_Error_Exist_Flag = 0;
+2252  020f 3f1b          	clr	_HP_Error_Exist_Flag
+2253                     ; 1682 				LP_Error_Exist_Flag = 0;
+2255  0211 3f1a          	clr	_LP_Error_Exist_Flag
+2256                     ; 1683 				E_Error_Exist_Flag = 0;
+2258  0213 3f19          	clr	_E_Error_Exist_Flag
+2259                     ; 1684 				TEM_Error_Exist_Flag = 0;
+2261  0215 3f1c          	clr	_TEM_Error_Exist_Flag
+2262                     ; 1685 				GPIO_WriteHigh(Highpressure_LED_PORT,Highpressure_LED_PIN);
+2264  0217 4b40          	push	#64
+2265  0219 ae500f        	ldw	x,#20495
+2266  021c cd0000        	call	_GPIO_WriteHigh
+2268  021f 84            	pop	a
+2269                     ; 1686 				GPIO_WriteHigh(Electricalfail_LED_PORT,Electricalfail_LED_PIN);
+2271  0220 4b10          	push	#16
+2272  0222 ae500f        	ldw	x,#20495
+2273  0225 cd0000        	call	_GPIO_WriteHigh
+2275  0228 84            	pop	a
+2276                     ; 1687 				GPIO_WriteHigh(Lowpressure_LED_PORT,Lowpressure_LED_PIN);
+2278  0229 4b20          	push	#32
+2279  022b ae500f        	ldw	x,#20495
+2280  022e cd0000        	call	_GPIO_WriteHigh
+2282  0231 84            	pop	a
+2283                     ; 1688 				GPIO_WriteHigh(Tem_LED_PORT,Tem_LED_PIN);
+2285  0232 4b08          	push	#8
+2286  0234 ae500f        	ldw	x,#20495
+2287  0237 cd0000        	call	_GPIO_WriteHigh
+2289  023a 84            	pop	a
+2290  023b               L743:
+2291                     ; 1690 			GPIO_WriteReverse(RelayControl_PORT,RelayControl_PIN);
+2293  023b 4b10          	push	#16
+2294  023d ae5000        	ldw	x,#20480
+2295  0240 cd0000        	call	_GPIO_WriteReverse
+2297  0243 84            	pop	a
+2298                     ; 1691 			GPIO_WriteReverse(Run_LED_PORT,Run_LED_PIN);
+2300  0244 4b80          	push	#128
+2301  0246 ae500f        	ldw	x,#20495
+2302  0249 cd0000        	call	_GPIO_WriteReverse
+2304  024c 84            	pop	a
+2305  024d 2003          	jra	L753
+2306  024f               L343:
+2307                     ; 1695 			StartStop_KEY_Delay_Count = 0;
+2309  024f 5f            	clrw	x
+2310  0250 bf15          	ldw	_StartStop_KEY_Delay_Count,x
+2311  0252               L753:
+2312                     ; 1698 	if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
+2314  0252 4b20          	push	#32
+2315  0254 ae5000        	ldw	x,#20480
+2316  0257 cd0000        	call	_GPIO_ReadInputPin
+2318  025a 5b01          	addw	sp,#1
+2319  025c 4d            	tnz	a
+2320  025d 2615          	jrne	L163
+2321                     ; 1699 		if(++Set_KEY_Delay_Count == Set_KEY_DelayTime){
+2323  025f be17          	ldw	x,_Set_KEY_Delay_Count
+2324  0261 1c0001        	addw	x,#1
+2325  0264 bf17          	ldw	_Set_KEY_Delay_Count,x
+2326  0266 a30bb8        	cpw	x,#3000
+2327  0269 260c          	jrne	L563
+2328                     ; 1700 			Set_KEY_Delay_Count = 0;
+2330  026b 5f            	clrw	x
+2331  026c bf17          	ldw	_Set_KEY_Delay_Count,x
+2332                     ; 1701 			Parameter_Set_Flag = TRUE;
+2334  026e 35010000      	mov	_Parameter_Set_Flag,#1
+2335  0272 2003          	jra	L563
+2336  0274               L163:
+2337                     ; 1705 			Set_KEY_Delay_Count = 0;
+2339  0274 5f            	clrw	x
+2340  0275 bf17          	ldw	_Set_KEY_Delay_Count,x
+2341  0277               L563:
+2342                     ; 1709   TIM4_ClearITPendingBit(TIM4_IT_UPDATE);
+2344  0277 a601          	ld	a,#1
+2345  0279 cd0000        	call	_TIM4_ClearITPendingBit
+2347                     ; 1710  }
+2350  027c 85            	popw	x
+2351  027d bf00          	ldw	c_y,x
+2352  027f 320002        	pop	c_y+2
+2353  0282 85            	popw	x
+2354  0283 bf00          	ldw	c_x,x
+2355  0285 320002        	pop	c_x+2
+2356  0288 80            	iret
+2379                     ; 1718 INTERRUPT_HANDLER(EEPROM_EEC_IRQHandler, 24)
+2379                     ; 1719 {
+2380                     	switch	.text
+2381  0289               f_EEPROM_EEC_IRQHandler:
+2385                     ; 1723 }
+2388  0289 80            	iret
+2602                     	xdef	_TEM_Error_Exist_Flag
+2603                     	xdef	_HP_Error_Exist_Flag
+2604                     	xdef	_LP_Error_Exist_Flag
+2605                     	xdef	_E_Error_Exist_Flag
+2606                     	xdef	_Set_KEY_Delay_Count
+2607                     	xdef	_StartStop_KEY_Delay_Count
+2608                     	xdef	_RemoteControl_Stop_Delay_Count
+2609                     	xdef	_RemoteControl_Start_Delay_Count
+2610                     	xdef	_Tem_Alarm_Delay_Count
+2611                     	xdef	_HP_Error_Delay_Count
+2612                     	xdef	_LP_Error_Delay_Count
+2613                     	xdef	_E_Error_Delay_Count
+2614                     	xdef	_NTC_ADC_Count
+2615                     	xdef	_SUM
+2616                     	xdef	f_EEPROM_EEC_IRQHandler
+2617                     	xdef	f_TIM4_UPD_OVF_IRQHandler
+2618                     	xdef	f_ADC1_IRQHandler
+2619                     	xdef	f_UART2_TX_IRQHandler
+2620                     	xdef	f_UART2_RX_IRQHandler
+2621                     	xdef	f_I2C_IRQHandler
+2622                     	xdef	f_TIM3_CAP_COM_IRQHandler
+2623                     	xdef	f_TIM3_UPD_OVF_BRK_IRQHandler
+2624                     	xdef	f_TIM2_CAP_COM_IRQHandler
+2625                     	xdef	f_TIM2_UPD_OVF_BRK_IRQHandler
+2626                     	xdef	f_TIM1_UPD_OVF_TRG_BRK_IRQHandler
+2627                     	xdef	f_TIM1_CAP_COM_IRQHandler
+2628                     	xdef	f_SPI_IRQHandler
+2629                     	xdef	f_EXTI_PORTE_IRQHandler
+2630                     	xdef	f_EXTI_PORTD_IRQHandler
+2631                     	xdef	f_EXTI_PORTC_IRQHandler
+2632                     	xdef	f_EXTI_PORTB_IRQHandler
+2633                     	xdef	f_EXTI_PORTA_IRQHandler
+2634                     	xdef	f_CLK_IRQHandler
+2635                     	xdef	f_AWU_IRQHandler
+2636                     	xdef	f_TLI_IRQHandler
+2637                     	xdef	f_TRAP_IRQHandler
+2638                     	xdef	f_NonHandledInterrupt
+2639                     	xdef	_Parameter_Set_Flag
+2640                     	xdef	_NTC_TEM_Value
+2641                     	xdef	_NTC_Conversion_Value
+2642                     	xdef	_TEMP_TABLE
+2643                     	xref	_TIM4_ClearITPendingBit
+2644                     	xref	_TIM3_ClearITPendingBit
+2645                     	xref	_GPIO_ReadInputPin
+2646                     	xref	_GPIO_WriteReverse
+2647                     	xref	_GPIO_WriteLow
+2648                     	xref	_GPIO_WriteHigh
+2649                     	xref	_ADC1_ClearITPendingBit
+2650                     	xref	_ADC1_GetConversionValue
+2651                     	xref	_ADC1_ITConfig
+2652                     	xref.b	c_x
+2653                     	xref.b	c_y
+2672                     	end
