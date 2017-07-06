@@ -1247,16 +1247,29 @@ INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
      it is recommended to set a breakpoint on the following instruction.
   */
 	if(Parameter_Set_Flag){
-		if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
-			dt++;
-			if(dt == Other){
-				Parameter_Set_Flag = FALSE;
-				dt = Tem_Show;
-			}
+		switch(dt){
+			case Tem_Show:
+				break;
+			case Tem_AlarmLimit_Set:
+				if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
+					dt = Start_DelayTime_Select;
+				}
+				if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
+					
+				}
+				break;
+			case Start_DelayTime_Select:
+				break;
+			case Other:
+				break;
+			default:
+				break;
 		}
-		if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
-			
-		}
+		//switch(Tem_Alarmlimit_set_step){
+		//	case idle:
+		//	break;
+		//	default:
+		//		break;
 	}
 }
 
@@ -1725,13 +1738,14 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 				Run_LED_Flash_Flag = TRUE;
 				GPIO_WriteLow(Run_LED_PORT, Run_LED_PIN);
 				GPIO_WriteHigh(RelayControl_PORT,RelayControl_PIN);
+				Relay_Output_Flag = !Relay_Output_Flag;
 			}
 			else if(Relay_Output_Flag){
 				Run_LED_Flash_Flag = FALSE;
 				GPIO_WriteHigh(Run_LED_PORT, Run_LED_PIN);
 				GPIO_WriteLow(RelayControl_PORT,RelayControl_PIN);	
+				Relay_Output_Flag = !Relay_Output_Flag;
 			}
-			Relay_Output_Flag = !Relay_Output_Flag;
 		}
 	}
 	else{

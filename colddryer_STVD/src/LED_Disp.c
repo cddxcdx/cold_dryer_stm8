@@ -3,6 +3,17 @@
 
 parametersettingstate_e dt = Tem_Show;
 
+static void TemAlarmLimitSet(uint8_t dig){
+	LD_number_S;
+	
+	if(dig == 1){
+		
+	}
+	else if(dig == 2){
+		
+	}
+}
+
 static void TemShow(uint8_t dig){
 	uint16_t first_dig = 0, second_dig = 0;
 	
@@ -104,7 +115,7 @@ static void leddisplay_show(uint8_t dig){
 			TemShow(dig);
 			break;
 		case Tem_AlarmLimit_Set:
-			LD_number_S;
+			
 			break;
 		case Start_DelayTime_Select:
 			LD_number_T;
