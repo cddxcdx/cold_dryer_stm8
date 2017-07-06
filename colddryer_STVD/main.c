@@ -15,15 +15,17 @@ main(){
 	while (1){
 		/*Parameters_Seting Mode*/
 		task_parameterssetting();
-		/*NTC Temperature Value Calculate*/	
-		for(i = 0; i < 1090; i++){
-			if(TEMP_TABLE[i] > (uint16_t)((float)NTC_Conversion_Value/Resolution*VREF)){
-				NTC_TEM_Value = (int16_t)((i - 90 + 5)/10) + current_tem_offset;
-				ADC1_ITConfig(ADC1_IT_EOCIE, ENABLE);
-				break;
+		/*NTC Temperature Value Calculate*/
+		if(Tem_Update_Flag){		
+			Tem_Update_Flag = FALSE;
+			for(i = 0; i < 1090; i++){
+				if(TEMP_TABLE[i] > (uint16_t)((float)NTC_Conversion_Value/Resolution*VREF)){
+					NTC_TEM_Value = (int16_t)((i - 90 + 5)/10) + current_tem_offset;
+					ADC1_ITConfig(ADC1_IT_EOCIE, ENABLE);
+					break;
+				}
 			}
 		}
-		LD_number_A;
 		/* Reload IWDG counter */
     IWDG_ReloadCounter(); 
 	}

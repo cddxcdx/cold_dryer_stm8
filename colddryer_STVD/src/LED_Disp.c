@@ -1,15 +1,9 @@
 #include "stm8s_it.h"
 #include "LED_Disp.h"
 
-typedef enum{
-	Tem_Show = 1,
-	Tem_AlarmLimit_Set,
-	Start_DelayTime_Select
-}parametersettingstate_e;
-
 parametersettingstate_e dt = Tem_Show;
 
-void TemShow(uint8_t dig){
+static void TemShow(uint8_t dig){
 	uint16_t first_dig = 0, second_dig = 0;
 	
 	if(NTC_TEM_Value > 99){
@@ -20,17 +14,89 @@ void TemShow(uint8_t dig){
 		LD_number_L;	
 		return;
 	}
-	first_dig = NTC_TEM_Value/10;
+	if(NTC_TEM_Value < 0){
+		first_dig = 10;
+	}
+	else
+		first_dig = NTC_TEM_Value/10;
 	second_dig = NTC_TEM_Value%10;
 	if(dig == 1){
-		
+		switch(first_dig){
+			case 0:
+				LD_number_blank;
+				break;
+			case 1:
+				LD_number_1;
+				break;
+			case 2:
+				LD_number_2;
+				break;
+			case 3:
+				LD_number_3;
+				break;
+			case 4:
+				LD_number_4;
+				break;
+			case 5:
+				LD_number_5;
+				break;
+			case 6:
+				LD_number_6;
+				break;
+			case 7:
+				LD_number_7;
+				break;
+			case 8:
+				LD_number_8;
+				break;
+			case 9:
+				LD_number_9;
+			case 10:
+				LD_number_NEG;
+				break;
+			default:
+				break;
+		}
 	}
 	else if( dig == 2){
-		
+		switch(second_dig){
+			case 0:
+				LD_number_0;
+				break;
+			case 1:
+				LD_number_1;
+				break;
+			case 2:
+				LD_number_2;
+				break;
+			case 3:
+				LD_number_3;
+				break;
+			case 4:
+				LD_number_4;
+				break;
+			case 5:
+				LD_number_5;
+				break;
+			case 6:
+				LD_number_6;
+				break;
+			case 7:
+				LD_number_7;
+				break;
+			case 8:
+				LD_number_8;
+				break;
+			case 9:
+				LD_number_9;
+				break;
+			default:
+				break;
+		}
 	}
 }
 
-void leddisplay_show(uint8_t dig){
+static void leddisplay_show(uint8_t dig){
 	switch(dt){
 		case Tem_Show:
 			TemShow(dig);
@@ -46,14 +112,14 @@ void leddisplay_show(uint8_t dig){
 		}
 }
 
-leddisplay_scan(bool sw){
+void leddisplay_scan(bool sw){
 	if(sw){
-		leddisplay_show(1);//first
 		LD_DIG1;
+		leddisplay_show(1);//first
 	}
 	else{
-		leddisplay_show(2);//second
 		LD_DIG2;
+		leddisplay_show(2);//second
 	}
 	
 }

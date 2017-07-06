@@ -48,6 +48,7 @@
 #define StartStop_KEY_DelayTime 3000
 #define Set_KEY_DelayTime 3000
 #define Tem_Alarm_DelayTime 3000
+#define Tem_Update_DelayTime 3000
 
 #define NTC_ADC_COUNT_UPLIMIT 8
 /* Private macro -------------------------------------------------------------*/
@@ -1148,9 +1149,23 @@ const uint16_t TEMP_TABLE[] =//NTC B:3980 R:10K
 bool Parameter_Set_Flag = FALSE;
 uint16_t NTC_Conversion_Value = 0,SUM = 0,NTC_ADC_Count = 0;
 int16_t NTC_TEM_Value = 0;
-uint16_t E_Error_Delay_Count = 0,LP_Error_Delay_Count = 0,HP_Error_Delay_Count = 0,Tem_Alarm_Delay_Count = 0,RemoteControl_Start_Delay_Count = 0,RemoteControl_Stop_Delay_Count = 0,StartStop_KEY_Delay_Count = 0, Set_KEY_Delay_Count = 0;
+uint16_t E_Error_Delay_Count = 0,\
+				LP_Error_Delay_Count = 0,\
+				HP_Error_Delay_Count = 0,\
+				Tem_Alarm_Delay_Count = 0,\
+				RemoteControl_Start_Delay_Count = 0,\
+				RemoteControl_Stop_Delay_Count = 0,\
+				StartStop_KEY_Delay_Count = 0,\
+				Set_KEY_Delay_Count = 0,\
+				Tem_Update_Delay_Count = 0,\
+				Run_LED_Flash_Delay_Count = 0,
+				Run_LED_FlashFREQ_Delay_Count;
 bool E_Error_Exist_Flag = FALSE,LP_Error_Exist_Flag = FALSE,HP_Error_Exist_Flag = FALSE,TEM_Error_Exist_Flag = FALSE;
 bool Dig_Switch_Flag = FALSE;
+bool Tem_Update_Flag = FALSE;
+bool Relay_Output_Flag = FALSE;
+bool Run_LED_Flash_Flag = FALSE;
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /* Public functions ----------------------------------------------------------*/
@@ -1426,12 +1441,7 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
      it is recommended to set a breakpoint on the following instruction.
   */
 	
-	if(Dig_Switch_Flag == TRUE){
-		LD_DIG1;
-	}
-	else{
-		LD_DIG2;
-	}		
+	leddisplay_scan(Dig_Switch_Flag);
 	Dig_Switch_Flag = !Dig_Switch_Flag;
 
 	/* Cleat Interrupt Pending bit */
@@ -1701,8 +1711,17 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 				GPIO_WriteHigh(Lowpressure_LED_PORT,Lowpressure_LED_PIN);
 				GPIO_WriteHigh(Tem_LED_PORT,Tem_LED_PIN);
 			}
-			GPIO_WriteReverse(RelayControl_PORT,RelayControl_PIN);
-			GPIO_WriteReverse(Run_LED_PORT,Run_LED_PIN);
+			if(!Relay_Output_Flag){
+				Run_LED_Flash_Flag = TRUE;
+				GPIO_WriteLow(Run_LED_PORT, Run_LED_PIN);
+				GPIO_WriteHigh(RelayControl_PORT,RelayControl_PIN);
+			}
+			else{
+				Run_LED_Flash_Flag = FALSE;
+				GPIO_WriteHigh(Run_LED_PORT, Run_LED_PIN);
+				GPIO_WriteLow(RelayControl_PORT,RelayControl_PIN);	
+			}
+			Relay_Output_Flag = !Relay_Output_Flag;
 		}
 	}
 	else{
@@ -1718,7 +1737,30 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	else{
 			Set_KEY_Delay_Count = 0;
 	}		
+	//
+	if(++Tem_Update_Delay_Count == Tem_Update_DelayTime){
+		Tem_Update_Delay_Count = 0;
+		Tem_Update_Flag = TRUE;
+	}
 	
+	//RUN LED FLASH
+	if(Run_LED_Flash_Flag){
+		if(++Run_LED_Flash_Delay_Count == 15000)
+		{
+			Run_LED_Flash_Flag = FALSE;
+			GPIO_WriteLow(Run_LED_PORT, Run_LED_PIN);
+		}
+		else{
+			if(++Run_LED_FlashFREQ_Delay_Count == 500){
+				Run_LED_FlashFREQ_Delay_Count = 0;
+				GPIO_WriteReverse(Run_LED_PORT, Run_LED_PIN);
+			}
+		}
+	}
+	else{
+		Run_LED_Flash_Delay_Count = 0;
+		Run_LED_FlashFREQ_Delay_Count = 0;
+	}
 	/* Cleat Interrupt Pending bit */
   TIM4_ClearITPendingBit(TIM4_IT_UPDATE);
  }

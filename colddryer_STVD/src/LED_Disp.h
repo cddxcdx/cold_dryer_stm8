@@ -3,6 +3,23 @@
 #include "stm8s.h"
 #include "Periph_Init.h"
 
+typedef enum{
+	Tem_Show = 1,
+	Tem_AlarmLimit_Set,
+	Start_DelayTime_Select
+}parametersettingstate_e;
+
+#define LD_number_blank {\
+												GPIO_WriteHigh(LED_Disp_a_PORT, LED_Disp_a_PIN);\
+												GPIO_WriteHigh(LED_Disp_b_PORT, LED_Disp_b_PIN);\
+												GPIO_WriteHigh(LED_Disp_c_PORT, LED_Disp_c_PIN);\
+												GPIO_WriteHigh(LED_Disp_d_PORT, LED_Disp_d_PIN);\
+												GPIO_WriteHigh(LED_Disp_e_PORT, LED_Disp_e_PIN);\
+												GPIO_WriteHigh(LED_Disp_f_PORT, LED_Disp_f_PIN);\
+												GPIO_WriteHigh(LED_Disp_g_PORT, LED_Disp_g_PIN);\
+												GPIO_WriteHigh(LED_Disp_dp_PORT, LED_Disp_dp_PIN);\
+											}
+
 #define LD_number_1 {\
 												GPIO_WriteHigh(LED_Disp_a_PORT, LED_Disp_a_PIN);\
 												GPIO_WriteLow(LED_Disp_b_PORT, LED_Disp_b_PIN);\
@@ -160,4 +177,7 @@
 										GPIO_WriteHigh(LED_Disp_Dig2_PORT, LED_Disp_Dig2_PIN);
 #define LD_DIG2 		GPIO_WriteHigh(LED_Disp_Dig1_PORT, LED_Disp_Dig1_PIN);\
 										GPIO_WriteLow(LED_Disp_Dig2_PORT, LED_Disp_Dig2_PIN);
+										
+void leddisplay_scan(bool sw);
+
 #endif
