@@ -16,10 +16,12 @@ static void TemShow(uint8_t dig){
 	}
 	if(NTC_TEM_Value < 0){
 		first_dig = 10;
+		second_dig = 0 - (NTC_TEM_Value%10);
 	}
-	else
+	else{
 		first_dig = NTC_TEM_Value/10;
-	second_dig = NTC_TEM_Value%10;
+		second_dig = NTC_TEM_Value%10;
+	}
 	if(dig == 1){
 		switch(first_dig){
 			case 0:
@@ -102,10 +104,10 @@ static void leddisplay_show(uint8_t dig){
 			TemShow(dig);
 			break;
 		case Tem_AlarmLimit_Set:
-		
+			LD_number_S;
 			break;
 		case Start_DelayTime_Select:
-			
+			LD_number_T;
 			break;
 		default:
 			break;

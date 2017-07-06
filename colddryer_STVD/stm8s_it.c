@@ -1161,6 +1161,7 @@ uint16_t E_Error_Delay_Count = 0,\
 				Run_LED_Flash_Delay_Count = 0,
 				Run_LED_FlashFREQ_Delay_Count;
 bool E_Error_Exist_Flag = FALSE,LP_Error_Exist_Flag = FALSE,HP_Error_Exist_Flag = FALSE,TEM_Error_Exist_Flag = FALSE;
+bool Total_Error_Flag = FALSE;
 bool Dig_Switch_Flag = FALSE;
 bool Tem_Update_Flag = FALSE;
 bool Relay_Output_Flag = FALSE;
@@ -1245,11 +1246,17 @@ INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
-	if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
-		
-	}
-	if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
-		
+	if(Parameter_Set_Flag){
+		if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
+			dt++;
+			if(dt == Other){
+				Parameter_Set_Flag = FALSE;
+				dt = Tem_Show;
+			}
+		}
+		if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
+			
+		}
 	}
 }
 
@@ -1668,7 +1675,7 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	else{
 		HP_Error_Delay_Count = 0;
 	}
-	if( NTC_TEM_Value > 28 && TEM_Error_Exist_Flag == FALSE ){
+	if( NTC_TEM_Value > 33 && TEM_Error_Exist_Flag == FALSE ){
 		if(++Tem_Alarm_Delay_Count == Tem_Alarm_DelayTime ){
 			Tem_Alarm_Delay_Count = 0;
 			TEM_Error_Exist_Flag = TRUE;
@@ -1677,8 +1684,10 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	}
 	else
 		Tem_Alarm_Delay_Count = 0;
+		
+	Total_Error_Flag = (TEM_Error_Exist_Flag)||(HP_Error_Exist_Flag)||(LP_Error_Exist_Flag)||(E_Error_Exist_Flag);
 	//
-	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Start_PIN)){
+	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Start_PIN && !Total_Error_Flag)){
 		if(++RemoteControl_Start_Delay_Count == RemoteControl_Start_DelayTime ){
 			RemoteControl_Start_Delay_Count = 0;
 			GPIO_WriteHigh(RelayControl_PORT,RelayControl_PIN);
@@ -1711,12 +1720,13 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 				GPIO_WriteHigh(Lowpressure_LED_PORT,Lowpressure_LED_PIN);
 				GPIO_WriteHigh(Tem_LED_PORT,Tem_LED_PIN);
 			}
-			if(!Relay_Output_Flag){
+			
+			if(!Relay_Output_Flag && !Total_Error_Flag){
 				Run_LED_Flash_Flag = TRUE;
 				GPIO_WriteLow(Run_LED_PORT, Run_LED_PIN);
 				GPIO_WriteHigh(RelayControl_PORT,RelayControl_PIN);
 			}
-			else{
+			else if(Relay_Output_Flag){
 				Run_LED_Flash_Flag = FALSE;
 				GPIO_WriteHigh(Run_LED_PORT, Run_LED_PIN);
 				GPIO_WriteLow(RelayControl_PORT,RelayControl_PIN);	
@@ -1728,10 +1738,11 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 			StartStop_KEY_Delay_Count = 0;
 	}	
 	
-	if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
+	if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN) && !Parameter_Set_Flag){
 		if(++Set_KEY_Delay_Count == Set_KEY_DelayTime){
 			Set_KEY_Delay_Count = 0;
-			Parameter_Set_Flag = TRUE;
+			dt = Tem_AlarmLimit_Set;//switch to Tem_AlarmLimit_Set mode
+			Parameter_Set_Flag = TRUE;//
 		}
 	}
 	else{

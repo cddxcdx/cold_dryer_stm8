@@ -6,7 +6,8 @@
 typedef enum{
 	Tem_Show = 1,
 	Tem_AlarmLimit_Set,
-	Start_DelayTime_Select
+	Start_DelayTime_Select,
+	Other
 }parametersettingstate_e;
 
 #define LD_number_blank {\
@@ -177,7 +178,9 @@ typedef enum{
 										GPIO_WriteHigh(LED_Disp_Dig2_PORT, LED_Disp_Dig2_PIN);
 #define LD_DIG2 		GPIO_WriteHigh(LED_Disp_Dig1_PORT, LED_Disp_Dig1_PIN);\
 										GPIO_WriteLow(LED_Disp_Dig2_PORT, LED_Disp_Dig2_PIN);
-										
+			
+extern parametersettingstate_e dt;
+
 void leddisplay_scan(bool sw);
 
 #endif
