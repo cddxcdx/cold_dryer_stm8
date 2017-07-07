@@ -178,7 +178,67 @@ typedef enum{
 										GPIO_WriteHigh(LED_Disp_Dig2_PORT, LED_Disp_Dig2_PIN);
 #define LD_DIG2 		GPIO_WriteHigh(LED_Disp_Dig1_PORT, LED_Disp_Dig1_PIN);\
 										GPIO_WriteLow(LED_Disp_Dig2_PORT, LED_Disp_Dig2_PIN);
-			
+
+#define LED_SEGCODE(seg,dig){\
+												switch(seg){\
+													case 0:\
+														if(dig == 1)\
+															LD_number_blank\
+														else if(dig == 2)\
+															LD_number_0\
+														break;\
+													case 1:\
+														LD_number_1;\
+														break;\
+													case 2:\
+														LD_number_2;\
+														break;\
+													case 3:\
+														LD_number_3;\
+														break;\
+													case 4:\
+														LD_number_4;\
+														break;\
+													case 5:\
+														LD_number_5;\
+														break;\
+													case 6:\
+														LD_number_6;\
+														break;\
+													case 7:\
+														LD_number_7;\
+														break;\
+													case 8:\
+														LD_number_8;\
+														break;\
+													case 9:\
+														LD_number_9;\
+													case '-':\
+														LD_number_NEG;\
+														break;\
+													case 'S':\
+														LD_number_S;\
+														break;\
+													case 'D':\
+														LD_number_D;\
+														break;\
+													case 'T':\
+														LD_number_T;\
+														break;\
+													case 'A':\
+														LD_number_A;\
+														break;\
+													case 'L':\
+														LD_number_L;\
+														break;\
+													case 'H':\
+														LD_number_H;\
+														break;\
+													default:\
+														break;\
+												}\
+										}
+
 extern parametersettingstate_e dt;
 
 void leddisplay_scan(bool sw);

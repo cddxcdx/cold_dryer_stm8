@@ -1,39 +1,74 @@
 #include "stm8s_it.h"
 #include "LED_Disp.h"
+#include "Parameter.h"
+
+#define TemAlarm_UpLimit 50 //<100
+#define TemAlarm_DownLimit 0 //>=0 
+
+uint16_t Current_TemAlarmLimitValue = 0;
 
 parametersettingstate_e dt = Tem_Show;
 
-static void TemAlarmLimitSet(uint8_t dig){
-	LD_number_S;
+static void TemAlarmLimitSet(uint8_t dig, uint8_t* step){
+	char first_dig = 0, second_dig = 0;
+	
+	if(*step == 0){//这段代码不应该放在这里，这里主要处理显示
+		Current_TemAlarmLimitValue = TEMAlarmLimitSetting;
+		*step = 1;
+		return;
+	}		
+	
+	if(Current_TemAlarmLimitValue >= TemAlarm_DownLimit && Current_TemAlarmLimitValue <= TemAlarm_UpLimit){
+		first_dig = Current_TemAlarmLimitValue/10;
+		second_dig = Current_TemAlarmLimitValue%10;
+	}
 	
 	if(dig == 1){
-		
+		if(*step == 1)
+			LD_number_T
+		else if(*step == 2)
+			LED_SEGCODE(first_dig,1)
 	}
 	else if(dig == 2){
-		
+		if(*step == 1)
+			LD_number_A
+		else if(*step == 2)
+			LED_SEGCODE(second_dig,2)
 	}
 }
 
 static void TemShow(uint8_t dig){
-	uint16_t first_dig = 0, second_dig = 0;
+	char first_dig = 0, second_dig = 0;
 	
-	if(NTC_TEM_Value > 99){
+	/*if(NTC_TEM_Value > 99){
 		LD_number_H;
 		return;
 	}
 	else if(NTC_TEM_Value < -9){
 		LD_number_L;	
 		return;
-	}
-	if(NTC_TEM_Value < 0){
-		first_dig = 10;
+	}*/
+	if(NTC_TEM_Value >= -9 && NTC_TEM_Value < 0){
+		first_dig = '-';
 		second_dig = 0 - (NTC_TEM_Value%10);
 	}
-	else{
+	else if(NTC_TEM_Value >= 0 && NTC_TEM_Value <= 99){
 		first_dig = NTC_TEM_Value/10;
 		second_dig = NTC_TEM_Value%10;
 	}
-	if(dig == 1){
+	else if(NTC_TEM_Value > 99){
+		first_dig = 'L';
+		second_dig = 'L';
+	}
+	else if(NTC_TEM_Value < -9){
+		first_dig = 'H';
+		second_dig = 'H';
+	}
+	if(dig == 1)
+		LED_SEGCODE(first_dig,1)
+	else if(dig == 2)
+		LED_SEGCODE(second_dig,2)
+	/*if(dig == 1){
 		switch(first_dig){
 			case 0:
 				LD_number_blank;
@@ -106,7 +141,7 @@ static void TemShow(uint8_t dig){
 			default:
 				break;
 		}
-	}
+	}*/
 }
 
 static void leddisplay_show(uint8_t dig){

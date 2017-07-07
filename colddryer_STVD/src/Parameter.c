@@ -1,9 +1,9 @@
-#include "stm8s.h"
 #include "stm8s_it.h"
 #include "Parameter.h"
 
 EEPROM uint8_t UsingTimes @UsingTimes_MEM;
-
+EEPROM uint8_t TEMAlarmLimitSetting @TEMAlarmLimitSetting_MEM;
+EEPROM uint8_t StartDelayTime @StartDelayTime_MEM;
 
 
 
