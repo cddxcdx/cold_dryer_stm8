@@ -31,6 +31,7 @@
 #include "stm8s_it.h"
 #include "Periph_Init.h"
 #include "LED_Disp.h"
+#include "Parameter.h"
 
 
 /** @addtogroup Template_Project
@@ -55,6 +56,166 @@
 /* Private variables ---------------------------------------------------------*/
 const uint16_t TEMP_TABLE[] =//NTC B:3980 R:10K
 {
+324,
+326,
+328,
+330,
+332,
+334,
+336,
+338,
+340,
+342,
+344,
+346,
+348,
+350,
+352,
+354,
+356,
+358,
+361,
+363,
+365,
+367,
+369,
+371,
+373,
+376,
+378,
+380,
+382,
+384,
+387,
+389,
+391,
+393,
+396,
+398,
+400,
+402,
+405,
+407,
+409,
+412,
+414,
+417,
+419,
+421,
+424,
+426,
+428,
+431,
+433,
+436,
+438,
+441,
+443,
+446,
+448,
+451,
+453,
+456,
+458,
+461,
+463,
+466,
+469,
+471,
+474,
+476,
+479,
+482,
+484,
+487,
+490,
+492,
+495,
+498,
+500,
+503,
+506,
+509,
+511,
+514,
+517,
+520,
+522,
+525,
+528,
+531,
+534,
+537,
+540,
+542,
+545,
+548,
+551,
+554,
+557,
+560,
+563,
+566,
+569,
+572,
+575,
+578,
+581,
+584,
+587,
+590,
+593,
+596,
+599,
+602,
+606,
+609,
+612,
+615,
+618,
+621,
+624,
+628,
+631,
+634,
+637,
+641,
+644,
+647,
+650,
+654,
+657,
+660,
+664,
+667,
+670,
+674,
+677,
+680,
+684,
+687,
+691,
+694,
+698,
+701,
+704,
+708,
+711,
+715,
+718,
+722,
+726,
+729,
+733,
+736,
+740,
+743,
+747,
+751,
+754,
+758,
+762,
+765,
 769,
 773,
 776,
@@ -1144,7 +1305,208 @@ const uint16_t TEMP_TABLE[] =//NTC B:3980 R:10K
 4671,
 4671,
 4672,
-4673
+4673,
+4674,
+4675,
+4676,
+4677,
+4677,
+4678,
+4679,
+4680,
+4681,
+4682,
+4682,
+4683,
+4684,
+4685,
+4686,
+4687,
+4687,
+4688,
+4689,
+4690,
+4691,
+4692,
+4692,
+4693,
+4694,
+4695,
+4696,
+4696,
+4697,
+4698,
+4699,
+4700,
+4700,
+4701,
+4702,
+4703,
+4703,
+4704,
+4705,
+4706,
+4707,
+4707,
+4708,
+4709,
+4710,
+4710,
+4711,
+4712,
+4713,
+4713,
+4714,
+4715,
+4716,
+4716,
+4717,
+4718,
+4719,
+4719,
+4720,
+4721,
+4721,
+4722,
+4723,
+4724,
+4724,
+4725,
+4726,
+4726,
+4727,
+4728,
+4729,
+4729,
+4730,
+4731,
+4731,
+4732,
+4733,
+4733,
+4734,
+4735,
+4735,
+4736,
+4737,
+4738,
+4738,
+4739,
+4740,
+4740,
+4741,
+4742,
+4742,
+4743,
+4744,
+4744,
+4745,
+4745,
+4746,
+4747,
+4747,
+4748,
+4749,
+4749,
+4750,
+4751,
+4751,
+4752,
+4753,
+4753,
+4754,
+4754,
+4755,
+4756,
+4756,
+4757,
+4758,
+4758,
+4759,
+4759,
+4760,
+4761,
+4761,
+4762,
+4762,
+4763,
+4764,
+4764,
+4765,
+4765,
+4766,
+4767,
+4767,
+4768,
+4768,
+4769,
+4770,
+4770,
+4771,
+4771,
+4772,
+4772,
+4773,
+4774,
+4774,
+4775,
+4775,
+4776,
+4776,
+4777,
+4777,
+4778,
+4779,
+4779,
+4780,
+4780,
+4781,
+4781,
+4782,
+4782,
+4783,
+4784,
+4784,
+4785,
+4785,
+4786,
+4786,
+4787,
+4787,
+4788,
+4788,
+4789,
+4789,
+4790,
+4790,
+4791,
+4791,
+4792,
+4792,
+4793,
+4794,
+4794,
+4795,
+4795,
+4796,
+4796,
+4797,
+4797,
+4798,
+4798,
+4799,
+4799,
+4800,
+4800,
+4801,
+4801,
+4802,
+4802,
+4802,
+4803,
+4803,
+4804,
+4804
 };
 bool Parameter_Set_Flag = FALSE;
 uint16_t NTC_Conversion_Value = 0,SUM = 0,NTC_ADC_Count = 0;
@@ -1166,6 +1528,8 @@ bool Dig_Switch_Flag = FALSE;
 bool Tem_Update_Flag = FALSE;
 bool Relay_Output_Flag = FALSE;
 bool Run_LED_Flash_Flag = FALSE;
+
+uint8_t step = 0;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -1252,13 +1616,45 @@ INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
 				break;
 			case Tem_AlarmLimit_Set:
 				if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
-					dt = Start_DelayTime_Select;
+					if(step == 0)
+						dt = Start_DelayTime_Select;
+					else if(step == 1){
+						step = 0;
+						temalarmlimitsetting_update_flag = TRUE;
+					}	
 				}
 				if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
-					
+					if(step == 0){
+						step = 1;
+					}
+					else if(step == 1){
+						Current_TemAlarmLimitValue++;
+						if(Current_TemAlarmLimitValue > TemAlarm_UpLimit)
+							Current_TemAlarmLimitValue = TemAlarm_DownLimit;
+					}
 				}
 				break;
 			case Start_DelayTime_Select:
+				if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
+					if(step == 0){
+						dt = Tem_Show;
+						Parameter_Set_Flag = FALSE;
+					}
+					else if(step == 1){
+						step = 0;
+						startdelaytimeselect_update_flag = TRUE;
+					}	
+				}
+				if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
+					if(step == 0){
+						step = 1;
+					}
+					else if(step == 1){
+						Current_StartDelayTimeIndex++;
+						if(Current_StartDelayTimeIndex > StartDelayTimeIndex_UpLimit)
+							Current_StartDelayTimeIndex = StartDelayTimeIndex_DownLimit;
+					}
+				}
 				break;
 			case Other:
 				break;
@@ -1461,7 +1857,7 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
      it is recommended to set a breakpoint on the following instruction.
   */
 	
-	leddisplay_scan(Dig_Switch_Flag);
+	leddisplay_scan(Dig_Switch_Flag,&step);
 	Dig_Switch_Flag = !Dig_Switch_Flag;
 
 	/* Cleat Interrupt Pending bit */
@@ -1658,6 +2054,7 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+	/*Error Alarm*/
 	if(!GPIO_ReadInputPin(Error_Input_PORT,E_Error_PIN)){
 		if(++E_Error_Delay_Count == E_Error_DelayTime && E_Error_Exist_Flag == FALSE){
 			E_Error_Delay_Count = 0;
@@ -1688,7 +2085,7 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	else{
 		HP_Error_Delay_Count = 0;
 	}
-	if( NTC_TEM_Value > 33 && TEM_Error_Exist_Flag == FALSE ){
+	if( NTC_TEM_Value > Current_TemAlarmLimitValue && TEM_Error_Exist_Flag == FALSE && !Parameter_Set_Flag){
 		if(++Tem_Alarm_Delay_Count == Tem_Alarm_DelayTime ){
 			Tem_Alarm_Delay_Count = 0;
 			TEM_Error_Exist_Flag = TRUE;
@@ -1697,10 +2094,11 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	}
 	else
 		Tem_Alarm_Delay_Count = 0;
-		
+	/*Total Error*/	
 	Total_Error_Flag = (TEM_Error_Exist_Flag)||(HP_Error_Exist_Flag)||(LP_Error_Exist_Flag)||(E_Error_Exist_Flag);
+	
 	//
-	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Start_PIN && !Total_Error_Flag)){
+	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Start_PIN) && !Total_Error_Flag){
 		if(++RemoteControl_Start_Delay_Count == RemoteControl_Start_DelayTime ){
 			RemoteControl_Start_Delay_Count = 0;
 			GPIO_WriteHigh(RelayControl_PORT,RelayControl_PIN);
@@ -1737,7 +2135,7 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 			if(!Relay_Output_Flag && !Total_Error_Flag){
 				Run_LED_Flash_Flag = TRUE;
 				GPIO_WriteLow(Run_LED_PORT, Run_LED_PIN);
-				GPIO_WriteHigh(RelayControl_PORT,RelayControl_PIN);
+				//GPIO_WriteHigh(RelayControl_PORT,RelayControl_PIN);
 				Relay_Output_Flag = !Relay_Output_Flag;
 			}
 			else if(Relay_Output_Flag){
@@ -1770,10 +2168,11 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	
 	//RUN LED FLASH
 	if(Run_LED_Flash_Flag){
-		if(++Run_LED_Flash_Delay_Count == 15000)
+		if(++Run_LED_Flash_Delay_Count == StartDelayTimeList[Current_StartDelayTimeIndex]*1000)
 		{
 			Run_LED_Flash_Flag = FALSE;
 			GPIO_WriteLow(Run_LED_PORT, Run_LED_PIN);
+			GPIO_WriteHigh(RelayControl_PORT,RelayControl_PIN);// ¼ÌµçÆ÷Êä³ö
 		}
 		else{
 			if(++Run_LED_FlashFREQ_Delay_Count == 500){

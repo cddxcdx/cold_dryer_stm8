@@ -213,6 +213,7 @@ typedef enum{
 														break;\
 													case 9:\
 														LD_number_9;\
+														break;\
 													case '-':\
 														LD_number_NEG;\
 														break;\
@@ -240,7 +241,7 @@ typedef enum{
 										}
 
 extern parametersettingstate_e dt;
-
-void leddisplay_scan(bool sw);
+extern uint8_t StartDelayTimeList[3];
+void leddisplay_scan(bool sw, uint8_t* step);
 
 #endif

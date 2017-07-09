@@ -41,6 +41,7 @@ extern bool Parameter_Set_Flag;
 extern bool Tem_Update_Flag;
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
+
 #ifdef _COSMIC_
  void _stext(void); /* RESET startup routine */
  INTERRUPT void NonHandledInterrupt(void);
