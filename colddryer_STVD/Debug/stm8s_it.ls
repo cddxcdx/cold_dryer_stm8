@@ -1616,7 +1616,7 @@
 1806  0070 3c00          	inc	_Current_TemAlarmLimitValue
 1807                     ; 1632 						if(Current_TemAlarmLimitValue > TemAlarm_UpLimit)
 1809  0072 b600          	ld	a,_Current_TemAlarmLimitValue
-1810  0074 a133          	cp	a,#51
+1810  0074 a164          	cp	a,#100
 1811  0076 2550          	jrult	L301
 1812                     ; 1633 							Current_TemAlarmLimitValue = TemAlarm_DownLimit;
 1814  0078 3f00          	clr	_Current_TemAlarmLimitValue
@@ -2091,7 +2091,7 @@
 2823  02c9 be15          	ldw	x,_StartStop_KEY_Delay_Count
 2824  02cb 1c0001        	addw	x,#1
 2825  02ce bf15          	ldw	_StartStop_KEY_Delay_Count,x
-2826  02d0 a30bb8        	cpw	x,#3000
+2826  02d0 a30064        	cpw	x,#100
 2827  02d3 2704          	jreq	L601
 2828  02d5 ac620362      	jpf	L544
 2829  02d9               L601:
@@ -2222,7 +2222,7 @@
 2995  038f be19          	ldw	x,_Tem_Update_Delay_Count
 2996  0391 1c0001        	addw	x,#1
 2997  0394 bf19          	ldw	_Tem_Update_Delay_Count,x
-2998  0396 a30bb8        	cpw	x,#3000
+2998  0396 a301f4        	cpw	x,#500
 2999  0399 2607          	jrne	L554
 3000                     ; 2165 		Tem_Update_Delay_Count = 0;
 3002  039b 5f            	clrw	x

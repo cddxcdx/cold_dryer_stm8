@@ -46,10 +46,10 @@
 #define HP_Error_DelayTime 3000
 #define RemoteControl_Start_DelayTime 3000
 #define RemoteControl_Stop_DelayTime 3000
-#define StartStop_KEY_DelayTime 3000
+#define StartStop_KEY_DelayTime 100
 #define Set_KEY_DelayTime 3000
 #define Tem_Alarm_DelayTime 3000
-#define Tem_Update_DelayTime 3000
+#define Tem_Update_DelayTime 500
 
 #define NTC_ADC_COUNT_UPLIMIT 8
 /* Private macro -------------------------------------------------------------*/

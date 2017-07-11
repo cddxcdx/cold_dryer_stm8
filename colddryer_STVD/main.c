@@ -9,8 +9,8 @@
 #include "LED_Disp.h"
 
 main(){
-	uint16_t i;
-	uint16_t current_tem_offset = 0;
+	int16_t i;
+	int16_t current_tem_offset = 0;
 	system_init();
 	EE_Parameters_Read();
 	while (1){
@@ -20,7 +20,6 @@ main(){
 		if(Tem_Update_Flag){		
 			Tem_Update_Flag = FALSE;
 			for(i = 0; i < 1451; i++){
-				
 				if(TEMP_TABLE[i] > (uint16_t)((float)NTC_Conversion_Value/Resolution*VREF)){
 					NTC_TEM_Value = (int16_t)((i - 250 + 5)/10) + current_tem_offset;
 					ADC1_ITConfig(ADC1_IT_EOCIE, ENABLE);

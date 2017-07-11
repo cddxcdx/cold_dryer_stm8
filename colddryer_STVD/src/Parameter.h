@@ -18,7 +18,7 @@
 #define UART485ADDRESS_MEM    0x400A //485通信地址
 #define ALARMENABLE  0x4010 //存是否需要报警，1:表示需要；0:表示不报警
 
-#define TemAlarm_UpLimit 50 //<100
+#define TemAlarm_UpLimit 99 //<100
 #define TemAlarm_DownLimit 0 //>=0 
 
 #define StartDelayTimeIndex_UpLimit 2
