@@ -2179,9 +2179,12 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	//	(TEM_Error_Exist_Flag)||
 	/*Total Error*/	
 	Total_Error_Flag = (HP_Error_Exist_Flag)||(LP_Error_Exist_Flag)||(E_Error_Exist_Flag);
+	
 	if(Total_Error_Flag && Relay_Output_Flag){
 		GPIO_WriteHigh(Run_LED_PORT, Run_LED_PIN);
 		GPIO_WriteLow(RelayControl_PORT,RelayControl_PIN);
+		Relay_Output_Flag = 0;
+		Run_LED_Flash_Flag = 0;
 	}
 	//
 	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Start_PIN) && !Total_Error_Flag){
