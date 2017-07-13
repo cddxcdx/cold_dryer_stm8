@@ -48,7 +48,7 @@
 #define RemoteControl_Stop_DelayTime 3000
 #define StartStop_KEY_DelayTime 100
 #define Set_KEY_DelayTime 3000
-#define Tem_Alarm_DelayTime 3000
+#define Tem_Alarm_DelayTime 900000
 #define Tem_Update_DelayTime 500
 
 #define NTC_ADC_COUNT_UPLIMIT 8
@@ -1514,7 +1514,6 @@ int16_t NTC_TEM_Value = 0;
 uint16_t E_Error_Delay_Count = 0,\
 				LP_Error_Delay_Count = 0,\
 				HP_Error_Delay_Count = 0,\
-				Tem_Alarm_Delay_Count = 0,\
 				RemoteControl_Start_Delay_Count = 0,\
 				RemoteControl_Stop_Delay_Count = 0,\
 				StartStop_KEY_Delay_Count = 0,\
@@ -1522,6 +1521,7 @@ uint16_t E_Error_Delay_Count = 0,\
 				Tem_Update_Delay_Count = 0,\
 				Run_LED_Flash_Delay_Count = 0,
 				Run_LED_FlashFREQ_Delay_Count;
+uint32_t Tem_Alarm_Delay_Count = 0;
 bool E_Error_Exist_Flag = FALSE,LP_Error_Exist_Flag = FALSE,HP_Error_Exist_Flag = FALSE,TEM_Error_Exist_Flag = FALSE;
 bool Total_Error_Flag = FALSE;
 bool Dig_Switch_Flag = FALSE;
@@ -1676,10 +1676,30 @@ INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
 					}
 				}
 				break;
-			case Tem_Offset:
+		case Tem_Show_Enable:
 				if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
 					if(step == 0)
 						dt = Start_DelayTime_Select;
+					else if(step == 1){
+						step = 0;
+						temshowenable_update_flag = TRUE;
+					}	
+				}
+				if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
+					if(step == 0){
+						step = 1;
+					}
+					else if(step == 1){
+						Current_TEMShowEnble++;
+						if(Current_TEMShowEnble > 1)
+							Current_TEMShowEnble = 0;
+					}
+				}
+				break;
+		case Tem_Offset:
+				if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
+					if(step == 0)
+						dt = Tem_Show_Enable;
 					else if(step == 1){
 						step = 0;
 						temoffset_update_flag = TRUE;
@@ -1918,7 +1938,6 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
-	
 	leddisplay_scan(Dig_Switch_Flag,&step);
 	Dig_Switch_Flag = !Dig_Switch_Flag;
 
@@ -2147,7 +2166,7 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	else{
 		HP_Error_Delay_Count = 0;
 	}
-	if( NTC_TEM_Value > Current_TemAlarmHighLimitValue && TEM_Error_Exist_Flag == FALSE && !Parameter_Set_Flag && Relay_Output_Flag){
+	if( (NTC_TEM_Value > Current_TemAlarmHighLimitValue || NTC_TEM_Value < Current_TemAlarmLowLimitValue) && TEM_Error_Exist_Flag == FALSE && !Parameter_Set_Flag && Relay_Output_Flag && Current_TEMAlarmEnable == 1){
 		if(++Tem_Alarm_Delay_Count == Tem_Alarm_DelayTime ){
 			Tem_Alarm_Delay_Count = 0;
 			TEM_Error_Exist_Flag = TRUE;

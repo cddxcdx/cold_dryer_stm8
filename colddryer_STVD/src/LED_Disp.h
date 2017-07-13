@@ -9,6 +9,7 @@ typedef enum{
 	Tem_AlarmLowLimit_Set,
 	Tem_Alarm_Enable,
 	Tem_Offset,
+	Tem_Show_Enable,
 	Start_DelayTime_Select,
 	Other
 }parametersettingstate_e;
