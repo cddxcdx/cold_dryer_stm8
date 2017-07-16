@@ -40,19 +40,6 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-
-#define E_Error_DelayTime 3000
-#define LP_Error_DelayTime 3000
-#define HP_Error_DelayTime 3000
-#define RemoteControl_Start_DelayTime 1000
-#define RemoteControl_Stop_DelayTime 1000
-#define StartStop_KEY_DelayTime 100
-#define Set_KEY_DelayTime 3000
-#define Tem_Alarm_DelayTime 900000
-#define Tem_Alarm_Reset_DelayTime 10000
-#define Tem_Update_DelayTime 500
-
-#define NTC_ADC_COUNT_UPLIMIT 8
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 const uint16_t TEMP_TABLE[] =//NTC B:3980 R:10K
@@ -1521,16 +1508,18 @@ uint16_t E_Error_Delay_Count = 0,\
 				Set_KEY_Delay_Count = 0,\
 				Tem_Update_Delay_Count = 0,\
 				Run_LED_FlashFREQ_Delay_Count;
-uint32_t Tem_Alarm_Delay_Count = 0,Tem_Alarm_Reset_Count = 0,Run_LED_Flash_Delay_Count = 0;
+uint32_t Tem_Alarm_Delay_Count = 0,\
+				Tem_Alarm_Reset_Count = 0,\
+				Run_LED_Flash_Delay_Count = 0,\
+				ParameterMode_Autoquit_Count = 0;
 bool E_Error_Exist_Flag = FALSE,LP_Error_Exist_Flag = FALSE,HP_Error_Exist_Flag = FALSE,TEM_Error_Exist_Flag = FALSE;
 bool Total_Error_Flag = FALSE;
 bool Dig_Switch_Flag = FALSE;
 bool Tem_Update_Flag = FALSE;
 bool Relay_Output_Flag = FALSE;
 bool Run_LED_Flash_Flag = FALSE;
-
 bool StartStop_KeyLock_Flag = FALSE;
-
+bool ColdDryerStatus_Update_Flag = FALSE;
 uint8_t step = 0;
 
 /* Private function prototypes -----------------------------------------------*/
@@ -1612,7 +1601,12 @@ INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+
 	if(Parameter_Set_Flag){
+		if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)\
+			||!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
+				ParameterMode_Autoquit_Count = 0;
+		}
 		switch(dt){
 			case Tem_Show:
 				break;
@@ -2194,6 +2188,8 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 		GPIO_WriteLow(RelayControl_PORT,RelayControl_PIN);
 		Relay_Output_Flag = 0;
 		Run_LED_Flash_Flag = 0;
+		Current_ColdDryerStatus = 0;
+		ColdDryerStatus_Update_Flag = TRUE;
 	}
 	//
 	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Start_PIN) && !Total_Error_Flag){
@@ -2203,6 +2199,8 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 				Run_LED_Flash_Flag = TRUE;
 				GPIO_WriteLow(Run_LED_PORT, Run_LED_PIN);
 				Relay_Output_Flag = TRUE;
+				Current_ColdDryerStatus = 1;
+				ColdDryerStatus_Update_Flag = TRUE;
 			}
 		}
 	}
@@ -2217,6 +2215,8 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 				GPIO_WriteHigh(Run_LED_PORT, Run_LED_PIN);
 				GPIO_WriteLow(RelayControl_PORT,RelayControl_PIN);	
 				Relay_Output_Flag = FALSE;
+				Current_ColdDryerStatus = 0;
+				ColdDryerStatus_Update_Flag = TRUE;
 			}
 		}
 	}
@@ -2244,14 +2244,17 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 			if(!Relay_Output_Flag && !Total_Error_Flag){
 				Run_LED_Flash_Flag = TRUE;
 				GPIO_WriteLow(Run_LED_PORT, Run_LED_PIN);
-				//GPIO_WriteHigh(RelayControl_PORT,RelayControl_PIN);
-				Relay_Output_Flag = !Relay_Output_Flag;
+				Relay_Output_Flag = TRUE;
+				Current_ColdDryerStatus = 1;
+				ColdDryerStatus_Update_Flag = TRUE;
 			}
 			else if(Relay_Output_Flag){
 				Run_LED_Flash_Flag = FALSE;
 				GPIO_WriteHigh(Run_LED_PORT, Run_LED_PIN);
 				GPIO_WriteLow(RelayControl_PORT,RelayControl_PIN);	
-				Relay_Output_Flag = !Relay_Output_Flag;
+				Relay_Output_Flag = FALSE;
+				Current_ColdDryerStatus = 0;
+				ColdDryerStatus_Update_Flag = TRUE;
 			}
 		}
 	}
@@ -2295,6 +2298,17 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 		Run_LED_Flash_Delay_Count = 0;
 		Run_LED_FlashFREQ_Delay_Count = 0;
 	}
+	
+	//ParameterMode AutoQuit
+	if(Parameter_Set_Flag){
+		if(++ParameterMode_Autoquit_Count == ParameterMode_Autoquit_Delaytime){
+			ParameterMode_Autoquit_Count = 0;
+			Parameter_Set_Flag = FALSE;
+			dt = Tem_Show;
+		}
+	}
+	else
+		ParameterMode_Autoquit_Count = 0;
 	/* Cleat Interrupt Pending bit */
   TIM4_ClearITPendingBit(TIM4_IT_UPDATE);
  }

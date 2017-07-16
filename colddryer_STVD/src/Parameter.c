@@ -7,9 +7,9 @@ EEPROM int8_t TEMAlarmLowLimitSetting @TEMAlarmLowLimitSetting_MEM;
 EEPROM int8_t TEMOffsetSetting @TEMOffsetSetting_MEM;
 EEPROM int8_t TEMAlarmEnable @TEMAlarmEnable_MEM;
 EEPROM int8_t StartDelayTime @StartDelayTime_MEM;
-
 EEPROM uint8_t FisrtStart_Flag @FisrtStart_Flag_MEM;
 EEPROM int8_t TEMShowEnble @TEMShowEnble_MEM;
+EEPROM uint8_t ColdDryerStatus @ColdDryerStatus_MEM;
 
 int8_t Current_TemAlarmHighLimitValue = 0;
 int8_t Current_TemAlarmLowLimitValue = 0;
@@ -17,6 +17,7 @@ int8_t Current_TEMOffsetSetting = 0;
 int8_t Current_TEMAlarmEnable = 0;
 int8_t Current_StartDelayTimeIndex = 0;
 int8_t Current_TEMShowEnble = 0;
+uint8_t Current_ColdDryerStatus = 0;
 
 bool temalarmhighlimitsetting_update_flag = FALSE;
 bool temalarmlowlimitsetting_update_flag = FALSE;
@@ -57,6 +58,12 @@ void EE_Parameters_Read(void){
 	Current_TEMAlarmEnable = TEMAlarmEnable;
 	Current_StartDelayTimeIndex = StartDelayTime;
 	Current_TEMShowEnble = TEMShowEnble;
+	Current_ColdDryerStatus = ColdDryerStatus;
+	//autorun
+	if(Current_ColdDryerStatus == 1){
+		Relay_Output_Flag = TRUE;
+		Run_LED_Flash_Flag =TRUE;
+	}
 }		
 
 void task_parameterssetting(void){
@@ -99,6 +106,14 @@ void task_parameterssetting(void){
 		startdelaytimeselect_update_flag = FALSE;
 		FLASH_Unlock(FLASH_MEMTYPE_DATA );//解锁, 将设定值写入内部EEPROM
 		FLASH_ProgramByte(StartDelayTime_MEM, Current_StartDelayTimeIndex);
+		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
+		FLASH_Unlock(FLASH_MEMTYPE_DATA );//上锁
+	}
+	//autorun
+	if(ColdDryerStatus_Update_Flag){
+		 ColdDryerStatus_Update_Flag = FALSE;
+		FLASH_Unlock(FLASH_MEMTYPE_DATA );//解锁, 将设定值写入内部EEPROM
+		FLASH_ProgramByte(ColdDryerStatus_MEM, Current_ColdDryerStatus);
 		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
 		FLASH_Unlock(FLASH_MEMTYPE_DATA );//上锁
 	}

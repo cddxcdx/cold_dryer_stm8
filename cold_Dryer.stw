@@ -8,5 +8,5 @@ Filename=colddryer_stvd\colddryer_stvd.stp
 Dependencies=
 [Options]
 ActiveProject=colddryer_stvd
-ActiveConfig=Debug
+ActiveConfig=Release
 AddSortedElements=1

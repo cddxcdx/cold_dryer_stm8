@@ -14,6 +14,8 @@
 #define StartDelayTime_MEM			  		0x4005   // 启动延时限制设定值
 #define TEMShowEnble_MEM              0x4006
 
+#define ColdDryerStatus_MEM           0x4020
+
 #define TEMAlarmHighLimit_defaultvalue 20
 #define TEMAlarmLowLimit_defaultvalue -5
 #define TEMAlarmEnable_defaultvalue 1
@@ -36,6 +38,7 @@ extern int8_t Current_TEMOffsetSetting;
 extern int8_t Current_TEMAlarmEnable;
 extern int8_t Current_StartDelayTimeIndex;
 extern int8_t Current_TEMShowEnble;
+extern uint8_t Current_ColdDryerStatus;
 
 extern bool temalarmhighlimitsetting_update_flag;
 extern bool temalarmlowlimitsetting_update_flag;

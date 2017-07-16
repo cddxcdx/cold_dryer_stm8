@@ -39,7 +39,23 @@ extern uint16_t NTC_Conversion_Value;
 extern int16_t NTC_TEM_Value;
 extern bool Parameter_Set_Flag;
 extern bool Tem_Update_Flag;
+extern bool Relay_Output_Flag;
+extern bool Run_LED_Flash_Flag;
+extern bool ColdDryerStatus_Update_Flag;
 /* Exported macro ------------------------------------------------------------*/
+#define E_Error_DelayTime 3000
+#define LP_Error_DelayTime 3000
+#define HP_Error_DelayTime 3000
+#define RemoteControl_Start_DelayTime 1000
+#define RemoteControl_Stop_DelayTime 1000
+#define StartStop_KEY_DelayTime 100
+#define Set_KEY_DelayTime 3000
+#define Tem_Alarm_DelayTime 900000
+#define Tem_Alarm_Reset_DelayTime 10000
+#define Tem_Update_DelayTime 500
+#define ParameterMode_Autoquit_Delaytime 180000
+
+#define NTC_ADC_COUNT_UPLIMIT 8
 /* Exported functions ------------------------------------------------------- */
 
 #ifdef _COSMIC_
