@@ -44,8 +44,8 @@
 #define E_Error_DelayTime 3000
 #define LP_Error_DelayTime 3000
 #define HP_Error_DelayTime 3000
-#define RemoteControl_Start_DelayTime 3000
-#define RemoteControl_Stop_DelayTime 3000
+#define RemoteControl_Start_DelayTime 1000
+#define RemoteControl_Stop_DelayTime 1000
 #define StartStop_KEY_DelayTime 100
 #define Set_KEY_DelayTime 3000
 #define Tem_Alarm_DelayTime 900000
@@ -2189,8 +2189,11 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Start_PIN) && !Total_Error_Flag){
 		if(++RemoteControl_Start_Delay_Count == RemoteControl_Start_DelayTime ){
 			RemoteControl_Start_Delay_Count = 0;
-			GPIO_WriteLow(Run_LED_PORT, Run_LED_PIN);
-			GPIO_WriteHigh(RelayControl_PORT,RelayControl_PIN);
+			if(!Relay_Output_Flag){
+				Run_LED_Flash_Flag = TRUE;
+				GPIO_WriteLow(Run_LED_PORT, Run_LED_PIN);
+				Relay_Output_Flag = TRUE;
+			}
 		}
 	}
 	else{
@@ -2199,8 +2202,12 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Stop_PIN)){
 		if(++RemoteControl_Stop_Delay_Count == RemoteControl_Stop_DelayTime){
 			RemoteControl_Stop_Delay_Count = 0;
-			GPIO_WriteHigh(Run_LED_PORT, Run_LED_PIN);
-			GPIO_WriteLow(RelayControl_PORT,RelayControl_PIN);
+			if(Relay_Output_Flag){
+				Run_LED_Flash_Flag = FALSE;
+				GPIO_WriteHigh(Run_LED_PORT, Run_LED_PIN);
+				GPIO_WriteLow(RelayControl_PORT,RelayControl_PIN);	
+				Relay_Output_Flag = FALSE;
+			}
 		}
 	}
 	else{
