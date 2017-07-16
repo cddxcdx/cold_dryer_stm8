@@ -1519,9 +1519,8 @@ uint16_t E_Error_Delay_Count = 0,\
 				StartStop_KEY_Delay_Count = 0,\
 				Set_KEY_Delay_Count = 0,\
 				Tem_Update_Delay_Count = 0,\
-				Run_LED_Flash_Delay_Count = 0,
 				Run_LED_FlashFREQ_Delay_Count;
-uint32_t Tem_Alarm_Delay_Count = 0;
+uint32_t Tem_Alarm_Delay_Count = 0,Run_LED_Flash_Delay_Count = 0;
 bool E_Error_Exist_Flag = FALSE,LP_Error_Exist_Flag = FALSE,HP_Error_Exist_Flag = FALSE,TEM_Error_Exist_Flag = FALSE;
 bool Total_Error_Flag = FALSE;
 bool Dig_Switch_Flag = FALSE;
@@ -2262,7 +2261,7 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	
 	//RUN LED FLASH
 	if(Run_LED_Flash_Flag){
-		if(++Run_LED_Flash_Delay_Count == StartDelayTimeList[Current_StartDelayTimeIndex]*1000)
+		if(++Run_LED_Flash_Delay_Count == (uint32_t)StartDelayTimeList[Current_StartDelayTimeIndex]*1000)
 		{
 			Run_LED_Flash_Flag = FALSE;
 			GPIO_WriteLow(Run_LED_PORT, Run_LED_PIN);
