@@ -2167,6 +2167,7 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 		if(++Tem_Alarm_Delay_Count == Tem_Alarm_DelayTime ){
 			Tem_Alarm_Delay_Count = 0;
 			TEM_Error_Exist_Flag = TRUE;
+			TEM_Error_Flash_Flag = FALSE;
 			GPIO_WriteLow(Tem_LED_PORT,Tem_LED_PIN);
 		}
 	}

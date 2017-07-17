@@ -44,7 +44,7 @@ ptn_Child33=Bar-32
 
 [WorkState_v1_2.DockState.Bar-0]
 BarID=59419
-Bars=38
+Bars=20
 Bar#0=0
 Bar#1=59647
 Bar#2=0
@@ -65,24 +65,6 @@ Bar#16=0
 Bar#17=32768
 Bar#18=0
 Bar#19=0
-Bar#20=0
-Bar#21=0
-Bar#22=0
-Bar#23=0
-Bar#24=0
-Bar#25=0
-Bar#26=0
-Bar#27=0
-Bar#28=0
-Bar#29=0
-Bar#30=0
-Bar#31=0
-Bar#32=0
-Bar#33=0
-Bar#34=0
-Bar#35=0
-Bar#36=0
-Bar#37=0
 Style=0
 ExStyle=0
 PrevFloating=False
@@ -1261,7 +1243,7 @@ ptn_Child2=ChildFrames
 
 [WorkState_v1_2.Frames.MainFrame]
 WindowPlacement=MCAAAAAACAAAAAAADAAAAAAAPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPHLAAAAAAEHAAAAAAEGEAAAAADBDAAAAA
-Title=ST Visual Develop - cold_Dryer.stw - [stm8s_it.h]
+Title=ST Visual Develop - cold_Dryer.stw - [stm8s_it.c]
 
 [WorkState_v1_2.Frames.ChildFrames]
 ptn_Child1=Document-0
@@ -1303,8 +1285,8 @@ ptn_Child1=ViewFrame-0
 DocPathName=colddryer_stvd\stm8s_it.c
 DocumentString=
 DocTemplateIndex=0
-WindowPlacement=MCAAAAAAAAAAAAAABAAAAAAAPPPPPPPPPPPPPPPPIPPPPPPPCOPPPPPPLEAAAAAALEAAAAAAOLDAAAAABHBAAAAA
-IsActiveChildFrame=False
+WindowPlacement=MCAAAAAACAAAAAAADAAAAAAAPPPPPPPPPPPPPPPPIPPPPPPPCOPPPPPPLEAAAAAALEAAAAAAOLDAAAAABHBAAAAA
+IsActiveChildFrame=True
 IsFrameVisible=True
 
 [WorkState_v1_2.Frames.ChildFrames.Document-3]
@@ -1347,8 +1329,8 @@ ptn_Child1=ViewFrame-0
 DocPathName=colddryer_stvd\stm8s_it.h
 DocumentString=
 DocTemplateIndex=0
-WindowPlacement=MCAAAAAACAAAAAAADAAAAAAAPPPPPPPPPPPPPPPPIPPPPPPPCOPPPPPPAAAAAAAAAAAAAAAADHDAAAAAGCBAAAAA
-IsActiveChildFrame=True
+WindowPlacement=MCAAAAAAAAAAAAAABAAAAAAAPPPPPPPPPPPPPPPPIPPPPPPPCOPPPPPPAAAAAAAAAAAAAAAADHDAAAAAGCBAAAAA
+IsActiveChildFrame=False
 IsFrameVisible=True
 
 [WorkState_v1_2.Frames.ChildFrames.Document-7]
