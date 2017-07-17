@@ -4,7 +4,11 @@
 void IO_Init(void)
 {
 	//define LED pins
-	GPIO_Init(Run_LED_PORT,(Run_LED_PIN|Electricalfail_LED_PIN|Tem_LED_PIN|Lowpressure_LED_PIN|Highpressure_LED_PIN),GPIO_MODE_OUT_PP_HIGH_FAST );
+	GPIO_Init(Run_LED_PORT,Run_LED_PIN,GPIO_MODE_OUT_PP_HIGH_FAST);
+	GPIO_Init(Electricalfail_LED_PORT,Electricalfail_LED_PIN,GPIO_MODE_OUT_PP_HIGH_FAST);
+	GPIO_Init(Tem_LED_PORT,Tem_LED_PIN,GPIO_MODE_OUT_PP_HIGH_FAST);
+	GPIO_Init(Lowpressure_LED_PORT,Lowpressure_LED_PIN,GPIO_MODE_OUT_PP_HIGH_FAST);
+	GPIO_Init(Highpressure_LED_PORT,Highpressure_LED_PIN,GPIO_MODE_OUT_PP_HIGH_FAST);
 	//define key input pins
 	GPIO_Init(StartStop_KEY_PORT,(StartStop_KEY_PIN|Set_KEY_PIN),GPIO_MODE_IN_FL_IT);
 	EXTI_SetExtIntSensitivity(EXTI_PORT_GPIOA, EXTI_SENSITIVITY_FALL_ONLY);
@@ -101,22 +105,50 @@ void WDG_Init(void){
   IWDG_ReloadCounter();	
 }
 
+static void Self_Check(void){
+	GPIO_WriteLow(Run_LED_PORT,Run_LED_PIN);
+	GPIO_WriteLow(Electricalfail_LED_PORT,Electricalfail_LED_PIN);
+	GPIO_WriteLow(Tem_LED_PORT,Tem_LED_PIN);
+	GPIO_WriteLow(Lowpressure_LED_PORT,Lowpressure_LED_PIN);
+	GPIO_WriteLow(Highpressure_LED_PORT,Highpressure_LED_PIN);
+
+	GPIO_WriteLow(LED_Disp_a_PORT,LED_Disp_a_PIN);
+	GPIO_WriteLow(LED_Disp_b_PORT,LED_Disp_b_PIN);
+	GPIO_WriteLow(LED_Disp_c_PORT,LED_Disp_c_PIN);
+	GPIO_WriteLow(LED_Disp_d_PORT,LED_Disp_d_PIN);
+	GPIO_WriteLow(LED_Disp_e_PORT,LED_Disp_e_PIN);
+	GPIO_WriteLow(LED_Disp_f_PORT,LED_Disp_f_PIN);
+	GPIO_WriteLow(LED_Disp_g_PORT,LED_Disp_g_PIN);
+	GPIO_WriteLow(LED_Disp_dp_PORT,LED_Disp_dp_PIN);
+	
+	GPIO_WriteLow(LED_Disp_Dig2_PORT,LED_Disp_Dig2_PIN);
+	GPIO_WriteLow(LED_Disp_Dig1_PORT,LED_Disp_Dig1_PIN);
+}
+
+static Delay_s(uint16_t interval){
+	uint16_t i,j;
+	for(i = 0;i < interval;i++)
+		for(j = 0;j < 3000;j++);
+}
+
 void system_init(void){
 	CLK_Init();
 	IO_Init();
 	ADC_Init();
 	Timer_Init();
-	WDG_Init();
 	
+	Self_Check();
+	Delay_s(3000);
+	IO_Init();
+	
+	WDG_Init();
 	enableInterrupts();
 }
 
 
 /*Followed for test*/
-void LED_TEST(void){
-	GPIO_WriteLow(Run_LED_PORT,(Run_LED_PIN|Electricalfail_LED_PIN|Tem_LED_PIN|Lowpressure_LED_PIN|Highpressure_LED_PIN));
-}
 
+/*
 void LEDDisplay_TEST(void){
 	GPIO_WriteLow(LED_Disp_Dig1_PORT,(LED_Disp_b_PIN|LED_Disp_a_PIN|LED_Disp_f_PIN|LED_Disp_d_PIN|LED_Disp_g_PIN|LED_Disp_dp_PIN));
 	GPIO_WriteLow(LED_Disp_Dig2_PORT,(LED_Disp_c_PIN));
@@ -147,4 +179,4 @@ void Input_test(void){
 			GPIO_WriteLow(Lowpressure_LED_PORT,Lowpressure_LED_PIN);
 		else
 			GPIO_WriteHigh(Lowpressure_LED_PORT,Lowpressure_LED_PIN);
-}
+}*/
