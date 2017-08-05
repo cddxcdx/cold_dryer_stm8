@@ -11,6 +11,7 @@ typedef enum{
 	Tem_Offset,
 	Tem_Show_Enable,
 	Start_DelayTime_Select,
+	Tem_HighAlarm_Autostop,
 	Other
 }parametersettingstate_e;
 

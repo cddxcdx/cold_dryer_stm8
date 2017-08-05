@@ -1675,7 +1675,7 @@ INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
 		case Tem_Show_Enable:
 				if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
 					if(step == 0)
-						dt = Start_DelayTime_Select;
+						dt = Tem_HighAlarm_Autostop;//Start_DelayTime_Select;
 					else if(step == 1){
 						step = 0;
 						temshowenable_update_flag = TRUE;
@@ -1709,6 +1709,26 @@ INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
 						Current_TEMOffsetSetting++;
 						if(Current_TEMOffsetSetting > TemOffset_UpLimit)
 							Current_TEMOffsetSetting = TemOffset_DownLimit;
+					}
+				}
+				break;
+			case Tem_HighAlarm_Autostop:
+				if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
+					if(step == 0)
+						dt = Start_DelayTime_Select;
+					else if(step == 1){
+						step = 0;
+						temhighalarmautostop_update_flag = TRUE;
+					}	
+				}
+				if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
+					if(step == 0){
+						step = 1;
+					}
+					else if(step == 1){
+						Current_TEMHighAlarmAutostop++;
+						if(Current_TEMHighAlarmAutostop > 1)
+							Current_TEMHighAlarmAutostop = 0;
 					}
 				}
 				break;
@@ -2182,11 +2202,13 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	}
 	else if( (NTC_TEM_Value <= Current_TemAlarmHighLimitValue && NTC_TEM_Value >= Current_TemAlarmLowLimitValue) && TEM_Error_Exist_Flag && !Parameter_Set_Flag && Relay_Output_Flag && Current_TEMAlarmEnable == 1){
 		Tem_Alarm_Delay_Count = 0;
-		if(++Tem_Alarm_Reset_Count == Tem_Alarm_Reset_DelayTime ){
-			Tem_Alarm_Reset_Count = 0;
-			TEM_Error_Exist_Flag = FALSE;
-			TEM_Error_Flash_Flag = FALSE;
-			GPIO_WriteHigh(Tem_LED_PORT,Tem_LED_PIN);
+		if(Current_TEMHighAlarmAutostop == 0){
+			if(++Tem_Alarm_Reset_Count == Tem_Alarm_Reset_DelayTime ){
+				Tem_Alarm_Reset_Count = 0;
+				TEM_Error_Exist_Flag = FALSE;
+				TEM_Error_Flash_Flag = FALSE;
+				GPIO_WriteHigh(Tem_LED_PORT,Tem_LED_PIN);
+			}
 		}
 	}
 	else{
@@ -2203,7 +2225,10 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 		
 	//	(TEM_Error_Exist_Flag)||
 	/*Total Error*/	
-	Total_Error_Flag = (HP_Error_Exist_Flag)||(LP_Error_Exist_Flag)||(E_Error_Exist_Flag);
+	Total_Error_Flag = (TEM_Error_Exist_Flag&&(Current_TEMHighAlarmAutostop == 1))
+											||(HP_Error_Exist_Flag)
+											||(LP_Error_Exist_Flag)
+											||(E_Error_Exist_Flag);
 	
 	if(Total_Error_Flag && Relay_Output_Flag){
 		GPIO_WriteHigh(Run_LED_PORT, Run_LED_PIN);

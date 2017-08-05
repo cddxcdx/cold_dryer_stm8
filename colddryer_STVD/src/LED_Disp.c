@@ -5,7 +5,8 @@
 parametersettingstate_e dt = Tem_Show;
 uint8_t StartDelayTimeList[3] = {5,60,120};
 
-static void TemOffset(uint8_t dig, uint8_t* step){
+static void 
+TemOffset(uint8_t dig, uint8_t* step){
 	char first_dig = 0, second_dig = 0;
 
 	if(Current_TEMOffsetSetting >= -9 && Current_TEMOffsetSetting < 0){
@@ -33,7 +34,8 @@ static void TemOffset(uint8_t dig, uint8_t* step){
 	}
 }
 
-static void TemShowEnable(uint8_t dig, uint8_t* step){
+static void 
+TemShowEnable(uint8_t dig, uint8_t* step){
 	char first_dig = 0, second_dig = 0;
 	if(Current_TEMShowEnble == 0){
 		first_dig = 0;
@@ -59,7 +61,8 @@ static void TemShowEnable(uint8_t dig, uint8_t* step){
 	}
 }
 
-static void TemAlarmEnable(uint8_t dig, uint8_t* step){
+static void 
+TemAlarmEnable(uint8_t dig, uint8_t* step){
 	char first_dig = 0, second_dig = 0;
 	if(Current_TEMAlarmEnable == 0){
 		first_dig = 0;
@@ -85,7 +88,35 @@ static void TemAlarmEnable(uint8_t dig, uint8_t* step){
 	}
 }
 
-static void StartDelayTimeSelect(uint8_t dig, uint8_t* step){
+static void 
+TemHighAlarmAutostop(uint8_t dig, uint8_t* step){
+	char first_dig = 0, second_dig = 0;
+	if(Current_TEMHighAlarmAutostop == 0){
+		first_dig = 0;
+		second_dig = 'N';
+	}
+	else if(Current_TEMHighAlarmAutostop == 1){
+		first_dig = 0;
+		second_dig = 'Y';
+	}
+	if(dig == 1){
+		if(*step == 0)
+			LD_number_T
+		else if(*step == 1)
+			LED_SEGCODE(first_dig,1)
+	}
+	else if(dig == 2){
+		if(*step == 0){
+			LD_number_A
+			LD_number_DP
+		}
+		else if(*step == 1)
+			LED_SEGCODE(second_dig,2)
+	}
+}
+
+static void 
+StartDelayTimeSelect(uint8_t dig, uint8_t* step){
 	char first_dig = 0, second_dig = 0;
   if(Current_StartDelayTimeIndex == 2){
 		first_dig = 2;
@@ -112,7 +143,8 @@ static void StartDelayTimeSelect(uint8_t dig, uint8_t* step){
 	}
 }
 
-static void TemAlarmHighLimitSet(uint8_t dig, uint8_t* step){
+static void 
+TemAlarmHighLimitSet(uint8_t dig, uint8_t* step){
 	char first_dig = 0, second_dig = 0;
 
 	if(Current_TemAlarmHighLimitValue >= -9 && Current_TemAlarmHighLimitValue < 0){
@@ -140,7 +172,8 @@ static void TemAlarmHighLimitSet(uint8_t dig, uint8_t* step){
 	}
 }
 
-static void TemAlarmLowLimitSet(uint8_t dig, uint8_t* step){
+static void 
+TemAlarmLowLimitSet(uint8_t dig, uint8_t* step){
 	char first_dig = 0, second_dig = 0;
 
 	if(Current_TemAlarmLowLimitValue >= -9 && Current_TemAlarmLowLimitValue < 0){
@@ -168,7 +201,8 @@ static void TemAlarmLowLimitSet(uint8_t dig, uint8_t* step){
 	}
 }
 
-static void TemShow(uint8_t dig){
+static void 
+TemShow(uint8_t dig){
 	char first_dig = 0, second_dig = 0;
 	
 	if(NTC_TEM_Value >= -9 && NTC_TEM_Value < 0){
@@ -193,7 +227,8 @@ static void TemShow(uint8_t dig){
 		LED_SEGCODE(second_dig,2)
 }
 
-static void leddisplay_show(uint8_t dig, uint8_t* step){
+static void 
+leddisplay_show(uint8_t dig, uint8_t* step){
 	switch(dt){
 		case Tem_Show:
 			if(Current_TEMShowEnble)
@@ -221,6 +256,9 @@ static void leddisplay_show(uint8_t dig, uint8_t* step){
 			break;
 		case Start_DelayTime_Select:
 			StartDelayTimeSelect(dig,step);
+			break;
+		case Tem_HighAlarm_Autostop:
+			TemHighAlarmAutostop(dig,step);
 			break;
 		default:
 			break;

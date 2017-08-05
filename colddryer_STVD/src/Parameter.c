@@ -9,6 +9,7 @@ EEPROM int8_t TEMAlarmEnable @TEMAlarmEnable_MEM;
 EEPROM int8_t StartDelayTime @StartDelayTime_MEM;
 EEPROM uint8_t FisrtStart_Flag @FisrtStart_Flag_MEM;
 EEPROM int8_t TEMShowEnble @TEMShowEnble_MEM;
+EEPROM int8_t TEMHighAlarmAutostop @TEMHighAlarmAutostop_MEM;
 EEPROM uint8_t ColdDryerStatus @ColdDryerStatus_MEM;
 
 int8_t Current_TemAlarmHighLimitValue = 0;
@@ -18,6 +19,7 @@ int8_t Current_TEMAlarmEnable = 0;
 int8_t Current_StartDelayTimeIndex = 0;
 int8_t Current_TEMShowEnble = 0;
 uint8_t Current_ColdDryerStatus = 0;
+int8_t Current_TEMHighAlarmAutostop = 0;
 
 bool temalarmhighlimitsetting_update_flag = FALSE;
 bool temalarmlowlimitsetting_update_flag = FALSE;
@@ -25,6 +27,7 @@ bool temalarmenable_update_flag = FALSE;
 bool temoffset_update_flag = FALSE;
 bool startdelaytimeselect_update_flag = FALSE;
 bool temshowenable_update_flag = FALSE;
+bool temhighalarmautostop_update_flag = FALSE;
 
 void EE_Parameters_FirstStart(void){
 	if(FisrtStart_Flag != 0xAA){
@@ -40,6 +43,8 @@ void EE_Parameters_FirstStart(void){
 		FLASH_ProgramByte(StartDelayTime_MEM, StartDelayTimeIndex_defaultvalue);
 		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
 		FLASH_ProgramByte(TEMShowEnble_MEM, TEMShowEnble_defaultvalue);
+		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
+		FLASH_ProgramByte(TEMHighAlarmAutostop_MEM, TEMHighAlarmAutostop_defaultvalue);
 		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
 		
 		FLASH_ProgramByte(FisrtStart_Flag_MEM, 0xAA);
@@ -59,6 +64,7 @@ void EE_Parameters_Read(void){
 	Current_StartDelayTimeIndex = StartDelayTime;
 	Current_TEMShowEnble = TEMShowEnble;
 	Current_ColdDryerStatus = ColdDryerStatus;
+	Current_TEMHighAlarmAutostop = TEMHighAlarmAutostop;
 	//autorun
 	if(Current_ColdDryerStatus == 1){
 		Relay_Output_Flag = TRUE;
@@ -106,6 +112,13 @@ void task_parameterssetting(void){
 		startdelaytimeselect_update_flag = FALSE;
 		FLASH_Unlock(FLASH_MEMTYPE_DATA );//解锁, 将设定值写入内部EEPROM
 		FLASH_ProgramByte(StartDelayTime_MEM, Current_StartDelayTimeIndex);
+		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
+		FLASH_Unlock(FLASH_MEMTYPE_DATA );//上锁
+	}
+	if(temhighalarmautostop_update_flag){
+		temhighalarmautostop_update_flag = FALSE;
+		FLASH_Unlock(FLASH_MEMTYPE_DATA );//解锁, 将设定值写入内部EEPROM
+		FLASH_ProgramByte(TEMHighAlarmAutostop_MEM, Current_TEMHighAlarmAutostop);
 		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
 		FLASH_Unlock(FLASH_MEMTYPE_DATA );//上锁
 	}
