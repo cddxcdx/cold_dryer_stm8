@@ -3354,7 +3354,7 @@ _PARAMETER_H_	src\parameter.h	2;"	macro
 _RAISONANCE_	stm8s_stdperiph_driver\inc\stm8s.h	84;"	macro
 __I	stm8s_stdperiph_driver\inc\stm8s.h	205;"	macro
 __IO	stm8s_stdperiph_driver\inc\stm8s.h	207;"	macro
-__MODS0__	d:\program files\cosmic\fse_compilers\cxstm8\hstm8\mods0.h	11;"	macro
+__MODS0__	..\..\..\..\..\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\mods0.h	11;"	macro
 __O	stm8s_stdperiph_driver\inc\stm8s.h	206;"	macro
 __STM8S_ADC1_H	stm8s_stdperiph_driver\inc\stm8s_adc1.h	29;"	macro
 __STM8S_AWU_H	stm8s_stdperiph_driver\inc\stm8s_awu.h	30;"	macro

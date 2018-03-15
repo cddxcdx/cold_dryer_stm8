@@ -2,6 +2,9 @@
 #define _PARAMETER_H_
 #include "stm8s.h"
 
+#define SoftwareVersion 1.1
+#define HardwareVersion 1.3
+
 //温度校正增量
 #define TEM_OFFSET 1       //1相当于1℃，基准，一次加减都是 这个值
 

@@ -21,7 +21,7 @@ main(){
 			Tem_Update_Flag = FALSE;
 			for(i = 0; i < 1451; i++){
 				if(NTC_Conversion_Value > Resolution)NTC_Conversion_Value = Resolution;
-				if(TEMP_TABLE[i] > (uint16_t)((float)NTC_Conversion_Value/Resolution*VREF)){
+				if(TEMP_TABLE[i] < (uint16_t)((float)NTC_Conversion_Value/Resolution*VREF)){
 					NTC_TEM_Value = (int16_t)((i - 250 + 5)/10) + Current_TEMOffsetSetting;
 					ADC1_ITConfig(ADC1_IT_EOCIE, ENABLE);
 					break;
