@@ -777,7 +777,7 @@ EEPROM	stm8s_stdperiph_driver\inc\stm8s.h	130;"	macro
 EEPROM	stm8s_stdperiph_driver\inc\stm8s.h	144;"	macro
 EEPROM_EEC_IRQHandler	stm8s_it.h	138;"	prototype	signature:(void)
 EE_Parameters_FirstStart	src\parameter.c	42;"	function	signature:(void)
-EE_Parameters_Read	src\parameter.c	67;"	function	signature:(void)
+EE_Parameters_Read	src\parameter.c	69;"	function	signature:(void)
 EE_Parameters_Read	src\parameter.h	61;"	prototype	signature:(void)
 EGR	stm8s_stdperiph_driver\inc\stm8s.h	1062;"	member	struct:TIM4_struct
 EGR	stm8s_stdperiph_driver\inc\stm8s.h	1124;"	member	struct:TIM5_struct
@@ -3437,7 +3437,7 @@ startdelaytimeselect_update_flag	src\parameter.c	30;"	variable
 step	stm8s_it.c	1525;"	variable
 system_init	src\periph_init.c	134;"	function	signature:(void)
 system_init	src\periph_init.h	65;"	prototype	signature:(void)
-task_parameterssetting	src\parameter.c	86;"	function	signature:(void)
+task_parameterssetting	src\parameter.c	88;"	function	signature:(void)
 task_parameterssetting	src\parameter.h	62;"	prototype	signature:(void)
 temalarmenable_update_flag	src\parameter.c	28;"	variable
 temalarmhighlimitsetting_update_flag	src\parameter.c	26;"	variable
