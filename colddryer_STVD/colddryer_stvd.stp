@@ -61,7 +61,7 @@ String.100.2=STM8 Cosmic
 String.100.3=ST7 Metrowerks V1.1
 String.100.4=Raisonance
 String.101.0=STM8 Cosmic
-String.102.0=C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8
+String.102.0=
 String.103.0=
 String.104.0=Hstm8
 String.105.0=Lib
@@ -137,20 +137,20 @@ String.2.0=Performing Custom Build on $(InputFile)
 String.6.0=2017,6,3,12,58,29
 
 [Root.Config.1.Settings.0]
-String.6.0=2017,6,3,12,58,29
+String.6.0=2018,3,16,23,47,38
 String.100.0=ST Assembler Linker
 String.100.1=ST7 Cosmic
 String.100.2=STM8 Cosmic
 String.100.3=ST7 Metrowerks V1.1
 String.100.4=Raisonance
 String.101.0=STM8 Cosmic
-String.102.0=C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8
+String.102.0=C:\Program Files\COSMIC\FSE_Compilers\CXSTM8
 String.103.0=
 String.104.0=Hstm8
 String.105.0=Lib
 String.106.0=Release
 String.107.0=colddryer_stvd.elf
-Int.108=0
+Int.108=1
 
 [Root.Config.1.Settings.1]
 String.6.0=2017,6,3,12,58,29

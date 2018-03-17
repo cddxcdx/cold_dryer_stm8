@@ -17,6 +17,7 @@
 #define StartDelayTime_MEM			  		0x4005   // 启动延时限制设定值
 #define TEMShowEnble_MEM              0x4006
 #define TEMHighAlarmAutostop_MEM			0x4007   // 温度高报警是否停机，1:表示需要；0:表示不报警
+#define LANControlEnable_MEM					0x4008   // 远程控制使能, 1:使能; 0:表示不使能
 
 #define ColdDryerStatus_MEM           0x4020
 
@@ -27,6 +28,7 @@
 #define StartDelayTimeIndex_defaultvalue 0
 #define TEMShowEnble_defaultvalue 1
 #define TEMHighAlarmAutostop_defaultvalue 0
+#define LANControlEnable_defaultvalue 0
 
 #define TemAlarm_UpLimit 99 //<100
 #define TemAlarm_DownLimit -9 //>=0 
@@ -43,8 +45,9 @@ extern int8_t Current_TEMOffsetSetting;
 extern int8_t Current_TEMAlarmEnable;
 extern int8_t Current_StartDelayTimeIndex;
 extern int8_t Current_TEMShowEnble;
-extern uint8_t Current_ColdDryerStatus;
+extern int8_t Current_ColdDryerStatus;
 extern int8_t Current_TEMHighAlarmAutostop;
+extern int8_t Current_LANControlEnable;
 
 extern bool temalarmhighlimitsetting_update_flag;
 extern bool temalarmlowlimitsetting_update_flag;
@@ -53,7 +56,7 @@ extern bool temoffset_update_flag;
 extern bool temshowenable_update_flag;
 extern bool startdelaytimeselect_update_flag;
 extern bool temhighalarmautostop_update_flag;
-
+extern bool lancontrolenable_update_flag;
 //void EE_Parameters_FirstStart(void);
 void EE_Parameters_Read(void);
 void task_parameterssetting(void);

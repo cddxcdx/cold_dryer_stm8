@@ -46,7 +46,7 @@ extern bool ColdDryerStatus_Update_Flag;
 #define E_Error_DelayTime 3000
 #define LP_Error_DelayTime 3000
 #define HP_Error_DelayTime 3000
-#define RemoteControl_Start_DelayTime 1000
+#define RemoteControl_Start_DelayTime 5000
 #define RemoteControl_Stop_DelayTime 1000
 #define StartStop_KEY_DelayTime 100
 #define Set_KEY_DelayTime 3000

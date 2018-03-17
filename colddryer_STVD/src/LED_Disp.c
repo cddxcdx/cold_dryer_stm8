@@ -6,6 +6,35 @@ parametersettingstate_e dt = Tem_Show;
 uint8_t StartDelayTimeList[3] = {5,60,120};
 
 static void 
+LANControlEnable(uint8_t dig, uint8_t* step){
+	char first_dig = 0, second_dig = 0;
+
+	if(Current_LANControlEnable == 0){
+		first_dig = 0;
+		second_dig = 'N';
+	}
+	else if(Current_LANControlEnable == 1){
+		first_dig = 0;
+		second_dig = 'Y';
+	}
+	
+	if(dig == 1){
+		if(*step == 0)
+			LD_number_L
+		else if(*step == 1)
+			LED_SEGCODE(first_dig,1)
+	}
+	else if(dig == 2){
+		if(*step == 0){
+			LD_number_C
+			LD_number_DP
+		}
+		else if(*step == 1)
+			LED_SEGCODE(second_dig,2)
+	}
+}
+
+static void 
 TemOffset(uint8_t dig, uint8_t* step){
 	char first_dig = 0, second_dig = 0;
 
@@ -259,6 +288,9 @@ leddisplay_show(uint8_t dig, uint8_t* step){
 			break;
 		case Tem_HighAlarm_Autostop:
 			TemHighAlarmAutostop(dig,step);
+			break;
+		case LANControl_Enable:
+			LANControlEnable(dig,step);
 			break;
 		default:
 			break;

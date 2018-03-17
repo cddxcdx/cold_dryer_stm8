@@ -10,7 +10,8 @@ EEPROM int8_t StartDelayTime @StartDelayTime_MEM;
 EEPROM uint8_t FisrtStart_Flag @FisrtStart_Flag_MEM;
 EEPROM int8_t TEMShowEnble @TEMShowEnble_MEM;
 EEPROM int8_t TEMHighAlarmAutostop @TEMHighAlarmAutostop_MEM;
-EEPROM uint8_t ColdDryerStatus @ColdDryerStatus_MEM;
+EEPROM int8_t ColdDryerStatus @ColdDryerStatus_MEM;
+EEPROM int8_t LANControlEnable @LANControlEnable_MEM;
 
 int8_t Current_TemAlarmHighLimitValue = 0;
 int8_t Current_TemAlarmLowLimitValue = 0;
@@ -18,8 +19,9 @@ int8_t Current_TEMOffsetSetting = 0;
 int8_t Current_TEMAlarmEnable = 0;
 int8_t Current_StartDelayTimeIndex = 0;
 int8_t Current_TEMShowEnble = 0;
-uint8_t Current_ColdDryerStatus = 0;
+int8_t Current_ColdDryerStatus = 0;
 int8_t Current_TEMHighAlarmAutostop = 0;
+int8_t Current_LANControlEnable = 0;
 
 bool temalarmhighlimitsetting_update_flag = FALSE;
 bool temalarmlowlimitsetting_update_flag = FALSE;
@@ -28,6 +30,14 @@ bool temoffset_update_flag = FALSE;
 bool startdelaytimeselect_update_flag = FALSE;
 bool temshowenable_update_flag = FALSE;
 bool temhighalarmautostop_update_flag = FALSE;
+bool lancontrolenable_update_flag = FALSE;
+
+static void ConfigUpdate(uint16_t mem, int8_t var){
+	FLASH_Unlock(FLASH_MEMTYPE_DATA );//解锁, 将设定值写入内部EEPROM
+	FLASH_ProgramByte(mem,var);
+	FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
+	FLASH_Unlock(FLASH_MEMTYPE_DATA );//上锁
+}
 
 void EE_Parameters_FirstStart(void){
 	if(FisrtStart_Flag != 0xAA){
@@ -65,6 +75,7 @@ void EE_Parameters_Read(void){
 	Current_TEMShowEnble = TEMShowEnble;
 	Current_ColdDryerStatus = ColdDryerStatus;
 	Current_TEMHighAlarmAutostop = TEMHighAlarmAutostop;
+	Current_LANControlEnable = LANControlEnable;
 	//autorun
 	if(Current_ColdDryerStatus == 1){
 		Relay_Output_Flag = TRUE;
@@ -75,59 +86,39 @@ void EE_Parameters_Read(void){
 void task_parameterssetting(void){
 	if(temalarmhighlimitsetting_update_flag){
 		temalarmhighlimitsetting_update_flag = FALSE;
-		FLASH_Unlock(FLASH_MEMTYPE_DATA );//解锁, 将设定值写入内部EEPROM
-		FLASH_ProgramByte(TEMAlarmHighLimitSetting_MEM, Current_TemAlarmHighLimitValue);
-		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
-		FLASH_Unlock(FLASH_MEMTYPE_DATA );//上锁
+		ConfigUpdate(TEMAlarmHighLimitSetting_MEM, Current_TemAlarmHighLimitValue);
 	}
 	if(temalarmlowlimitsetting_update_flag){
 		temalarmlowlimitsetting_update_flag = FALSE;
-		FLASH_Unlock(FLASH_MEMTYPE_DATA );//解锁, 将设定值写入内部EEPROM
-		FLASH_ProgramByte(TEMAlarmLowLimitSetting_MEM, Current_TemAlarmLowLimitValue);
-		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
-		FLASH_Unlock(FLASH_MEMTYPE_DATA );//上锁
+		ConfigUpdate(TEMAlarmLowLimitSetting_MEM, Current_TemAlarmLowLimitValue);
 	}
 	if(temalarmenable_update_flag){
 		temalarmenable_update_flag = FALSE;
-		FLASH_Unlock(FLASH_MEMTYPE_DATA );//解锁, 将设定值写入内部EEPROM
-		FLASH_ProgramByte(TEMAlarmEnable_MEM, Current_TEMAlarmEnable);
-		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
-		FLASH_Unlock(FLASH_MEMTYPE_DATA );//上锁
+		ConfigUpdate(TEMAlarmEnable_MEM, Current_TEMAlarmEnable);
 	}	
 	if(temoffset_update_flag){
 		temoffset_update_flag = FALSE;
-		FLASH_Unlock(FLASH_MEMTYPE_DATA );//解锁, 将设定值写入内部EEPROM
-		FLASH_ProgramByte(TEMOffsetSetting_MEM, Current_TEMOffsetSetting);
-		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
-		FLASH_Unlock(FLASH_MEMTYPE_DATA );//上锁
+		ConfigUpdate(TEMOffsetSetting_MEM, Current_TEMOffsetSetting);
 	}	
 	if(temshowenable_update_flag){
 		temshowenable_update_flag = FALSE;
-		FLASH_Unlock(FLASH_MEMTYPE_DATA );//解锁, 将设定值写入内部EEPROM
-		FLASH_ProgramByte(TEMShowEnble_MEM, Current_TEMShowEnble);
-		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
-		FLASH_Unlock(FLASH_MEMTYPE_DATA );//上锁
+		ConfigUpdate(TEMShowEnble_MEM, Current_TEMShowEnble);
 	}
 	if(startdelaytimeselect_update_flag){
 		startdelaytimeselect_update_flag = FALSE;
-		FLASH_Unlock(FLASH_MEMTYPE_DATA );//解锁, 将设定值写入内部EEPROM
-		FLASH_ProgramByte(StartDelayTime_MEM, Current_StartDelayTimeIndex);
-		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
-		FLASH_Unlock(FLASH_MEMTYPE_DATA );//上锁
+		ConfigUpdate(StartDelayTime_MEM, Current_StartDelayTimeIndex);
 	}
 	if(temhighalarmautostop_update_flag){
 		temhighalarmautostop_update_flag = FALSE;
-		FLASH_Unlock(FLASH_MEMTYPE_DATA );//解锁, 将设定值写入内部EEPROM
-		FLASH_ProgramByte(TEMHighAlarmAutostop_MEM, Current_TEMHighAlarmAutostop);
-		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
-		FLASH_Unlock(FLASH_MEMTYPE_DATA );//上锁
+		ConfigUpdate(TEMHighAlarmAutostop_MEM, Current_TEMHighAlarmAutostop);
 	}
 	//autorun
 	if(ColdDryerStatus_Update_Flag){
-		 ColdDryerStatus_Update_Flag = FALSE;
-		FLASH_Unlock(FLASH_MEMTYPE_DATA );//解锁, 将设定值写入内部EEPROM
-		FLASH_ProgramByte(ColdDryerStatus_MEM, Current_ColdDryerStatus);
-		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
-		FLASH_Unlock(FLASH_MEMTYPE_DATA );//上锁
+		ColdDryerStatus_Update_Flag = FALSE;
+		ConfigUpdate(ColdDryerStatus_MEM, Current_ColdDryerStatus);
+	}
+	if(lancontrolenable_update_flag){
+		lancontrolenable_update_flag = FALSE;
+		ConfigUpdate(LANControlEnable_MEM, Current_LANControlEnable);
 	}
 }

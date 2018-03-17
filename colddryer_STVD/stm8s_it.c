@@ -1526,6 +1526,20 @@ uint8_t step = 0;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
+static void ErrorReset(void)
+{
+	if(HP_Error_Exist_Flag || LP_Error_Exist_Flag || E_Error_Exist_Flag || TEM_Error_Exist_Flag){
+		HP_Error_Exist_Flag = 0;
+		LP_Error_Exist_Flag = 0;
+		E_Error_Exist_Flag = 0;
+		TEM_Error_Exist_Flag = 0;
+		TEM_Error_Flash_Flag = FALSE;
+		GPIO_WriteHigh(Highpressure_LED_PORT,Highpressure_LED_PIN);
+		GPIO_WriteHigh(Electricalfail_LED_PORT,Electricalfail_LED_PIN);
+		GPIO_WriteHigh(Lowpressure_LED_PORT,Lowpressure_LED_PIN);
+		GPIO_WriteHigh(Tem_LED_PORT,Tem_LED_PIN);
+	}
+}
 /* Public functions ----------------------------------------------------------*/
 
 #ifdef _COSMIC_
@@ -1734,10 +1748,8 @@ INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
 				break;
 			case Start_DelayTime_Select:
 				if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
-					if(step == 0){
-						dt = Tem_Show;
-						Parameter_Set_Flag = FALSE;
-					}
+					if(step == 0)
+						dt = LANControl_Enable;
 					else if(step == 1){
 						step = 0;
 						startdelaytimeselect_update_flag = TRUE;
@@ -1751,6 +1763,28 @@ INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
 						Current_StartDelayTimeIndex++;
 						if(Current_StartDelayTimeIndex > StartDelayTimeIndex_UpLimit)
 							Current_StartDelayTimeIndex = StartDelayTimeIndex_DownLimit;
+					}
+				}
+				break;
+			case LANControl_Enable:
+				if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
+					if(step == 0){
+						dt = Tem_Show;//Start_DelayTime_Select;
+						Parameter_Set_Flag = FALSE;
+					}
+					else if(step == 1){
+						step = 0;
+						lancontrolenable_update_flag = TRUE;
+					}	
+				}
+				if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
+					if(step == 0){
+						step = 1;
+					}
+					else if(step == 1){
+						Current_LANControlEnable++;
+						if(Current_LANControlEnable > 1)
+							Current_LANControlEnable = 0;
 					}
 				}
 				break;
@@ -2152,8 +2186,8 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
      it is recommended to set a breakpoint on the following instruction.
   */
 	/*Error Alarm*/
-	if(!GPIO_ReadInputPin(Error_Input_PORT,E_Error_PIN)){
-		if(++E_Error_Delay_Count == E_Error_DelayTime && E_Error_Exist_Flag == FALSE){
+	if(!GPIO_ReadInputPin(Error_Input_PORT,E_Error_PIN) && E_Error_Exist_Flag == FALSE){
+		if(++E_Error_Delay_Count == E_Error_DelayTime){
 			E_Error_Delay_Count = 0;
 			E_Error_Exist_Flag = TRUE;
 			GPIO_WriteLow(Electricalfail_LED_PORT,Electricalfail_LED_PIN);
@@ -2162,8 +2196,8 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	else{
 		E_Error_Delay_Count = 0;
 	}
-	if(!GPIO_ReadInputPin(Error_Input_PORT,LP_Error_PIN)){
-		if(++LP_Error_Delay_Count == LP_Error_DelayTime && LP_Error_Exist_Flag == FALSE){
+	if(!GPIO_ReadInputPin(Error_Input_PORT,LP_Error_PIN) && LP_Error_Exist_Flag == FALSE){
+		if(++LP_Error_Delay_Count == LP_Error_DelayTime){
 			LP_Error_Delay_Count = 0;
 			LP_Error_Exist_Flag = TRUE;
 			GPIO_WriteLow(Lowpressure_LED_PORT,Lowpressure_LED_PIN);
@@ -2172,8 +2206,8 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	else{
 		LP_Error_Delay_Count = 0;
 	}
-	if(!GPIO_ReadInputPin(Error_Input_PORT,HP_Error_PIN)){
-		if(++HP_Error_Delay_Count == HP_Error_DelayTime && HP_Error_Exist_Flag == FALSE){
+	if(!GPIO_ReadInputPin(Error_Input_PORT,HP_Error_PIN) && HP_Error_Exist_Flag == FALSE){
+		if(++HP_Error_Delay_Count == HP_Error_DelayTime){
 			HP_Error_Delay_Count = 0;
 			HP_Error_Exist_Flag = TRUE;
 			GPIO_WriteLow(Highpressure_LED_PORT,Highpressure_LED_PIN);
@@ -2238,7 +2272,7 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 		Current_ColdDryerStatus = 0;
 		ColdDryerStatus_Update_Flag = TRUE;
 	}
-	//
+	/*
 	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Start_PIN) && !Total_Error_Flag){
 		if(++RemoteControl_Start_Delay_Count == RemoteControl_Start_DelayTime ){
 			RemoteControl_Start_Delay_Count = 0;
@@ -2270,33 +2304,25 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	else{
 		RemoteControl_Stop_Delay_Count = 0;
 	}
-	//
-	if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN) && !Parameter_Set_Flag && !StartStop_KeyLock_Flag){
-		
-		if(++StartStop_KEY_Delay_Count == StartStop_KEY_DelayTime){
-			StartStop_KEY_Delay_Count = 0;
-			StartStop_KeyLock_Flag = TRUE;
-			
-			if(HP_Error_Exist_Flag || LP_Error_Exist_Flag || E_Error_Exist_Flag || TEM_Error_Exist_Flag){
-				HP_Error_Exist_Flag = 0;
-				LP_Error_Exist_Flag = 0;
-				E_Error_Exist_Flag = 0;
-				TEM_Error_Exist_Flag = 0;
-				TEM_Error_Flash_Flag = FALSE;
-				GPIO_WriteHigh(Highpressure_LED_PORT,Highpressure_LED_PIN);
-				GPIO_WriteHigh(Electricalfail_LED_PORT,Electricalfail_LED_PIN);
-				GPIO_WriteHigh(Lowpressure_LED_PORT,Lowpressure_LED_PIN);
-				GPIO_WriteHigh(Tem_LED_PORT,Tem_LED_PIN);
+	*/
+	if(Current_LANControlEnable){
+		if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Start_PIN) && !Total_Error_Flag){
+			if(!Relay_Output_Flag){
+					if(++RemoteControl_Start_Delay_Count == RemoteControl_Start_DelayTime ){
+						RemoteControl_Start_Delay_Count = 0;
+						
+						Run_LED_Flash_Flag = TRUE;
+						GPIO_WriteLow(Run_LED_PORT, Run_LED_PIN);
+						Relay_Output_Flag = TRUE;
+						Current_ColdDryerStatus = 1;
+						ColdDryerStatus_Update_Flag = TRUE;
+					}
 			}
+		}
+		else if(GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Start_PIN)){
+			RemoteControl_Start_Delay_Count = 0;
 			
-			if(!Relay_Output_Flag && !Total_Error_Flag){
-				Run_LED_Flash_Flag = TRUE;
-				GPIO_WriteLow(Run_LED_PORT, Run_LED_PIN);
-				Relay_Output_Flag = TRUE;
-				Current_ColdDryerStatus = 1;
-				ColdDryerStatus_Update_Flag = TRUE;
-			}
-			else if(Relay_Output_Flag){
+			if(Relay_Output_Flag){
 				Run_LED_Flash_Flag = FALSE;
 				GPIO_WriteHigh(Run_LED_PORT, Run_LED_PIN);
 				GPIO_WriteLow(RelayControl_PORT,RelayControl_PIN);	
@@ -2305,11 +2331,50 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 				ColdDryerStatus_Update_Flag = TRUE;
 			}
 		}
-	}
-	else if(GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
+		
+		if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN) && !Parameter_Set_Flag && !StartStop_KeyLock_Flag){
+			if(++StartStop_KEY_Delay_Count == StartStop_KEY_DelayTime){
+				StartStop_KEY_Delay_Count = 0;
+				StartStop_KeyLock_Flag = TRUE;
+				ErrorReset();
+			}
+		}
+		else if(GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
 			StartStop_KEY_Delay_Count = 0;
 			StartStop_KeyLock_Flag = FALSE;
-	}	
+		}
+	}
+	else{
+		if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN) && !Parameter_Set_Flag && !StartStop_KeyLock_Flag){
+			
+			if(++StartStop_KEY_Delay_Count == StartStop_KEY_DelayTime){
+				StartStop_KEY_Delay_Count = 0;
+				StartStop_KeyLock_Flag = TRUE;
+				
+				ErrorReset();
+				
+				if(!Relay_Output_Flag && !Total_Error_Flag){
+					Run_LED_Flash_Flag = TRUE;
+					GPIO_WriteLow(Run_LED_PORT, Run_LED_PIN);
+					Relay_Output_Flag = TRUE;
+					Current_ColdDryerStatus = 1;
+					ColdDryerStatus_Update_Flag = TRUE;
+				}
+				else if(Relay_Output_Flag){
+					Run_LED_Flash_Flag = FALSE;
+					GPIO_WriteHigh(Run_LED_PORT, Run_LED_PIN);
+					GPIO_WriteLow(RelayControl_PORT,RelayControl_PIN);	
+					Relay_Output_Flag = FALSE;
+					Current_ColdDryerStatus = 0;
+					ColdDryerStatus_Update_Flag = TRUE;
+				}
+			}
+		}
+		else if(GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
+				StartStop_KEY_Delay_Count = 0;
+				StartStop_KeyLock_Flag = FALSE;
+		}	
+	}
 	
 	if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN) && !Parameter_Set_Flag){
 		if(++Set_KEY_Delay_Count == Set_KEY_DelayTime){

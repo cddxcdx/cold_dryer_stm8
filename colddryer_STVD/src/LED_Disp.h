@@ -12,6 +12,7 @@ typedef enum{
 	Tem_Show_Enable,
 	Start_DelayTime_Select,
 	Tem_HighAlarm_Autostop,
+	LANControl_Enable,
 	Other
 }parametersettingstate_e;
 
