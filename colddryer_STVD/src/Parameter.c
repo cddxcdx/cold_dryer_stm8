@@ -4,6 +4,8 @@
 //EEPROM uint8_t UsingTimes @UsingTimes_MEM;
 EEPROM int8_t TEMAlarmHighLimitSetting @TEMAlarmHighLimitSetting_MEM;
 EEPROM int8_t TEMAlarmLowLimitSetting @TEMAlarmLowLimitSetting_MEM;
+EEPROM int8_t TEMLowLimitRecoverSetting @TEMLowLimitRecoverSetting_MEM;
+EEPROM int8_t TEMLowLimitRunAutoControl @TEMLowLimitRunAutoControl_MEM;
 EEPROM int8_t TEMOffsetSetting @TEMOffsetSetting_MEM;
 EEPROM int8_t TEMAlarmEnable @TEMAlarmEnable_MEM;
 EEPROM int8_t StartDelayTime @StartDelayTime_MEM;
@@ -15,6 +17,8 @@ EEPROM int8_t LANControlEnable @LANControlEnable_MEM;
 
 int8_t Current_TemAlarmHighLimitValue = 0;
 int8_t Current_TemAlarmLowLimitValue = 0;
+int8_t Current_TemLowLimitRecoverValue = 0;
+int8_t Current_TemLowLimitRunAutoControl = 0;
 int8_t Current_TEMOffsetSetting = 0;
 int8_t Current_TEMAlarmEnable = 0;
 int8_t Current_StartDelayTimeIndex = 0;
@@ -25,6 +29,8 @@ int8_t Current_LANControlEnable = 0;
 
 bool temalarmhighlimitsetting_update_flag = FALSE;
 bool temalarmlowlimitsetting_update_flag = FALSE;
+bool temlowlimitrecoversetting_update_flag = FALSE;
+bool temlowlimitrunauto_update_flag = FALSE;
 bool temalarmenable_update_flag = FALSE;
 bool temoffset_update_flag = FALSE;
 bool startdelaytimeselect_update_flag = FALSE;
@@ -46,6 +52,10 @@ void EE_Parameters_FirstStart(void){
 		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
 		FLASH_ProgramByte(TEMAlarmLowLimitSetting_MEM, TEMAlarmLowLimit_defaultvalue);
 		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
+		FLASH_ProgramByte(TEMLowLimitRecoverSetting_MEM, TEMLowLimitRecoverSetting_defaultvalue);
+		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
+		FLASH_ProgramByte(TEMLowLimitRunAutoControl_MEM, TEMLowLimitRunAutoControl_defaultvalue);
+		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
 		FLASH_ProgramByte(TEMOffsetSetting_MEM, TEMOffset_defaultvalue);
 		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
 		FLASH_ProgramByte(TEMAlarmEnable_MEM, TEMAlarmEnable_defaultvalue);
@@ -55,6 +65,8 @@ void EE_Parameters_FirstStart(void){
 		FLASH_ProgramByte(TEMShowEnble_MEM, TEMShowEnble_defaultvalue);
 		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
 		FLASH_ProgramByte(TEMHighAlarmAutostop_MEM, TEMHighAlarmAutostop_defaultvalue);
+		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
+		FLASH_ProgramByte(LANControlEnable_MEM, LANControlEnable_defaultvalue);
 		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
 		
 		FLASH_ProgramByte(FisrtStart_Flag_MEM, 0xAA);
@@ -69,6 +81,7 @@ void EE_Parameters_Read(void){
 	
 	Current_TemAlarmHighLimitValue = TEMAlarmHighLimitSetting;
 	Current_TemAlarmLowLimitValue = TEMAlarmLowLimitSetting;
+	Current_TemLowLimitRecoverValue = TEMLowLimitRecoverSetting;
 	Current_TEMOffsetSetting = TEMOffsetSetting;
 	Current_TEMAlarmEnable = TEMAlarmEnable;
 	Current_StartDelayTimeIndex = StartDelayTime;
@@ -91,6 +104,14 @@ void task_parameterssetting(void){
 	if(temalarmlowlimitsetting_update_flag){
 		temalarmlowlimitsetting_update_flag = FALSE;
 		ConfigUpdate(TEMAlarmLowLimitSetting_MEM, Current_TemAlarmLowLimitValue);
+	}
+	if(temlowlimitrecoversetting_update_flag){
+		temlowlimitrecoversetting_update_flag = FALSE;
+		ConfigUpdate(TEMLowLimitRecoverSetting_MEM, Current_TemLowLimitRecoverValue);
+	}
+	if(temlowlimitrunauto_update_flag){
+		temlowlimitrunauto_update_flag = FALSE;
+		ConfigUpdate(TEMLowLimitRunAutoControl_MEM, Current_TemLowLimitRunAutoControl);
 	}
 	if(temalarmenable_update_flag){
 		temalarmenable_update_flag = FALSE;

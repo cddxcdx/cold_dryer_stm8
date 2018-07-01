@@ -34,3 +34,8 @@ JLinkLog.txt
 
 */Debug
 */Release
+*/*.txt
+*/*.pdb
+*/*.dep
+*.wdb
+*.wed

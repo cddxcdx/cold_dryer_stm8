@@ -231,6 +231,61 @@ TemAlarmLowLimitSet(uint8_t dig, uint8_t* step){
 }
 
 static void 
+TemLowLimitRecover(uint8_t dig, uint8_t* step){
+	char first_dig = 0, second_dig = 0;
+	if(Current_TemLowLimitRecoverValue >= -9 && Current_TemLowLimitRecoverValue < 0){
+		first_dig = '-';
+		second_dig = 0 - (Current_TemLowLimitRecoverValue%10);
+	}
+	else if(Current_TemLowLimitRecoverValue >= 0 && Current_TemLowLimitRecoverValue <= 99){
+		first_dig = Current_TemLowLimitRecoverValue/10;
+		second_dig = Current_TemLowLimitRecoverValue%10;	
+	}
+	
+	if(dig == 1){
+		if(*step == 0)
+			LD_number_T
+		else if(*step == 1)
+			LED_SEGCODE(first_dig,1)
+	}
+	else if(dig == 2){
+		if(*step == 0){
+			LD_number_1
+			LD_number_DP
+		}
+		else if(*step == 1)
+			LED_SEGCODE(second_dig,2)
+	}
+}
+
+static void 
+TemLowLimitRunAutoControl(uint8_t dig, uint8_t* step){
+	char first_dig = 0, second_dig = 0;
+	if(Current_TemLowLimitRunAutoControl == 0){
+		first_dig = 0;
+		second_dig = 'N';
+	}
+	else if(Current_TemLowLimitRunAutoControl == 1){
+		first_dig = 0;
+		second_dig = 'Y';
+	}
+	if(dig == 1){
+		if(*step == 0)
+			LD_number_T
+		else if(*step == 1)
+			LED_SEGCODE(first_dig,1)
+	}
+	else if(dig == 2){
+		if(*step == 0){
+			LD_number_F
+			LD_number_DP
+		}
+		else if(*step == 1)
+			LED_SEGCODE(second_dig,2)
+	}
+}
+
+static void 
 TemShow(uint8_t dig){
 	char first_dig = 0, second_dig = 0;
 	

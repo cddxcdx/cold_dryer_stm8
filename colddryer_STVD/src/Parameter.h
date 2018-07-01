@@ -18,11 +18,15 @@
 #define TEMShowEnble_MEM              0x4006
 #define TEMHighAlarmAutostop_MEM			0x4007   // 温度高报警是否停机，1:表示需要；0:表示不报警
 #define LANControlEnable_MEM					0x4008   // 远程控制使能, 1:使能; 0:表示不使能
+#define TEMLowLimitRecoverSetting_MEM 0x4009   // 温度下限报警恢复设定值
+#define TEMLowLimitRunAutoControl_MEM 0x400A   // 露点下限报警恢复自动启动压缩机
 
 #define ColdDryerStatus_MEM           0x4020
 
 #define TEMAlarmHighLimit_defaultvalue 20
 #define TEMAlarmLowLimit_defaultvalue -5
+#define TEMLowLimitRecoverSetting_defaultvalue -5
+#define TEMLowLimitRunAutoControl_defaultvalue 0
 #define TEMAlarmEnable_defaultvalue 1
 #define TEMOffset_defaultvalue 0
 #define StartDelayTimeIndex_defaultvalue 0
@@ -41,6 +45,8 @@
 
 extern int8_t Current_TemAlarmHighLimitValue;
 extern int8_t Current_TemAlarmLowLimitValue;
+extern int8_t Current_TemLowLimitRunAutoControl;
+extern int8_t Current_TemLowLimitRecoverValue;
 extern int8_t Current_TEMOffsetSetting;
 extern int8_t Current_TEMAlarmEnable;
 extern int8_t Current_StartDelayTimeIndex;
@@ -51,6 +57,8 @@ extern int8_t Current_LANControlEnable;
 
 extern bool temalarmhighlimitsetting_update_flag;
 extern bool temalarmlowlimitsetting_update_flag;
+extern bool temlowlimitrecoversetting_update_flag;
+extern bool temlowlimitrunauto_update_flag;
 extern bool temalarmenable_update_flag;
 extern bool temoffset_update_flag;
 extern bool temshowenable_update_flag;

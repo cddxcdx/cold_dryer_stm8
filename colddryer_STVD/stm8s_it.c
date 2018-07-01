@@ -1512,9 +1512,11 @@ uint32_t Tem_Alarm_Delay_Count = 0,\
 				Tem_Alarm_Reset_Count = 0,\
 				Run_LED_Flash_Delay_Count = 0,\
 				ParameterMode_Autoquit_Count = 0,\
-				TEM_Error_Flash_Delay_Count = 0\
+				TEM_Error_Flash_Delay_Count = 0,\
+				RUNLED_Flash_Delay_Count = 0,\
+				AutoStart_Count = 0 \
 				;
-bool E_Error_Exist_Flag = FALSE,LP_Error_Exist_Flag = FALSE,HP_Error_Exist_Flag = FALSE,TEM_Error_Exist_Flag = FALSE, TEM_Error_Flash_Flag = FALSE;
+bool E_Error_Exist_Flag = FALSE,LP_Error_Exist_Flag = FALSE,HP_Error_Exist_Flag = FALSE,TEM_Error_Exist_Flag = FALSE, TEM_Error_Flash_Flag = FALSE, AutoRun_Flash_Flag = FALSE;
 bool Total_Error_Flag = FALSE;
 bool Dig_Switch_Flag = FALSE;
 bool Tem_Update_Flag = FALSE;
@@ -1534,12 +1536,16 @@ static void ErrorReset(void)
 		E_Error_Exist_Flag = 0;
 		TEM_Error_Exist_Flag = 0;
 		TEM_Error_Flash_Flag = FALSE;
+		
+		AutoRun_Flash_Flag = FALSE; 
+		
 		GPIO_WriteHigh(Highpressure_LED_PORT,Highpressure_LED_PIN);
 		GPIO_WriteHigh(Electricalfail_LED_PORT,Electricalfail_LED_PIN);
 		GPIO_WriteHigh(Lowpressure_LED_PORT,Lowpressure_LED_PIN);
 		GPIO_WriteHigh(Tem_LED_PORT,Tem_LED_PIN);
 	}
 }
+
 /* Public functions ----------------------------------------------------------*/
 
 #ifdef _COSMIC_
@@ -1649,7 +1655,7 @@ INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
 			case Tem_AlarmLowLimit_Set:
 				if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
 					if(step == 0)
-						dt = Tem_Alarm_Enable;
+						dt = Tem_LowLimitRecover_Set;
 					else if(step == 1){
 						step = 0;
 						temalarmlowlimitsetting_update_flag = TRUE;
@@ -1666,6 +1672,46 @@ INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
 					}
 				}
 				break;
+			case Tem_LowLimitRecover_Set:
+				if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
+					if(step == 0)
+						dt = Tem_LowLimitRunAuto_Enable;
+					else if(step == 1){
+						step = 0;
+						temlowlimitrecoversetting_update_flag = TRUE;
+					}	
+				}
+				if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
+					if(step == 0){
+						step = 1;
+					}
+					else if(step == 1){
+						Current_TemLowLimitRecoverValue++;
+						if(Current_TemLowLimitRecoverValue> TemAlarm_UpLimit)
+							Current_TemLowLimitRecoverValue = TemAlarm_DownLimit;
+					}
+				}
+				break;
+			case Tem_LowLimitRunAuto_Enable:
+				if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
+					if(step == 0)
+						dt = Tem_Alarm_Enable;
+					else if(step == 1){
+						step = 0;
+						temlowlimitrunauto_update_flag = TRUE;
+					}	
+				}
+				if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
+					if(step == 0){
+						step = 1;
+					}
+					else if(step == 1){
+						Current_TemLowLimitRunAutoControl++;
+						if(Current_TemLowLimitRunAutoControl> 1)
+							Current_TemLowLimitRunAutoControl = 0;
+					}
+				}
+				break;	
 			case Tem_Alarm_Enable:
 				if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
 					if(step == 0)
@@ -2227,10 +2273,13 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	}
 	else if(NTC_TEM_Value < Current_TemAlarmLowLimitValue && !TEM_Error_Exist_Flag && !Parameter_Set_Flag && Relay_Output_Flag && Current_TEMAlarmEnable == 1){
 		Tem_Alarm_Reset_Count = 0;
-		if(++Tem_Alarm_Delay_Count == Tem_Alarm_DelayTime ){
+		if(++Tem_Alarm_Delay_Count == Tem_LowLimitAlarm_DelayTime ){
 			Tem_Alarm_Delay_Count = 0;
 			TEM_Error_Exist_Flag = TRUE;
 			TEM_Error_Flash_Flag = TRUE;
+			if(Current_TemLowLimitRunAutoControl == 1){
+				AutoRun_Flash_Flag = TRUE;
+			}
 			GPIO_WriteLow(Tem_LED_PORT,Tem_LED_PIN);
 		}
 	}
@@ -2250,13 +2299,38 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 		Tem_Alarm_Reset_Count = 0;
 	}
 	
+	if(Current_TemLowLimitRunAutoControl && AutoRun_Flash_Flag){
+		if(NTC_TEM_Value > Current_TemLowLimitRecoverValue){
+			if(++AutoStart_Count >= AutoStart_DelayTime){
+				AutoStart_Count = 0;
+				TEM_Error_Exist_Flag = FALSE;
+				TEM_Error_Flash_Flag = FALSE;
+				AutoRun_Flash_Flag = FALSE;
+				GPIO_WriteHigh(RelayControl_PORT,RelayControl_PIN);// relay output
+				GPIO_WriteHigh(Tem_LED_PORT,Tem_LED_PIN);
+			}
+		}
+		else{
+			AutoStart_Count = 0;
+		}
+	}
+	else{
+		AutoStart_Count = 0;
+	}
+		
 	if(TEM_Error_Flash_Flag){
-		if(++TEM_Error_Flash_Delay_Count == 500){
+		if(++TEM_Error_Flash_Delay_Count >= 500){
 				TEM_Error_Flash_Delay_Count = 0;
 				GPIO_WriteReverse(Tem_LED_PORT,Tem_LED_PIN);
 			}
 	}
 		
+	if(AutoRun_Flash_Flag){
+		if(++RUNLED_Flash_Delay_Count >= 500){
+				RUNLED_Flash_Delay_Count = 0;
+				GPIO_WriteReverse(Run_LED_PORT,Run_LED_PIN);
+			}
+	}
 	//	(TEM_Error_Exist_Flag)||
 	/*Total Error*/	
 	Total_Error_Flag = (TEM_Error_Exist_Flag&&(Current_TEMHighAlarmAutostop == 1))

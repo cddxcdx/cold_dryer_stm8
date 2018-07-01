@@ -51,7 +51,9 @@ extern bool ColdDryerStatus_Update_Flag;
 #define StartStop_KEY_DelayTime 100
 #define Set_KEY_DelayTime 3000
 #define Tem_Alarm_DelayTime 900000
+#define Tem_LowLimitAlarm_DelayTime 5000
 #define Tem_Alarm_Reset_DelayTime 10000
+#define AutoStart_DelayTime 180000
 #define Tem_Update_DelayTime 500
 #define ParameterMode_Autoquit_Delaytime 180000
 
