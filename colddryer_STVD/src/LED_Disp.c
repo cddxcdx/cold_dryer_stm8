@@ -329,6 +329,12 @@ leddisplay_show(uint8_t dig, uint8_t* step){
 		case Tem_AlarmLowLimit_Set:
 			TemAlarmLowLimitSet(dig,step);
 			break;
+		case Tem_LowLimitRecover_Set:
+			TemLowLimitRecover(dig,step);
+			break;
+		case Tem_LowLimitRunAuto_Enable:
+			TemLowLimitRunAutoControl(dig,step);
+			break;
 		case Tem_Alarm_Enable:
 			TemAlarmEnable(dig,step);
 			break;
