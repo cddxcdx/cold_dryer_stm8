@@ -2277,9 +2277,6 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 			Tem_Alarm_Delay_Count = 0;
 			TEM_Error_Exist_Flag = TRUE;
 			TEM_Error_Flash_Flag = TRUE;
-			if(Current_TemLowLimitRunAutoControl == 1){
-				AutoRun_Flash_Flag = TRUE;
-			}
 			GPIO_WriteLow(Tem_LED_PORT,Tem_LED_PIN);
 		}
 	}
@@ -2298,25 +2295,6 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 		Tem_Alarm_Delay_Count = 0;
 		Tem_Alarm_Reset_Count = 0;
 	}
-	
-	if(Current_TemLowLimitRunAutoControl && AutoRun_Flash_Flag){
-		if(NTC_TEM_Value > Current_TemLowLimitRecoverValue){
-			if(++AutoStart_Count >= AutoStart_DelayTime){
-				AutoStart_Count = 0;
-				TEM_Error_Exist_Flag = FALSE;
-				TEM_Error_Flash_Flag = FALSE;
-				AutoRun_Flash_Flag = FALSE;
-				GPIO_WriteHigh(RelayControl_PORT,RelayControl_PIN);// relay output
-				GPIO_WriteHigh(Tem_LED_PORT,Tem_LED_PIN);
-			}
-		}
-		else{
-			AutoStart_Count = 0;
-		}
-	}
-	else{
-		AutoStart_Count = 0;
-	}
 		
 	if(TEM_Error_Flash_Flag){
 		if(++TEM_Error_Flash_Delay_Count >= 500){
@@ -2324,13 +2302,7 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 				GPIO_WriteReverse(Tem_LED_PORT,Tem_LED_PIN);
 			}
 	}
-		
-	if(AutoRun_Flash_Flag){
-		if(++RUNLED_Flash_Delay_Count >= 500){
-				RUNLED_Flash_Delay_Count = 0;
-				GPIO_WriteReverse(Run_LED_PORT,Run_LED_PIN);
-			}
-	}
+	
 	//	(TEM_Error_Exist_Flag)||
 	/*Total Error*/	
 	Total_Error_Flag = (TEM_Error_Exist_Flag&&(Current_TEMHighAlarmAutostop == 1))
@@ -2345,6 +2317,39 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 		Run_LED_Flash_Flag = 0;
 		Current_ColdDryerStatus = 0;
 		ColdDryerStatus_Update_Flag = TRUE;
+	}
+	
+	if(TEM_Error_Exist_Flag&&(Current_TEMHighAlarmAutostop == 1)){	
+		if(Current_TemLowLimitRunAutoControl == 1){
+				AutoRun_Flash_Flag = TRUE;
+			}
+	}
+	
+	if(AutoRun_Flash_Flag){
+		if(++RUNLED_Flash_Delay_Count >= 500){
+				RUNLED_Flash_Delay_Count = 0;
+				GPIO_WriteReverse(Run_LED_PORT,Run_LED_PIN);
+			}
+	}
+	
+	if(Current_TemLowLimitRunAutoControl && AutoRun_Flash_Flag){
+		if(NTC_TEM_Value > Current_TemLowLimitRecoverValue){
+			if(++AutoStart_Count >= AutoStart_DelayTime){
+				AutoStart_Count = 0;
+				TEM_Error_Exist_Flag = FALSE;
+				TEM_Error_Flash_Flag = FALSE;
+				AutoRun_Flash_Flag = FALSE;
+				GPIO_WriteHigh(RelayControl_PORT,RelayControl_PIN);// relay output
+				GPIO_WriteHigh(Tem_LED_PORT,Tem_LED_PIN);
+				GPIO_WriteLow(Run_LED_PORT,Run_LED_PIN);
+			}
+		}
+		else{
+			AutoStart_Count = 0;
+		}
+	}
+	else{
+		AutoStart_Count = 0;
 	}
 	/*
 	if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Start_PIN) && !Total_Error_Flag){
