@@ -56,6 +56,8 @@ void EE_Parameters_FirstStart(void){
 		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
 		FLASH_ProgramByte(TEMHighAlarmAutostop_MEM, TEMHighAlarmAutostop_defaultvalue);
 		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
+		FLASH_ProgramByte(LANControlEnable_MEM, LANControlEnable_defaultvalue);
+		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
 		
 		FLASH_ProgramByte(FisrtStart_Flag_MEM, 0xAA);
 		FLASH_WaitForLastOperation(FLASH_MEMTYPE_DATA);
