@@ -1,1 +1,0 @@
-# cold_dryer_stm8
