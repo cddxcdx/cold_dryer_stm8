@@ -27,6 +27,8 @@ int8_t Current_ColdDryerStatus = 0;
 int8_t Current_TEMHighAlarmAutostop = 0;
 int8_t Current_LANControlEnable = 0;
 
+int8_t Current_Password = 0;
+
 bool temalarmhighlimitsetting_update_flag = FALSE;
 bool temalarmlowlimitsetting_update_flag = FALSE;
 bool temlowlimitrecoversetting_update_flag = FALSE;
@@ -82,6 +84,7 @@ void EE_Parameters_Read(void){
 	Current_TemAlarmHighLimitValue = TEMAlarmHighLimitSetting;
 	Current_TemAlarmLowLimitValue = TEMAlarmLowLimitSetting;
 	Current_TemLowLimitRecoverValue = TEMLowLimitRecoverSetting;
+	Current_TemLowLimitRunAutoControl = TEMLowLimitRunAutoControl;
 	Current_TEMOffsetSetting = TEMOffsetSetting;
 	Current_TEMAlarmEnable = TEMAlarmEnable;
 	Current_StartDelayTimeIndex = StartDelayTime;

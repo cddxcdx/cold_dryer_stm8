@@ -25,7 +25,7 @@
 
 #define TEMAlarmHighLimit_defaultvalue 20
 #define TEMAlarmLowLimit_defaultvalue -5
-#define TEMLowLimitRecoverSetting_defaultvalue -5
+#define TEMLowLimitRecoverSetting_defaultvalue 5
 #define TEMLowLimitRunAutoControl_defaultvalue 0
 #define TEMAlarmEnable_defaultvalue 1
 #define TEMOffset_defaultvalue 0
@@ -54,6 +54,8 @@ extern int8_t Current_TEMShowEnble;
 extern int8_t Current_ColdDryerStatus;
 extern int8_t Current_TEMHighAlarmAutostop;
 extern int8_t Current_LANControlEnable;
+
+extern int8_t Current_Password;
 
 extern bool temalarmhighlimitsetting_update_flag;
 extern bool temalarmlowlimitsetting_update_flag;

@@ -5,6 +5,29 @@
 parametersettingstate_e dt = Tem_Show;
 uint8_t StartDelayTimeList[3] = {5,60,120};
 
+static void
+PasswordInput(uint8_t dig, uint8_t* step){
+	char first_dig = 0, second_dig = 0;	
+	
+	first_dig = Current_Password/10;
+	second_dig = Current_Password%10;	
+	
+	if(dig == 1){
+		if(*step == 0)
+			LD_number_P
+		else if(*step == 1)
+			LED_SEGCODE(first_dig,1)
+	}
+	else if(dig == 2){
+		if(*step == 0){
+			LD_number_5
+			LD_number_DP
+		}
+		else if(*step == 1)
+			LED_SEGCODE(second_dig,2)
+	}
+}
+
 static void 
 LANControlEnable(uint8_t dig, uint8_t* step){
 	char first_dig = 0, second_dig = 0;
@@ -322,6 +345,9 @@ leddisplay_show(uint8_t dig, uint8_t* step){
 				LED_SEGCODE('-',1)
 				LED_SEGCODE('-',2)
 			}
+			break;
+		case Password_Input:
+			PasswordInput(dig,step);
 			break;
 		case Tem_AlarmHighLimit_Set:
 			TemAlarmHighLimitSet(dig,step);

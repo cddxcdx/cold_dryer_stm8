@@ -1516,7 +1516,7 @@ uint32_t Tem_Alarm_Delay_Count = 0,\
 				RUNLED_Flash_Delay_Count = 0,\
 				AutoStart_Count = 0 \
 				;
-bool E_Error_Exist_Flag = FALSE,LP_Error_Exist_Flag = FALSE,HP_Error_Exist_Flag = FALSE,TEM_Error_Exist_Flag = FALSE, TEM_Error_Flash_Flag = FALSE, AutoRun_Flash_Flag = FALSE;
+bool E_Error_Exist_Flag = FALSE,LP_Error_Exist_Flag = FALSE,HP_Error_Exist_Flag = FALSE,TEM_Error_Exist_Flag = FALSE, TEM_Error_Flash_Flag = FALSE, AutoRun_Flash_Flag = FALSE, AutoStart_Timeout_Flag = FALSE;
 bool Total_Error_Flag = FALSE;
 bool Dig_Switch_Flag = FALSE;
 bool Tem_Update_Flag = FALSE;
@@ -1536,8 +1536,6 @@ static void ErrorReset(void)
 		E_Error_Exist_Flag = 0;
 		TEM_Error_Exist_Flag = 0;
 		TEM_Error_Flash_Flag = FALSE;
-		
-		AutoRun_Flash_Flag = FALSE; 
 		
 		GPIO_WriteHigh(Highpressure_LED_PORT,Highpressure_LED_PIN);
 		GPIO_WriteHigh(Electricalfail_LED_PORT,Electricalfail_LED_PIN);
@@ -1632,10 +1630,35 @@ INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
 		switch(dt){
 			case Tem_Show:
 				break;
+			case Password_Input:
+				if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
+					if(step == 0){
+						dt = Tem_Show;
+						Parameter_Set_Flag = FALSE;
+					}
+					else if(step == 1){
+						step = 0;
+						if(Current_Password == 11){
+							dt = Tem_AlarmHighLimit_Set;
+						}
+						Current_Password = 0;
+					}	
+				}
+				if(!GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
+					if(step == 0){
+						step = 1;
+					}
+					else if(step == 1){
+						Current_Password++;
+						if(Current_Password > 99)
+							Current_Password = 0;
+					}
+				}
+				break;
 			case Tem_AlarmHighLimit_Set:
 				if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
 					if(step == 0)
-						dt = Tem_AlarmLowLimit_Set;
+						dt = Tem_LowLimitRecover_Set;
 					else if(step == 1){
 						step = 0;
 						temalarmhighlimitsetting_update_flag = TRUE;
@@ -1648,14 +1671,14 @@ INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
 					else if(step == 1){
 						Current_TemAlarmHighLimitValue++;
 						if(Current_TemAlarmHighLimitValue > TemAlarm_UpLimit)
-							Current_TemAlarmHighLimitValue = TemAlarm_DownLimit;
+							Current_TemAlarmHighLimitValue = Current_TemAlarmLowLimitValue + 1;
 					}
 				}
 				break;
 			case Tem_AlarmLowLimit_Set:
 				if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
 					if(step == 0)
-						dt = Tem_LowLimitRecover_Set;
+						dt = Tem_LowLimitRunAuto_Enable;
 					else if(step == 1){
 						step = 0;
 						temalarmlowlimitsetting_update_flag = TRUE;
@@ -1667,7 +1690,7 @@ INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
 					}
 					else if(step == 1){
 						Current_TemAlarmLowLimitValue++;
-						if(Current_TemAlarmLowLimitValue > TemAlarm_UpLimit)
+						if(Current_TemAlarmLowLimitValue > (Current_TemAlarmHighLimitValue - 1) || (Current_TemAlarmLowLimitValue > Current_TemLowLimitRecoverValue - 1))
 							Current_TemAlarmLowLimitValue = TemAlarm_DownLimit;
 					}
 				}
@@ -1675,7 +1698,7 @@ INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
 			case Tem_LowLimitRecover_Set:
 				if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN)){
 					if(step == 0)
-						dt = Tem_LowLimitRunAuto_Enable;
+						dt = Tem_AlarmLowLimit_Set;
 					else if(step == 1){
 						step = 0;
 						temlowlimitrecoversetting_update_flag = TRUE;
@@ -1688,7 +1711,7 @@ INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
 					else if(step == 1){
 						Current_TemLowLimitRecoverValue++;
 						if(Current_TemLowLimitRecoverValue> TemAlarm_UpLimit)
-							Current_TemLowLimitRecoverValue = TemAlarm_DownLimit;
+							Current_TemLowLimitRecoverValue = Current_TemAlarmLowLimitValue + 1;
 					}
 				}
 				break;
@@ -1844,6 +1867,9 @@ INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
 		//	break;
 		//	default:
 		//		break;
+	}
+	else{
+		
 	}
 }
 
@@ -2282,7 +2308,7 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	}
 	else if( (NTC_TEM_Value <= Current_TemAlarmHighLimitValue && NTC_TEM_Value >= Current_TemAlarmLowLimitValue) && TEM_Error_Exist_Flag && !Parameter_Set_Flag && Relay_Output_Flag && Current_TEMAlarmEnable == 1){
 		Tem_Alarm_Delay_Count = 0;
-		if(Current_TEMHighAlarmAutostop == 0){
+		if((Current_TEMHighAlarmAutostop == 0 && !TEM_Error_Flash_Flag)||(Current_TemLowLimitRunAutoControl == 0 &&TEM_Error_Flash_Flag)){
 			if(++Tem_Alarm_Reset_Count == Tem_Alarm_Reset_DelayTime ){
 				Tem_Alarm_Reset_Count = 0;
 				TEM_Error_Exist_Flag = FALSE;
@@ -2297,7 +2323,7 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	}
 		
 	if(TEM_Error_Flash_Flag){
-		if(++TEM_Error_Flash_Delay_Count >= 500){
+		if(++TEM_Error_Flash_Delay_Count >= 250){
 				TEM_Error_Flash_Delay_Count = 0;
 				GPIO_WriteReverse(Tem_LED_PORT,Tem_LED_PIN);
 			}
@@ -2305,7 +2331,8 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	
 	//	(TEM_Error_Exist_Flag)||
 	/*Total Error*/	
-	Total_Error_Flag = (TEM_Error_Exist_Flag&&(Current_TEMHighAlarmAutostop == 1))
+	Total_Error_Flag = (TEM_Error_Exist_Flag&&(Current_TEMHighAlarmAutostop == 1)&&(!TEM_Error_Flash_Flag))
+											||(TEM_Error_Exist_Flag&&(Current_TemLowLimitRunAutoControl == 1)&&(TEM_Error_Flash_Flag))
 											||(HP_Error_Exist_Flag)
 											||(LP_Error_Exist_Flag)
 											||(E_Error_Exist_Flag);
@@ -2319,33 +2346,36 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 		ColdDryerStatus_Update_Flag = TRUE;
 	}
 	
-	if(TEM_Error_Exist_Flag&&(Current_TEMHighAlarmAutostop == 1)){	
+	if(TEM_Error_Exist_Flag&&(TEM_Error_Flash_Flag)){	
 		if(Current_TemLowLimitRunAutoControl == 1){
 				AutoRun_Flash_Flag = TRUE;
+				TEM_Error_Flash_Flag = FALSE;
+				TEM_Error_Exist_Flag = FALSE;
+				GPIO_WriteHigh(Tem_LED_PORT,Tem_LED_PIN);
 			}
 	}
 	
 	if(AutoRun_Flash_Flag){
-		if(++RUNLED_Flash_Delay_Count >= 500){
+		if(++RUNLED_Flash_Delay_Count >= 1000){
 				RUNLED_Flash_Delay_Count = 0;
 				GPIO_WriteReverse(Run_LED_PORT,Run_LED_PIN);
 			}
 	}
 	
-	if(Current_TemLowLimitRunAutoControl && AutoRun_Flash_Flag){
-		if(NTC_TEM_Value > Current_TemLowLimitRecoverValue){
-			if(++AutoStart_Count >= AutoStart_DelayTime){
-				AutoStart_Count = 0;
-				TEM_Error_Exist_Flag = FALSE;
-				TEM_Error_Flash_Flag = FALSE;
-				AutoRun_Flash_Flag = FALSE;
-				GPIO_WriteHigh(RelayControl_PORT,RelayControl_PIN);// relay output
-				GPIO_WriteHigh(Tem_LED_PORT,Tem_LED_PIN);
-				GPIO_WriteLow(Run_LED_PORT,Run_LED_PIN);
-			}
+	if(AutoRun_Flash_Flag){
+		if(++AutoStart_Count >= AutoStart_DelayTime && !AutoStart_Timeout_Flag){
+			AutoStart_Timeout_Flag = TRUE;
 		}
-		else{
+		if(NTC_TEM_Value > Current_TemLowLimitRecoverValue && AutoStart_Timeout_Flag){//
 			AutoStart_Count = 0;
+			AutoStart_Timeout_Flag = FALSE;
+			TEM_Error_Exist_Flag = FALSE;
+			TEM_Error_Flash_Flag = FALSE;
+			AutoRun_Flash_Flag = FALSE;
+			Relay_Output_Flag = TRUE;
+			GPIO_WriteHigh(RelayControl_PORT,RelayControl_PIN);// relay output
+			GPIO_WriteHigh(Tem_LED_PORT,Tem_LED_PIN);
+			GPIO_WriteLow(Run_LED_PORT,Run_LED_PIN);
 		}
 	}
 	else{
@@ -2386,7 +2416,7 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	*/
 	if(Current_LANControlEnable){
 		if(!GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Start_PIN) && !Total_Error_Flag){
-			if(!Relay_Output_Flag){
+			if(!Relay_Output_Flag && !AutoRun_Flash_Flag){
 					if(++RemoteControl_Start_Delay_Count == RemoteControl_Start_DelayTime ){
 						RemoteControl_Start_Delay_Count = 0;
 						
@@ -2401,11 +2431,13 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 		else if(GPIO_ReadInputPin(RemoteControl_PORT,RemoteControl_Start_PIN)){
 			RemoteControl_Start_Delay_Count = 0;
 			
-			if(Relay_Output_Flag){
+			if(Relay_Output_Flag || AutoRun_Flash_Flag){
 				Run_LED_Flash_Flag = FALSE;
 				GPIO_WriteHigh(Run_LED_PORT, Run_LED_PIN);
 				GPIO_WriteLow(RelayControl_PORT,RelayControl_PIN);	
 				Relay_Output_Flag = FALSE;
+				AutoRun_Flash_Flag = FALSE;//
+				AutoStart_Timeout_Flag = FALSE;//
 				Current_ColdDryerStatus = 0;
 				ColdDryerStatus_Update_Flag = TRUE;
 			}
@@ -2430,23 +2462,24 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 				StartStop_KEY_Delay_Count = 0;
 				StartStop_KeyLock_Flag = TRUE;
 				
-				ErrorReset();
-				
-				if(!Relay_Output_Flag && !Total_Error_Flag){
+				if(!Relay_Output_Flag && !Total_Error_Flag && !AutoRun_Flash_Flag){
 					Run_LED_Flash_Flag = TRUE;
 					GPIO_WriteLow(Run_LED_PORT, Run_LED_PIN);
 					Relay_Output_Flag = TRUE;
 					Current_ColdDryerStatus = 1;
 					ColdDryerStatus_Update_Flag = TRUE;
 				}
-				else if(Relay_Output_Flag){
+				else if(Relay_Output_Flag || AutoRun_Flash_Flag){
 					Run_LED_Flash_Flag = FALSE;
+					AutoRun_Flash_Flag = FALSE; 
+					AutoStart_Timeout_Flag = FALSE;
 					GPIO_WriteHigh(Run_LED_PORT, Run_LED_PIN);
 					GPIO_WriteLow(RelayControl_PORT,RelayControl_PIN);	
 					Relay_Output_Flag = FALSE;
 					Current_ColdDryerStatus = 0;
 					ColdDryerStatus_Update_Flag = TRUE;
 				}
+				ErrorReset();
 			}
 		}
 		else if(GPIO_ReadInputPin(StartStop_KEY_PORT,StartStop_KEY_PIN)){
@@ -2458,7 +2491,7 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 	if(!GPIO_ReadInputPin(Set_KEY_PORT,Set_KEY_PIN) && !Parameter_Set_Flag){
 		if(++Set_KEY_Delay_Count == Set_KEY_DelayTime){
 			Set_KEY_Delay_Count = 0;
-			dt = Tem_AlarmHighLimit_Set;//switch to Tem_AlarmLimit_Set mode
+			dt = Password_Input;//Tem_AlarmHighLimit_Set;//switch to Tem_AlarmLimit_Set mode
 			Parameter_Set_Flag = TRUE;//
 		}
 	}
