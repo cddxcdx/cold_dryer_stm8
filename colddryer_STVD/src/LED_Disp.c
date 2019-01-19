@@ -325,8 +325,8 @@ TemShow(uint8_t dig){
 		second_dig = 'H';
 	}
 	else if(NTC_TEM_Value < -9){
-		first_dig = 'L';
-		second_dig = 'L';
+		first_dig = '-';
+		second_dig = 9;
 	}
 	if(dig == 1)
 		LED_SEGCODE(first_dig,1)
